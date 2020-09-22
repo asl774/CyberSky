@@ -1,0 +1,506 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>Making your first Phaser 3 Game - Part 10</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var config = {
+    type: Phaser.AUTO,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    parent: 'phaser-example',
+    physics: {
+        default: 'arcade',
+    },
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
+};
+
+var player;
+var cpu;
+var finishline;
+var bullets;
+var ship;
+var speed;
+var stats;
+var cursors;
+var lastFired = 0;
+var score = 0;
+var scoreText;
+var helpText;
+    var shipFire;
+    var shipFire2;
+    var clickTransition;
+    var coinPowerup;
+    var hop;
+    var hop2;
+    var hop3;
+    var jump;
+    var jumpLong;
+    var jumpMedium;
+    var jumpQuick;
+    var KarstenholymolySolarSystem;
+
+var game = new Phaser.Game(config);
+
+function preload ()
+{
+    this.load.image('bg', 'assets/japan3.png');
+    this.load.image('bg2', 'assets/scrollingbg.png');
+    this.load.image('ship3', 'assets/ship3.png');
+    this.load.image('ship4-1', 'assets/ship4-1.png');
+    this.load.spritesheet('ship5-1', 'assets/ship5-1.png', { frameWidth: 100, frameHeight: 100 });
+    this.load.image('bullet', 'assets/bullet.png');
+    this.load.image('finishline', 'assets/finishline.png');
+
+    this.load.image('ninja1', 'assets/blockninja.png');
+    this.load.image('ninja2', 'assets/blockninja2.png');
+    this.load.image('ninja3', 'assets/blockninja3.png');
+    this.load.image('ninja4', 'assets/blockninja4.png');
+    this.load.image('star1', 'assets/ninjastar.png');
+    this.load.image('star2', 'assets/ninjastar2.png');
+    this.load.image('star3', 'assets/ninjastar3.png');      
+
+    this.load.setPath('assets');
+    this.load.audio('shipFire', [ 'shipFire.mp3' ]);
+    this.load.audio('shipFire2', [ 'shipFire2.mp3' ]);
+    this.load.audio('clickTransition', [ 'clickTransition.mp3' ]);
+    this.load.audio('coinPowerup', [ 'coinPowerup.mp3' ]);
+    this.load.audio('hop', [ 'hop.mp3' ]);
+    this.load.audio('hop2', [ 'hop2.mp3' ]);
+    this.load.audio('hop3', [ 'hop3.mp3' ]);
+    this.load.audio('jump', [ 'jump.mp3' ]);
+    this.load.audio('jumpLong', [ 'jumpLong.mp3' ]);
+    this.load.audio('jumpMedium', [ 'jumpMedium.mp3' ]);
+    this.load.audio('jumpQuick', [ 'jumpQuick.mp3' ]);
+    //this.load.audio('Karstenholymoly_-_Solar_System', [ 'Karstenholymoly_-_Solar_System.mp3' ]);
+
+    //this.load.spritesheet('dude2', 'assets/dude2.png', { frameWidth: 32, frameHeight: 48 });
+}
+
+function create ()
+{
+    score = 0;
+
+    shipFire = this.sound.add('shipFire');
+    shipFire2 = this.sound.add('shipFire2');
+    clickTransition = this.sound.add('clickTransition');
+    coinPowerup = this.sound.add('coinPowerup');
+    hop = this.sound.add('hop');
+    hop2 = this.sound.add('hop2');
+    hop3 = this.sound.add('hop3');
+    jump = this.sound.add('jump');
+    jumpLong = this.sound.add('jumpLong');
+    jumpMedium = this.sound.add('jumpMedium');
+    jumpQuick = this.sound.add('jumpQuick');
+    KarstenholymolySolarSystem = this.sound.add('Karstenholymoly_-_Solar_System');
+
+    //KarstenholymolySolarSystem.play();
+
+    
+    //  Set the camera and physics bounds to be the size of 2x1 bg images
+    this.cameras.main.setBounds(0, 0, 2400 * 2, 600);
+    this.physics.world.setBounds(0, 0, 2400 * 2, 600);
+
+
+
+    var randNum = Math.random();
+    if (randNum >= 0 && randNum <= 0.5){
+    //  Mash 2 images together to create our background
+        this.add.image(0, 0, 'bg').setOrigin(0);
+        this.add.image(800, 0, 'bg').setFlip(800,0).setOrigin(0);
+        this.add.image(1600, 0, 'bg').setOrigin(0);
+        this.add.image(2400, 0, 'bg').setFlip(800,0).setOrigin(0);
+        this.add.image(3200, 0, 'bg').setOrigin(0);
+        this.add.image(4000, 0, 'bg').setFlip(800,0).setOrigin(0);
+    }
+
+    else if (randNum > 0.5 && randNum <= 1){
+        //  Mash 2 images together to create our background
+        this.add.image(0, 0, 'bg2').setOrigin(0);
+        this.add.image(800, 0, 'bg2').setFlip(800,0).setOrigin(0);
+        this.add.image(1600, 0, 'bg2').setOrigin(0);
+        this.add.image(2400, 0, 'bg2').setFlip(800,0).setOrigin(0);
+        this.add.image(3200, 0, 'bg2').setOrigin(0);
+        this.add.image(4000, 0, 'bg2').setFlip(800,0).setOrigin(0);
+    }
+
+
+
+
+
+    cursors = this.input.keyboard.createCursorKeys();
+
+
+    finishline = this.physics.add.staticGroup();
+    //this.physics.add.collider(player, finishline);
+
+    finishline.create(4775, 300, 'finishline');
+
+
+    player = this.physics.add.image(0, 300, 'ninja1');
+
+    player.setCollideWorldBounds(true);
+
+    cpu = this.physics.add.staticGroup();
+    this.physics.add.collider(player, cpu);
+
+
+
+    //5 random color enemies at same 5 y-coordinates
+    for (var i = 775; i < 4776; i += 800)
+    {
+        for (var j = 100; j < 600; j += 100)
+        {
+            var randNum = Math.random();
+            if (randNum > 0 && randNum <= 0.33)
+                cpu.create(i, j, 'ninja2');
+            else if (randNum > 0.33 && randNum <= 0.67)
+                cpu.create(i, j, 'ninja3');
+            else if (randNum > 0.67 && randNum <= 1)
+                cpu.create(i, j, 'ninja4');
+
+        }
+    }
+
+
+/*
+    //1 random color enemy at random y-coordinate
+    for (var i = 775; i < 4776; i += 800)
+    {
+        var randNum = Math.random();
+        var randYCoord = (Math.floor(Math.random() * 5) + 1) * 100;
+        if (randNum > 0 && randNum <= 0.33)
+            cpu.create(i, randYCoord, 'ninja2');
+        else if (randNum > 0.33 && randNum <= 0.67)
+            cpu.create(i, randYCoord, 'ninja3');
+        else if (randNum > 0.67 && randNum <= 1)
+            cpu.create(i, randYCoord, 'ninja4');
+    }
+*/
+
+    this.cameras.main.startFollow(player, true, 0.5, 0.5);
+    this.cameras.main.followOffset.set(-600, 0);
+    //this.cameras.main.followOffset.set(-480, 0);
+
+
+    var Bullet = new Phaser.Class({
+
+        Extends: Phaser.GameObjects.Image,
+
+        initialize:
+
+        function Bullet (scene)
+        {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'star3');
+
+            this.speed = Phaser.Math.GetSpeed(1200, 1);
+        },
+
+        fire: function (x, y)
+        {
+            this.setPosition(x + 50, y);
+            //this.setPosition(x + 78, y);
+            
+            this.setActive(true);
+            this.setVisible(true);
+        },
+
+        update: function (time, delta)
+        {
+            this.x += this.speed * delta;
+
+            if (this.x > player.x + 900)
+            {
+                this.setActive(false);
+                this.setVisible(false);
+            }
+        }
+
+    });
+
+    var Bullet2 = new Phaser.Class({
+
+        Extends: Phaser.GameObjects.Image,
+
+        initialize:
+
+        function Bullet (scene)
+        {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'star1');
+
+            this.speed = Phaser.Math.GetSpeed(1200, 1);
+        },
+
+        fire: function (x, y)
+        {
+            this.setPosition(x + 50, y);
+            //this.setPosition(x + 78, y);
+            
+            this.setActive(true);
+            this.setVisible(true);
+        },
+
+        update: function (time, delta)
+        {
+            this.x += this.speed * delta;
+
+            if (this.x > player.x + 900)
+            {
+                this.setActive(false);
+                this.setVisible(false);
+            }
+        }
+
+    });
+
+
+    var Bullet3 = new Phaser.Class({
+
+        Extends: Phaser.GameObjects.Image,
+
+        initialize:
+
+        function Bullet (scene)
+        {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'star3');
+            this.speed = Phaser.Math.GetSpeed(1200, 1);
+        },
+
+        fire: function (x, y)
+        {
+            this.setPosition(x + 50, y);
+            this.setActive(true);
+            this.setVisible(true);
+        },
+
+        update: function (time, delta)
+        {
+            this.x += this.speed * delta;
+
+            if (this.x > player.x + 900)
+            {
+                this.setActive(false);
+                this.setVisible(false);
+            }
+        }
+
+    });
+
+        var Bullet4 = new Phaser.Class({
+
+        Extends: Phaser.GameObjects.Image,
+
+        initialize:
+
+        function Bullet (scene)
+        {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'star3');
+            this.speed = Phaser.Math.GetSpeed(1200, 1);
+        },
+
+        fire: function (x, y)
+        {
+            this.setPosition(x + 50, y);
+            this.setActive(true);
+            this.setVisible(true);
+        },
+
+        update: function (time, delta)
+        {
+            this.x += this.speed * delta;
+
+            if (this.x > player.x + 900)
+            {
+                this.setActive(false);
+                this.setVisible(false);
+            }
+        }
+
+    });
+
+        var Bullet5 = new Phaser.Class({
+
+        Extends: Phaser.GameObjects.Image,
+
+        initialize:
+
+        function Bullet (scene)
+        {
+            Phaser.GameObjects.Image.call(this, scene, 0, 0, 'star3');
+            this.speed = Phaser.Math.GetSpeed(1200, 1);
+        },
+
+        fire: function (x, y)
+        {
+            this.setPosition(x + 50, y);
+            this.setActive(true);
+            this.setVisible(true);
+        },
+
+        update: function (time, delta)
+        {
+            this.x += this.speed * delta;
+
+            if (this.x > player.x + 900)
+            {
+                this.setActive(false);
+                this.setVisible(false);
+            }
+        }
+
+    });
+
+    //  Limited to 20 objects in the pool, not allowed to grow beyond it
+    // bullets = this.pool.createObjectPool(Bullet, 20);
+
+    bullets = this.physics.add.group({
+        classType: Bullet,
+        maxSize: 100,
+        runChildUpdate: true
+    });
+
+    bullets2 = this.physics.add.group({
+        classType: Bullet2,
+        maxSize: 1,
+        runChildUpdate: true
+    });
+
+    bullets3 = this.physics.add.group({
+        classType: Bullet3,
+        maxSize: 1,
+        runChildUpdate: true
+    });
+    bullets4 = this.physics.add.group({
+        classType: Bullet4,
+        maxSize: 1,
+        runChildUpdate: true
+    });
+    bullets5 = this.physics.add.group({
+        classType: Bullet5,
+        maxSize: 1,
+        runChildUpdate: true
+    });
+
+    //  Create the objects in advance, so they're ready and waiting in the pool
+    bullets.createMultiple({ quantity: 100, active: false });
+    bullets2.createMultiple({ quantity: 1, active: false });
+    bullets3.createMultiple({ quantity: 1, active: false });
+    bullets4.createMultiple({ quantity: 1, active: false });
+    bullets5.createMultiple({ quantity: 1, active: false });
+
+    speed = Phaser.Math.GetSpeed(300, 1);
+
+    spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    zkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+    xkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+
+    this.physics.add.overlap(bullets, cpu, collide, null, this);
+    this.physics.add.overlap(bullets2, cpu, penetrate, null, this);
+    this.physics.add.overlap(bullets3, cpu, collide, null, this);
+    this.physics.add.overlap(bullets4, cpu, collide, null, this);
+    this.physics.add.overlap(bullets5, cpu, collide, null, this);
+    this.physics.add.overlap(player, finishline, finish, null, this);
+
+    scoreText = this.add.text(20, 5, 'score: '+score, { fontSize: '20px', fill: '#ff0000', align: "center" });
+    scoreText.setScrollFactor(0);
+    helpText = this.add.text(275, 5, 'Press spacebar for basic attack, z for giant shuriken, x for triple throw', { fontSize: '20px', fill: '#ff0000', align: "center" });
+    helpText.setScrollFactor(0);
+}
+
+function update ()
+{
+    scoreText.setText("score: "+score);
+    player.setVelocity(0);
+    if (Phaser.Input.Keyboard.JustDown(spacebar))
+    {
+        //shipFire2.play();
+        var bullet = bullets.get();
+
+        if (bullet)
+        {
+            bullet.fire(player.x, player.y);
+        }
+    }
+    if (Phaser.Input.Keyboard.JustDown(zkey))
+    {
+        //shipFire2.play();
+        var bullet2 = bullets2.get();
+
+        if (bullet2)
+        {
+            bullet2.fire(player.x, player.y);
+        }
+    }
+    if (Phaser.Input.Keyboard.JustDown(xkey))
+    {
+        //shipFire2.play();
+        var bullet4 = bullets4.get();
+        var bullet5 = bullets5.get();
+        var bullet3 = bullets3.get();
+
+        if (bullet3 && bullet4 && bullet5)
+        {
+            bullet4.fire(player.x, player.y - 70);
+            bullet5.fire(player.x, player.y);
+            bullet3.fire(player.x, player.y + 70);
+        }
+    }
+    if (cursors.left.isDown)
+    {
+        player.setVelocityX(-400);
+        //player.anims.play('left', true);
+    }
+    else if (cursors.right.isDown)
+    {
+        player.setVelocityX(400);
+        //player.anims.play('right', true);
+    }
+
+    if (cursors.up.isDown)
+    {
+        player.setVelocityY(-400);
+    }
+    else if (cursors.down.isDown)
+    {
+        player.setVelocityY(400);
+    }
+
+}
+
+function collide (bullets, cpu)
+{
+    bullets.setActive(false);
+    bullets.setVisible(false);
+    score++;
+    cpu.disableBody(true, true);
+
+}
+
+function penetrate (bullets, cpu){
+    score++;
+    cpu.disableBody(true, true);
+}
+
+function finish (player, finishline)
+{
+    finishline.disableBody(true, true);
+    this.scene.restart();
+}
+</script>
+
+</body>
+</html>
