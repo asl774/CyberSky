@@ -13,6 +13,7 @@ gameScene.init = function() {
   this.bossSpeed = 2;
   this.bossHP = 3;
   this.bossMinX = -250;
+  this.bossAlive = true;
   this.startBoss = false;
   this.numEnemiesLeft = 2;
   this.enemyKilled = false;
@@ -22,7 +23,7 @@ gameScene.init = function() {
 gameScene.preload = function() {
 
   // load images
-  this.load.image('background', 'assets/background2.png');
+  this.load.image('background', 'assets/background3.png');
   this.load.image('player', 'assets/player.png');
   this.load.image('dragon', 'assets/dragon.png');
   this.load.image('treasure', 'assets/treasure.png');
@@ -37,11 +38,25 @@ gameScene.preload = function() {
 // executed once, after assets were loaded
 gameScene.create = function() {
 
+
+
   // background
   let bg = this.add.sprite(0, 0, 'background');
 
   // change origin to the top-left of the sprite
   bg.setOrigin(0, 0);
+
+  //let healthBar=this.makeBar(140,100,0x2ecc71);
+  //this.setValue(healthBar,100);
+
+
+  healthBar = this.makeBar(0,0,0xe74c3c);
+  this.setValue(healthBar,100);
+  healthBar.setVisible(false);
+  healthPercent = 100;
+
+  //let magicBar=this.makeBar(140,300,0x2980b9);
+  //this.setValue(magicBar,33);
 
   // player
   this.player = this.add.sprite(20, this.sys.game.config.height / 2, 'ninja');
@@ -86,7 +101,31 @@ gameScene.create = function() {
   //create keyboard keys
   cursors = game.input.keyboard.createCursorKeys();
 
+
 };
+
+gameScene.makeBar = function (x, y,color) {
+    //draw the bar
+    let bar = this.add.graphics();
+
+    //color the bar
+    bar.fillStyle(color, 1);
+
+    //fill the bar with a rectangle
+    bar.fillRect(0, 0, 800, 10);
+    
+    //position the bar
+    bar.x = x;
+    bar.y = y;
+
+    //return the bar
+    return bar;
+}
+gameScene.setValue = function (bar,percentage) {
+    //scale the bar
+    bar.scaleX = percentage/100;
+}
+
 
 // executed on every frame (60 times per second)
 gameScene.update = function() {
@@ -146,21 +185,28 @@ gameScene.update = function() {
     }
   }
 
-  if (this.player.x > 350) {
+  if (this.player.x + 17 > 400) {
     this.startBoss = true;
   }
 
   if (this.startBoss){
+    this.startBoss = false;
+    healthBar.setVisible(true);
     this.boss.setVisible(true);
     this.boss.x -= this.bossSpeed;
   }
 
-  if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.boss.getBounds())) {
+  if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.boss.getBounds()) && this.bossAlive) {
+    healthPercent -= 33.33;
+    this.setValue(healthBar, healthPercent);
+    this.cameras.main.shake(400, 0.01); //duration, intensity
     this.bossHP -= 1;
+    
     this.boss.x = 1100;
   }
 
   if (this.bossHP <= 0) {
+    this.bossAlive = false;
     this.boss.setActive(false);
     this.boss.setVisible(false);
   }
@@ -190,7 +236,8 @@ gameScene.gameOver = function() {
   }, [], this);
 };
 
-
+var healthBar;
+var healthPercent = 100;
 
 // our game's configuration
 let config = {
