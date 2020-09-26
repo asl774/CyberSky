@@ -12,7 +12,7 @@ gameScene.init = function() {
   this.enemyMinX = 10;  //80
   this.bossSpeed = 2;
   this.bossHP = 3;
-  this.bossMinX = -250; //-250 for offscreen leftside
+  this.bossMinX = 1030; //-250 for offscreen leftside
   this.bossAlive = true;
   this.startBoss = false;
   this.numEnemiesLeft = 2;
@@ -216,7 +216,8 @@ gameScene.update = function() {
   }
 
   if (this.boss.x <= this.bossMinX) {
-      this.boss.x = 1550;
+    this.bossSpeed = 0;
+      //this.boss.x = 1550;
     }
 
 };
