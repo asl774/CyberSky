@@ -33,8 +33,10 @@ gameScene.preload = function() {
   this.load.image('ninja', 'assets/blockninja.png');
   this.load.image('enemy', 'assets/blockninja2.png');
   this.load.image('star', 'assets/ninjastar3.png');
-  this.load.image('starbig', 'assets/ninjastar.png');  
-  this.load.image('boss', 'assets/boss.png');  
+  this.load.image('starbig', 'assets/ninjastar.png');
+  this.load.image('boss', 'assets/boss.png');
+
+  this.load.image('bullet', 'assets/bullet.png');
 };
 
 // executed once, after assets were loaded
@@ -61,7 +63,9 @@ gameScene.create = function() {
   //this.setValue(magicBar,33);
 
   // player
-  this.player = this.add.sprite(20, this.sys.game.config.height / 2, 'ninja');
+  this.player = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninja');
+  this.player.setCollideWorldBounds(true); //can't run off screen
+  this.playerHP = 100;
 
   // scale down
   this.player.setScale(0.5);
@@ -84,8 +88,9 @@ gameScene.create = function() {
   });
   */
 
-  this.boss = this.add.sprite(1550, 300, 'boss');
+  this.boss = this.physics.add.sprite(1550, 300, 'boss');
   this.boss.setVisible(false);
+  this.bullets = this.physics.add.group(); //create attack 1
 
   text = this.add.text(400, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
 
@@ -98,6 +103,8 @@ gameScene.create = function() {
     enemy.speed = 2;
   }, this);
   */
+
+  this.physics.add.overlap(this.player, this.bullets, this.getHit, null, this); //trigger between player & bullets
 
   // player is alive
   this.isPlayerAlive = true;
@@ -120,7 +127,7 @@ gameScene.makeBar = function (x, y,color) {
 
     //fill the bar with a rectangle
     bar.fillRect(0, 0, 1280, 30);
-    
+
     //position the bar
     bar.x = x;
     bar.y = y;
@@ -209,7 +216,7 @@ gameScene.update = function(time, delta) {
     this.setValue(healthBar, healthPercent);
     this.cameras.main.shake(400, 0.01); //duration, intensity
     this.bossHP -= 1;
-    
+
     this.boss.x = 1550;
   }
 
@@ -226,6 +233,7 @@ gameScene.update = function(time, delta) {
     this.timer -= 5000;
     var ability = Math.floor(Math.random() * 3) + 1;
     text.setText("Boss is using ability: " + ability + " (updates every 5 secs, can be the same number)");
+    this.useAbility(ability);
     }
 
       //this.boss.x = 1550;
@@ -233,6 +241,50 @@ gameScene.update = function(time, delta) {
 
 
 };
+
+gameScene.useAbility = function(ability) {
+  if(ability == 1)
+  {
+    this.abilityOne();
+  } else if (ability == 2)
+  {
+    this.abilityTwo();
+  } else {
+    this.abilityThree();
+  }
+}
+
+gameScene.abilityOne = function() { //shoots three bullets
+  console.log("using ability one");
+  for(let i = 0; i < 4; i++)
+  {
+    let x = this.boss.x;
+    let y = Phaser.Math.Between(this.boss.y - 200, this.boss.y + 200); //can and should randomize this
+
+    let bullet = this.bullets.create(x, y, 'bullet');
+    bullet.setVelocityX(Phaser.Math.Between(-100,-200));
+  }
+}
+
+gameScene.abilityTwo = function() {
+  console.log("using ability two");
+}
+
+gameScene.abilityThree = function(){
+  console.log("using ability three");
+}
+
+gameScene.getHit = function(player, bullet) {
+  bullet.disableBody(true,true);
+  if(this.playerHP <= 0) //things can happen, be safe and less than 0
+  {
+    this.gameOver();
+  } else {
+    this.playerHP -= 20;
+  }
+  console.log("player health is : " + this.playerHP);
+}
+
 
 gameScene.gameOver = function() {
 
@@ -262,6 +314,13 @@ let config = {
   type: Phaser.AUTO,
   width: 1280, //640
   height: 600, //360
+  physics: { //needed for physics to work in game
+    default: 'arcade',
+    arcade: {
+        gravity: { y: 0 },
+        debug: false
+      }
+  },
   scene: gameScene
 };
 
