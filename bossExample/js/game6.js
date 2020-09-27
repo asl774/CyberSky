@@ -4,7 +4,7 @@ let gameScene = new Phaser.Scene('Game');
 
 // some parameters for our scene
 gameScene.init = function() {
-  this.playerSpeed = 3;
+  this.playerSpeed = 10;
   this.enemySpeed = 2;
   this.enemyMaxY = 490; //280
   this.enemyMinY = 105;  //80
@@ -17,6 +17,8 @@ gameScene.init = function() {
   this.startBoss = false;
   this.numEnemiesLeft = 2;
   this.enemyKilled = false;
+  this.text = "";
+  this.timer = 0;
 }
 
 // load asset files for our game
@@ -85,6 +87,8 @@ gameScene.create = function() {
   this.boss = this.add.sprite(1550, 300, 'boss');
   this.boss.setVisible(false);
 
+  text = this.add.text(400, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+
   // scale enemies
   //Phaser.Actions.ScaleXY(this.enemies.getChildren(), -0.5, -0.5);
 
@@ -131,8 +135,8 @@ gameScene.setValue = function (bar,percentage) {
 
 
 // executed on every frame (60 times per second)
-gameScene.update = function() {
-
+gameScene.update = function(time, delta) {
+  this.timer += delta;
   // only if the player is alive
   if (!this.isPlayerAlive) {
     return;
@@ -217,8 +221,16 @@ gameScene.update = function() {
 
   if (this.boss.x <= this.bossMinX) {
     this.bossSpeed = 0;
-      //this.boss.x = 1550;
+
+  while (this.timer > 5000) {
+    this.timer -= 5000;
+    var ability = Math.floor(Math.random() * 3) + 1;
+    text.setText("Boss is using ability: " + ability + " (updates every 5 secs, can be the same number)");
     }
+
+      //this.boss.x = 1550;
+  }
+
 
 };
 
@@ -243,6 +255,7 @@ gameScene.gameOver = function() {
 
 var healthBar;
 var healthPercent = 100;
+var text;
 
 // our game's configuration
 let config = {
