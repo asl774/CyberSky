@@ -122,11 +122,13 @@ class BossScene extends Phaser.Scene{
       this.timer.paused = true;
     }
     //ability three
-    if (this.timer2.getProgress().toString().substr(0,4) >= 0.1 && this.timer2.getProgress().toString().substr(0,4) <= 0.4){
-      this.physics.moveToObject(this.boss, this.player, 700);
-    }
-    else if (this.timer2.getProgress().toString().substr(0,4) > 0.4 && this.timer2.getProgress().toString().substr(0,4) <= 1.0){
-      this.physics.moveToObject(this.boss, this.treasure, 700);
+    if (this.timer.getProgress().toString().substr(0,4) < 0.4){
+      if (this.timer2.getProgress().toString().substr(0,4) >= 0.1 && this.timer2.getProgress().toString().substr(0,4) <= 0.5){
+        this.physics.moveToObject(this.boss, this.player, 700);
+      }
+      else if (this.timer2.getProgress().toString().substr(0,4) > 0.5 && this.timer2.getProgress().toString().substr(0,4) <= 1.0){
+        this.physics.moveToObject(this.boss, this.treasure, 700);
+      }
     }
   }
 
