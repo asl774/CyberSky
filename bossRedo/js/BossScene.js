@@ -31,7 +31,7 @@ class BossScene extends Phaser.Scene{
   preload()
   {
     // load images
-    this.load.image('background', 'assets/background4.png');
+    this.load.image('background', 'assets/background5.png');
     this.load.image('player', 'assets/player.png');
     this.load.image('dragon', 'assets/dragon.png');
     this.load.image('treasure', 'assets/treasure.png');
@@ -73,7 +73,7 @@ class BossScene extends Phaser.Scene{
     this.player.setCollideWorldBounds(true); //can't run off screen
     this.playerHP = 100;
     this.isPlayerAlive = true;
-    this.playerHealthBar = this.makeBar(0,570,0x2ecc71);
+    this.playerHealthBar = this.makeBar(0,this.sys.game.config.height - 30,0x2ecc71);
     this.setValue(this.playerHealthBar,100);
     this.playerHealthBar.setVisible(true);
     this.playerHealthPercent = 100;
@@ -160,7 +160,7 @@ class BossScene extends Phaser.Scene{
     //color the bar
     bar.fillStyle(color, 1);
     //fill the bar with a rectangle
-    bar.fillRect(0, 0, 1280, 30);
+    bar.fillRect(0, 0, this.sys.game.config.width, 30);
     //position the bar
     bar.x = x;
     bar.y = y;
