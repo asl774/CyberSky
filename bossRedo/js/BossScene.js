@@ -65,7 +65,7 @@ class BossScene extends Phaser.Scene{
     this.laser = this.physics.add.group(); // create attack 2
     //colliders / triggers
     this.physics.add.overlap(this.player, this.bullets, this.getHit, null, this); //trigger b/w player & bullets
-    this.physics.add.overlap(this.player, this.laser, this.getHitLaser, null, this); //trigger b/w player & laser
+    this.physics.add.overlap(this.player, this.laser, this.dot, null, this); //trigger b/w player & laser
     this.physics.add.overlap(this.player, this.treasure, this.gameOver, null, this); //trigger b/w player & treasure
     this.physics.add.overlap(this.player, this.boss, this.hitBoss, null, this); //trigger b/w player & boss
     //camera
@@ -208,15 +208,24 @@ class BossScene extends Phaser.Scene{
     console.log("player health is : " + this.playerHP);
   }
 
-  getHitLaser(player,laser)
-  {
-    laser.disableBody(true,true);
-    this.playerHP -= 50;
-    if(this.playerHP <= 0) //things can happen, be safe and less than 0
-    {
+  dot(player, laser) {
+
+    if (this.playerHP <= 0){
       this.gameOver();
+    }else{
+      if (this.player.x >= 200){
+      this.playerHP -= 10;
+      this.player.x = this.player.x - 150;
+      this.player.tint = Math.random() * 0xffffff;
+      this.cameras.main.shake(300);
+    }else{
+      this.playerHP -= 10;
+      this.player.x = this.player.x + 200;
+      this.laser.tint = Math.random() * 0xffffff;
+      this.cameras.main.shake(300);
     }
-    console.log("player health is : " + this.playerHP);
+
+    }
   }
 
   hitBoss(player, boss)
