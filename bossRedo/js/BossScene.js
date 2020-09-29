@@ -75,7 +75,7 @@ class BossScene extends Phaser.Scene{
     this.cursors = this.input.keyboard.createCursorKeys();
     //timer testing
     this.timer = this.time.addEvent({delay : 5000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
-    this.timer2 = this.time.addEvent({delay : 2500, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
+    this.timer2 = this.time.addEvent({delay : 5000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
 
     //debugging / things to remove later
     this.timerText = this.add.text(400, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
@@ -123,10 +123,10 @@ class BossScene extends Phaser.Scene{
     }
     //ability three
     if (this.timer.getProgress().toString().substr(0,4) < 0.4){
-      if (this.timer2.getProgress().toString().substr(0,4) >= 0.1 && this.timer2.getProgress().toString().substr(0,4) <= 0.5){
+      if (this.timer2.getProgress().toString().substr(0,4) >= 0.05 && this.timer2.getProgress().toString().substr(0,4) <= 0.25){
         this.physics.moveToObject(this.boss, this.player, 700);
       }
-      else if (this.timer2.getProgress().toString().substr(0,4) > 0.5 && this.timer2.getProgress().toString().substr(0,4) <= 1.0){
+      else if (this.timer2.getProgress().toString().substr(0,4) > 0.25 && this.timer2.getProgress().toString().substr(0,4) <= 0.5){
         this.physics.moveToObject(this.boss, this.treasure, 700);
       }
     }
