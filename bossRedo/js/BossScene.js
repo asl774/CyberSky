@@ -20,6 +20,11 @@ class BossScene extends Phaser.Scene{
     this.enemyKilled = false;
     this.text = "";
     this.timer;
+    this.ability1;
+    this.ability2;
+    this.ability3;
+    this.dinogrowl;
+
   }
 
   preload()
@@ -38,10 +43,22 @@ class BossScene extends Phaser.Scene{
 
     this.load.image('bullet', 'assets/bullet.png');
     this.load.image('laser', 'assets/laser.png');
+
+    this.load.setPath('assets');
+    this.load.audio('ability1', [ 'fireball1.mp3' ]);
+    this.load.audio('ability2', [ 'laser.mp3' ]);
+    this.load.audio('ability3', [ 'stomp.mp3' ]);
+    this.load.audio('dinogrowl', [ 'dinogrowl.mp3' ]);
   }
 
   create()
   {
+    //audio
+    this.ability1 = this.sound.add('ability1', {volume: 0.5});
+    this.ability2 = this.sound.add('ability2', {volume: 0.5});
+    this.ability3 = this.sound.add('ability3');
+    this.dinogrowl = this.sound.add('dinogrowl');
+    
     // background
     this.add.sprite(0, 0, 'background').setOrigin(0,0);
     //boss health bar
@@ -173,6 +190,8 @@ class BossScene extends Phaser.Scene{
   abilityOne() {
     console.log("using ability one");
     this.timer2.paused = true;
+    this.ability3.setMute(true);
+    this.ability1.play();
     for(let i = 0; i < 4; i++)
     {
       let x = this.boss.x;
@@ -186,6 +205,8 @@ class BossScene extends Phaser.Scene{
   abilityTwo(){
     console.log("using ability two");
     this.timer2.paused = true;
+    this.ability3.setMute(true);
+    this.ability2.play();
     let x = Phaser.Math.Between(0, this.boss.x - 20);
     let y = 0;
     let laser = this.laser.create(x, y, 'laser');
@@ -195,6 +216,8 @@ class BossScene extends Phaser.Scene{
   abilityThree() {
     console.log("using ability three");
     this.timer2.paused = false;
+    this.ability3.setMute(false);
+    this.ability3.play();
   }
 
   getHit(player, bullet)
