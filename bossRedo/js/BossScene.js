@@ -6,6 +6,7 @@ class BossScene extends Phaser.Scene{
   init()
   {
     this.playerSpeed = 10;
+    this.playerHP;
     this.enemySpeed = 2;
     this.enemyMaxY = 490; //280
     this.enemyMinY = 105;  //80
@@ -62,16 +63,20 @@ class BossScene extends Phaser.Scene{
     // background
     this.add.sprite(0, 0, 'background').setOrigin(0,0);
     //boss health bar
-    this.healthBar = this.makeBar(0,0,0xe74c3c);
-    this.setValue(this.healthBar,100);
-    this.healthBar.setVisible(false);
-    this.healthPercent = 100;
+    this.bossHealthBar = this.makeBar(0,0,0xe74c3c);
+    this.setValue(this.bossHealthBar,100);
+    this.bossHealthBar.setVisible(false);
+    this.bossHealthPercent = 100;
     // player
     this.player = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninja');
     this.player.setScale(0.5);
     this.player.setCollideWorldBounds(true); //can't run off screen
     this.playerHP = 100;
     this.isPlayerAlive = true;
+    this.playerHealthBar = this.makeBar(0,570,0x2ecc71);
+    this.setValue(this.playerHealthBar,100);
+    this.playerHealthBar.setVisible(true);
+    this.playerHealthPercent = 100;
     // goal / end of level
     this.treasure = this.physics.add.sprite(this.sys.game.config.width - 20, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
@@ -84,7 +89,7 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(this.player, this.bullets, this.getHit, null, this); //trigger b/w player & bullets
     this.physics.add.overlap(this.player, this.laser, this.dot, null, this); //trigger b/w player & laser
     this.physics.add.overlap(this.player, this.treasure, this.gameOver, null, this); //trigger b/w player & treasure
-    this.physics.add.overlap(this.player, this.boss, this.hitBoss, null, this); //trigger b/w player & boss
+    this.physics.add.overlap(this.player, this.boss, this.hitPlayer, null, this); //trigger b/w player & boss
     //camera
     this.cameras.main.resetFX(); //reset cameras
     //keyboard input
@@ -123,7 +128,7 @@ class BossScene extends Phaser.Scene{
       this.startBoss = true;
     }
     if (this.startBoss){
-      this.healthBar.setVisible(true);
+      this.bossHealthBar.setVisible(true);
       this.boss.setVisible(true);
       this.boss.x -= this.bossSpeed;
       this.timer.paused = false;
@@ -224,6 +229,8 @@ class BossScene extends Phaser.Scene{
   {
     bullet.disableBody(true,true);
     this.playerHP -= 20;
+    this.playerHealthPercent -= 20;
+    this.setValue(this.playerHealthBar, this.playerHealthPercent);
     if(this.playerHP <= 0) //things can happen, be safe and less than 0
     {
       this.gameOver();
@@ -232,29 +239,46 @@ class BossScene extends Phaser.Scene{
   }
 
   dot(player, laser) {
-
-    if (this.playerHP <= 0){
-      this.gameOver();
-    }else{
-      if (this.player.x >= 200){
-      this.playerHP -= 10;
+    if (this.player.x >= 200){
+      this.playerHP -= 30;
+      this.playerHealthPercent -= 30;
+      this.setValue(this.playerHealthBar, this.playerHealthPercent);
       this.player.x = this.player.x - 150;
       this.player.tint = Math.random() * 0xffffff;
       this.cameras.main.shake(300);
-    }else{
-      this.playerHP -= 10;
+      console.log("player health is : " + this.playerHP);
+    }
+    else{
+      this.playerHP -= 30;
+      this.playerHealthPercent -= 30;
+      this.setValue(this.playerHealthBar, this.playerHealthPercent);
       this.player.x = this.player.x + 200;
       this.laser.tint = Math.random() * 0xffffff;
       this.cameras.main.shake(300);
+      console.log("player health is : " + this.playerHP);
     }
+    if (this.playerHP <= 0){
+      this.gameOver();
+    }
+  }
 
+  hitPlayer(player, boss)
+  {
+    this.playerHealthPercent -= 1;
+    this.setValue(this.playerHealthBar, this.playerHealthPercent);
+    this.cameras.main.shake(400, 0.01); //duration, intensity
+    this.playerHP -= 1;
+    if(this.playerHP <= 0) //things can happen, be safe and less than 0
+    {
+      this.gameOver();
     }
+    console.log("player health is : " + this.playerHP);
   }
 
   hitBoss(player, boss)
   {
-    this.healthPercent -= 33.33;
-    this.setValue(this.healthBar, this.healthPercent);
+    this.bossHealthPercent -= 33.33;
+    this.setValue(this.bossHealthBar, this.bossHealthPercent);
     this.cameras.main.shake(400, 0.01); //duration, intensity
     this.bossHP -= 1;
     this.boss.x = 1550;
