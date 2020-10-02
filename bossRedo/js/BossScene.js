@@ -51,6 +51,8 @@ class BossScene extends Phaser.Scene{
     this.load.audio('dinogrowl', [ 'dinogrowl.mp3' ]);
     this.load.audio('throwstar', [ 'throwstar.mp3' ]);
     this.load.audio('teleport', [ 'teleport.mp3' ]);
+    this.load.audio('throwtriplestar', [ 'throwtriplestar2.mp3' ]);  
+    this.load.audio('throwbigstar', [ 'throwbigstar.mp3' ]);
   }
 
   create()
@@ -62,6 +64,8 @@ class BossScene extends Phaser.Scene{
     this.dinogrowl = this.sound.add('dinogrowl');
     this.throwstar = this.sound.add('throwstar');
     this.teleport = this.sound.add('teleport');
+    this.throwtriplestar = this.sound.add('throwtriplestar');
+    this.throwbigstar = this.sound.add('throwbigstar');
     // background
     this.add.sprite(0, 0, 'background').setOrigin(0,0);
     //boss health bar
@@ -175,7 +179,7 @@ class BossScene extends Phaser.Scene{
     //press z key to throw 3 stars
     else if (Phaser.Input.Keyboard.JustDown(this.zkey))
     {
-      this.throwstar.play();
+      this.throwtriplestar.play();
       let playerx = this.player.x;
       let playery = this.player.y;
       let pbullet1 = this.playerbullets.create(playerx, playery - 25, 'star');
@@ -190,7 +194,7 @@ class BossScene extends Phaser.Scene{
     //press x key to throw big piercing star
     else if (Phaser.Input.Keyboard.JustDown(this.xkey))
     {
-      this.throwstar.play();
+      this.throwbigstar.play();
       let playerx = this.player.x;
       let playery = this.player.y;
       let pbullet = this.playerbigbullets.create(playerx, playery, 'starbig');
