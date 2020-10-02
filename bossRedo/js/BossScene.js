@@ -147,6 +147,9 @@ class BossScene extends Phaser.Scene{
       this.boss.x -= this.bossSpeed;
       this.timer.paused = false;
     }
+    if (this.boss.x < this.sys.game.config.width + 150 && this.boss.x > this.sys.game.config.width + 140){
+      this.dinogrowl.play();
+    }
     if (this.boss.x <= this.bossMinX) {
       this.bossSpeed = 0;
       this.boss.setCollideWorldBounds(true);
