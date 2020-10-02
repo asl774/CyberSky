@@ -78,6 +78,7 @@ class BossScene extends Phaser.Scene{
     this.playerHealthBar.setVisible(true);
     this.playerHealthPercent = 100;
     this.playerbullets = this.physics.add.group(); //create stars
+    this.playerbigbullets = this.physics.add.group(); //create stars
     // goal / end of level
     this.treasure = this.physics.add.sprite(this.sys.game.config.width - 20, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
@@ -92,12 +93,16 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(this.player, this.treasure, this.gameOver, null, this); //trigger b/w player & treasure
     this.physics.add.overlap(this.player, this.boss, this.hitPlayer, null, this); //trigger b/w player & boss
     this.physics.add.overlap(this.boss, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & boss
+    this.physics.add.overlap(this.boss, this.playerbigbullets, this.pierce, null, this); //trigger b/w playerbullets & boss
     //camera
     this.cameras.main.resetFX(); //reset cameras
     //keyboard input
     //create keyboard keys
     this.cursors = this.input.keyboard.createCursorKeys();
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.zkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+    this.xkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+    this.ckey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
     //timer testing
     this.timer = this.time.addEvent({delay : 5000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 5000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
@@ -150,10 +155,10 @@ class BossScene extends Phaser.Scene{
     //ability three
     if (this.timer.getProgress().toString().substr(0,4) < 0.4){
       if (this.timer2.getProgress().toString().substr(0,4) >= 0.05 && this.timer2.getProgress().toString().substr(0,4) <= 0.25){
-        this.physics.moveToObject(this.boss, this.player, 710);
+        this.physics.moveToObject(this.boss, this.player, 700);
       }
       else if (this.timer2.getProgress().toString().substr(0,4) > 0.25 && this.timer2.getProgress().toString().substr(0,4) <= 0.5){
-        this.physics.moveToObject(this.boss, this.treasure, 710);
+        this.physics.moveToObject(this.boss, this.treasure, 700);
       }
     }
     //press spacebar to throw star
@@ -163,7 +168,48 @@ class BossScene extends Phaser.Scene{
       let playerx = this.player.x;
       let playery = this.player.y;
       let pbullet = this.playerbullets.create(playerx, playery, 'star');
-      pbullet.setVelocityX(1200);
+      pbullet.setVelocityX(800);
+    }
+    //press z key to throw 3 stars
+    else if (Phaser.Input.Keyboard.JustDown(this.zkey))
+    {
+      this.throwstar.play();
+      let playerx = this.player.x;
+      let playery = this.player.y;
+      let pbullet1 = this.playerbullets.create(playerx, playery - 25, 'star');
+      let pbullet2 = this.playerbullets.create(playerx, playery, 'star');
+      let pbullet3 = this.playerbullets.create(playerx, playery + 25, 'star');
+      pbullet1.setVelocityX(800);
+      pbullet1.setVelocityY(-100);
+      pbullet2.setVelocityX(800);
+      pbullet3.setVelocityX(800);
+      pbullet3.setVelocityY(100);
+    }
+    //press x key to throw big piercing star
+    else if (Phaser.Input.Keyboard.JustDown(this.xkey))
+    {
+      this.throwstar.play();
+      let playerx = this.player.x;
+      let playery = this.player.y;
+      let pbullet = this.playerbigbullets.create(playerx, playery, 'starbig');
+      pbullet.setVelocityX(800);
+    }
+    //press c key to teleport 100 pixels in direction of arrow key
+    else if (Phaser.Input.Keyboard.JustDown(this.ckey))
+    {
+      this.throwstar.play();
+      if (this.cursors.right.isDown){
+        this.player.x += 100;
+      }
+      else if (this.cursors.left.isDown){
+        this.player.x -= 100;
+      }
+      else if (this.cursors.up.isDown){
+        this.player.y -= 100;
+      }
+      else if (this.cursors.down.isDown){
+        this.player.y += 100;
+      }
     }
   }
 
@@ -305,6 +351,13 @@ class BossScene extends Phaser.Scene{
     this.bossHP -= 1;
     this.setValue(this.bossHealthBar, this.bossHealthPercent);
     //this.cameras.main.shake(400, 0.01); //duration, intensity
+  }
+
+  pierce (boss, pbullet)
+  {
+    this.bossHealthPercent -= 0.1;
+    this.bossHP -= 0.1;
+    this.setValue(this.bossHealthBar, this.bossHealthPercent);
   }
 
   gameOver()
