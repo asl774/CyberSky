@@ -30,16 +30,20 @@ class BossScene extends Phaser.Scene{
   preload()
   {
     // load images
-    this.load.image('background', 'assets/background5.png');
+    this.load.image('background', 'assets/cyberpunk-street.png');
     this.load.image('player', 'assets/player.png');
     this.load.image('dragon', 'assets/dragon.png');
     this.load.image('treasure', 'assets/treasure.png');
 
+
+    //this.load.image('ninja', 'assets/blockninja2.png');
     this.load.image('ninja', 'assets/blockninja.png');
-    this.load.image('enemy', 'assets/blockninja2.png');
+    //this.load.image('ninja', 'assets/blockninjaold.png');
+    //this.load.image('ninja', 'assets/blockninjaold2.png');
     this.load.image('star', 'assets/ninjastar3.png');
     this.load.image('starbig', 'assets/ninjastar.png');
     this.load.image('boss', 'assets/boss.png');
+    //this.load.image('boss', 'assets/bossnew.png');
 
     this.load.image('bullet', 'assets/bullet.png');
     this.load.image('laser', 'assets/laser.png');
