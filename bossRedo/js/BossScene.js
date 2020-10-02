@@ -13,7 +13,7 @@ class BossScene extends Phaser.Scene{
     this.enemyMaxX = 790; //280
     this.enemyMinX = 10;  //80
     this.bossSpeed = 2;
-    this.bossHP = 3;
+    this.bossHP = 100;
     this.bossMinX = 1030; //-250 for offscreen leftside
     this.bossAlive = true;
     this.startBoss = false;
@@ -24,8 +24,7 @@ class BossScene extends Phaser.Scene{
     this.ability1;
     this.ability2;
     this.ability3;
-    this.dinogrowl;
-
+    this.playerbullets;
   }
 
   preload()
@@ -50,6 +49,7 @@ class BossScene extends Phaser.Scene{
     this.load.audio('ability2', [ 'laser.mp3' ]);
     this.load.audio('ability3', [ 'stomp.mp3' ]);
     this.load.audio('dinogrowl', [ 'dinogrowl.mp3' ]);
+    this.load.audio('throwstar', [ 'throwstar.mp3' ]);
   }
 
   create()
@@ -59,7 +59,7 @@ class BossScene extends Phaser.Scene{
     this.ability2 = this.sound.add('ability2', {volume: 0.5});
     this.ability3 = this.sound.add('ability3');
     this.dinogrowl = this.sound.add('dinogrowl');
-    
+    this.throwstar = this.sound.add('throwstar');
     // background
     this.add.sprite(0, 0, 'background').setOrigin(0,0);
     //boss health bar
@@ -77,6 +77,7 @@ class BossScene extends Phaser.Scene{
     this.setValue(this.playerHealthBar,100);
     this.playerHealthBar.setVisible(true);
     this.playerHealthPercent = 100;
+    this.playerbullets = this.physics.add.group(); //create stars
     // goal / end of level
     this.treasure = this.physics.add.sprite(this.sys.game.config.width - 20, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
@@ -90,11 +91,13 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(this.player, this.laser, this.dot, null, this); //trigger b/w player & laser
     this.physics.add.overlap(this.player, this.treasure, this.gameOver, null, this); //trigger b/w player & treasure
     this.physics.add.overlap(this.player, this.boss, this.hitPlayer, null, this); //trigger b/w player & boss
+    this.physics.add.overlap(this.boss, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & boss
     //camera
     this.cameras.main.resetFX(); //reset cameras
     //keyboard input
     //create keyboard keys
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     //timer testing
     this.timer = this.time.addEvent({delay : 5000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 5000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
@@ -139,6 +142,7 @@ class BossScene extends Phaser.Scene{
     }
     if (this.bossHP <= 0) {
       this.bossAlive = false;
+      this.boss.disableBody(true, true);
       this.boss.setActive(false);
       this.boss.setVisible(false);
       this.timer.paused = true;
@@ -146,11 +150,20 @@ class BossScene extends Phaser.Scene{
     //ability three
     if (this.timer.getProgress().toString().substr(0,4) < 0.4){
       if (this.timer2.getProgress().toString().substr(0,4) >= 0.05 && this.timer2.getProgress().toString().substr(0,4) <= 0.25){
-        this.physics.moveToObject(this.boss, this.player, 700);
+        this.physics.moveToObject(this.boss, this.player, 710);
       }
       else if (this.timer2.getProgress().toString().substr(0,4) > 0.25 && this.timer2.getProgress().toString().substr(0,4) <= 0.5){
-        this.physics.moveToObject(this.boss, this.treasure, 700);
+        this.physics.moveToObject(this.boss, this.treasure, 710);
       }
+    }
+    //press spacebar to throw star
+    if (Phaser.Input.Keyboard.JustDown(this.spacebar))
+    {
+      this.throwstar.play();
+      let playerx = this.player.x;
+      let playery = this.player.y;
+      let pbullet = this.playerbullets.create(playerx, playery, 'star');
+      pbullet.setVelocityX(1200);
     }
   }
 
@@ -193,10 +206,10 @@ class BossScene extends Phaser.Scene{
   }
 
   abilityOne() {
+    this.ability1.play();
     console.log("using ability one");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    this.ability1.play();
     for(let i = 0; i < 4; i++)
     {
       let x = this.boss.x;
@@ -208,10 +221,10 @@ class BossScene extends Phaser.Scene{
   }
 
   abilityTwo(){
+    this.ability2.play();
     console.log("using ability two");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    this.ability2.play();
     let x = Phaser.Math.Between(0, this.boss.x - 20);
     let y = 0;
     let laser = this.laser.create(x, y, 'laser');
@@ -219,10 +232,10 @@ class BossScene extends Phaser.Scene{
   }
 
   abilityThree() {
+    this.ability3.play();
     console.log("using ability three");
     this.timer2.paused = false;
     this.ability3.setMute(false);
-    this.ability3.play();
   }
 
   getHit(player, bullet)
@@ -285,6 +298,15 @@ class BossScene extends Phaser.Scene{
     this.bossSpeed = 2;
   }
 
+  collide (boss, pbullet)
+  {
+    pbullet.disableBody(true,true);
+    this.bossHealthPercent -= 1;
+    this.bossHP -= 1;
+    this.setValue(this.bossHealthBar, this.bossHealthPercent);
+    //this.cameras.main.shake(400, 0.01); //duration, intensity
+  }
+
   gameOver()
   {
     // flag to set player is dead
@@ -300,7 +322,5 @@ class BossScene extends Phaser.Scene{
       this.scene.restart();
     }, [], this);
   }
-
-
 
 }
