@@ -50,6 +50,7 @@ class BossScene extends Phaser.Scene{
     this.load.audio('ability3', [ 'stomp.mp3' ]);
     this.load.audio('dinogrowl', [ 'dinogrowl.mp3' ]);
     this.load.audio('throwstar', [ 'throwstar.mp3' ]);
+    this.load.audio('teleport', [ 'teleport.mp3' ]);
   }
 
   create()
@@ -60,6 +61,7 @@ class BossScene extends Phaser.Scene{
     this.ability3 = this.sound.add('ability3');
     this.dinogrowl = this.sound.add('dinogrowl');
     this.throwstar = this.sound.add('throwstar');
+    this.teleport = this.sound.add('teleport');
     // background
     this.add.sprite(0, 0, 'background').setOrigin(0,0);
     //boss health bar
@@ -197,7 +199,7 @@ class BossScene extends Phaser.Scene{
     //press c key to teleport 100 pixels in direction of arrow key
     else if (Phaser.Input.Keyboard.JustDown(this.ckey))
     {
-      this.throwstar.play();
+      this.teleport.play();
       if (this.cursors.right.isDown){
         this.player.x += 100;
       }
