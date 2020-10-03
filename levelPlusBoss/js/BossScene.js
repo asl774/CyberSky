@@ -5,6 +5,8 @@ class BossScene extends Phaser.Scene{
 
   init()
   {
+    this.playerSpeed = 10;
+    this.playerHP;
     this.enemySpeed = 2;
     this.enemyMaxY = 490; //280
     this.enemyMinY = 105;  //80
@@ -12,7 +14,7 @@ class BossScene extends Phaser.Scene{
     this.enemyMinX = 10;  //80
     this.bossSpeed = 2;
     this.bossHP = 100;
-    this.bossMinX = 1030; //-250 for offscreen leftside
+    this.bossMinX = 6630; //-250 for offscreen leftside //1030
     this.bossAlive = true;
     this.startBoss = false;
     this.numEnemiesLeft = 2;
@@ -28,7 +30,8 @@ class BossScene extends Phaser.Scene{
   preload()
   {
     // load images
-    this.load.image('background', 'assets/cyberpunk-street.png');
+    this.load.image('background1', 'assets/cyberpunk-street3.png');
+    this.load.image('background2', 'assets/cyberpunk-street.png');
     this.load.image('player', 'assets/player.png');
     this.load.image('dragon', 'assets/dragon.png');
     this.load.image('treasure', 'assets/treasure.png');
@@ -53,15 +56,15 @@ class BossScene extends Phaser.Scene{
     this.load.audio('dinogrowl', [ 'dinogrowl.mp3' ]);
     this.load.audio('throwstar', [ 'throwstar.mp3' ]);
     this.load.audio('teleport', [ 'teleport.mp3' ]);
-    this.load.audio('throwtriplestar', [ 'throwtriplestar2.mp3' ]);
+    this.load.audio('throwtriplestar', [ 'throwtriplestar2.mp3' ]);  
     this.load.audio('throwbigstar', [ 'throwbigstar.mp3' ]);
   }
 
   create()
   {
     //audio
-    this.ability1 = this.sound.add('ability1', {volume: 0.01});
-    this.ability2 = this.sound.add('ability2', {volume: 0.25});
+    this.ability1 = this.sound.add('ability1', {volume: 0.5});
+    this.ability2 = this.sound.add('ability2', {volume: 0.5});
     this.ability3 = this.sound.add('ability3');
     this.dinogrowl = this.sound.add('dinogrowl');
     this.throwstar = this.sound.add('throwstar');
@@ -69,35 +72,44 @@ class BossScene extends Phaser.Scene{
     this.throwtriplestar = this.sound.add('throwtriplestar');
     this.throwbigstar = this.sound.add('throwbigstar');
     // background
-    this.add.sprite(0, 0, 'background').setOrigin(0,0);
+    //this.add.sprite(0, 0, 'background').setOrigin(0,0);
+    this.cameras.main.setBounds(0, 0, 5600 + 1400, 600);
+    this.physics.world.setBounds(0, 0, 5600 + 1400, 600);
+    this.add.image(0, 0, 'background1').setOrigin(0);
+    this.add.image(5600, 0, 'background2').setOrigin(0);
+    //this.add.image(5600, 0, 'bg').setOrigin(0);
     //boss health bar
-    this.bossHealthBar = this.makeBar(0,0,0xe74c3c);
+    this.bossHealthBar = this.makeBar(5600,0,0xe74c3c);
     this.setValue(this.bossHealthBar,100);
     this.bossHealthBar.setVisible(false);
     this.bossHealthPercent = 100;
-    // player - might be able to move all this to the object
-    player.sprite = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninja');
-    player.sprite.setScale(0.5);
-    player.sprite.setCollideWorldBounds(true); //can't run off screen
-    player.healthBar = this.makeBar(0,this.sys.game.config.height - 30,0x2ecc71);
-    this.setValue(player.healthBar,100);
-    player.healthBar.setVisible(true);
-    player.healthPercent = 100;
+    // player
+    this.player = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninja');
+    this.player.setScale(0.5);
+    this.player.setCollideWorldBounds(true); //can't run off screen
+    this.playerHP = 100;
+    this.isPlayerAlive = true;
+    this.playerHealthBar = this.makeBar(5600,this.sys.game.config.height - 30,0x2ecc71);
+    this.setValue(this.playerHealthBar,100);
+    this.playerHealthBar.setVisible(false);
+    this.playerHealthPercent = 100;
+    this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
+    this.cameras.main.followOffset.set(-500, 0);
     this.playerbullets = this.physics.add.group(); //create stars
     this.playerbigbullets = this.physics.add.group(); //create stars
     // goal / end of level
-    this.treasure = this.physics.add.sprite(this.sys.game.config.width - 20, this.sys.game.config.height / 2, 'treasure');
+    this.treasure = this.physics.add.sprite(7000 - 50, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
     //boss
-    this.boss = this.physics.add.sprite(1550, 300, 'boss');
+    this.boss = this.physics.add.sprite(7150, 300, 'boss'); //1550
     this.boss.setVisible(false);
     this.bullets = this.physics.add.group(); //create attack 1
     this.laser = this.physics.add.group(); // create attack 2
     //colliders / triggers
-    this.physics.add.overlap(player.sprite, this.bullets, this.getHit, null, this); //trigger b/w player & bullets
-    this.physics.add.overlap(player.sprite, this.laser, this.dot, null, this); //trigger b/w player & laser
-    this.physics.add.overlap(player.sprite, this.treasure, this.gameOver, null, this); //trigger b/w player & treasure
-    this.physics.add.overlap(player.sprite, this.boss, this.hitPlayer, null, this); //trigger b/w player & boss
+    this.physics.add.overlap(this.player, this.bullets, this.getHit, null, this); //trigger b/w player & bullets
+    this.physics.add.overlap(this.player, this.laser, this.dot, null, this); //trigger b/w player & laser
+    this.physics.add.overlap(this.player, this.treasure, this.gameOver, null, this); //trigger b/w player & treasure
+    this.physics.add.overlap(this.player, this.boss, this.hitPlayer, null, this); //trigger b/w player & boss
     this.physics.add.overlap(this.boss, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & boss
     this.physics.add.overlap(this.boss, this.playerbigbullets, this.pierce, null, this); //trigger b/w playerbullets & boss
     //camera
@@ -114,40 +126,43 @@ class BossScene extends Phaser.Scene{
     this.timer2 = this.time.addEvent({delay : 5000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
 
     //debugging / things to remove later
-    this.timerText = this.add.text(400, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.text = this.add.text(200,200,"");
+    this.timerText = this.add.text(6000, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.text = this.add.text(6000,150,"");
   }
 
   update()
   {
     this.timerText.setText("timer progress: " + this.timer.getProgress().toString().substr(0,4));
     //check if player is alive
-    if (!player.isAlive) {
+    if (!this.isPlayerAlive) {
       return;
     }
     // check for active input
     if (this.cursors.right.isDown) {
       // player walks
-      player.sprite.x += player.speed;
+      this.player.x += this.playerSpeed;
     } else if (this.cursors.left.isDown) {
-      player.sprite.x -= player.speed;
+      this.player.x -= this.playerSpeed;
     }
     if (this.cursors.up.isDown) {
-      player.sprite.y -= player.speed;
+      this.player.y -= this.playerSpeed;
     } else if (this.cursors.down.isDown){
-      player.sprite.y += player.speed;
+      this.player.y += this.playerSpeed;
     }
 
-    if (player.sprite.x + 17 > 400) {
+    if (this.player.x + 17 > 6000) { //400
       this.startBoss = true;
+      this.cameras.main.setBounds(5600, 0, 1300, 560);
+      this.physics.world.setBounds(5600, 30, 1400, 560);
     }
     if (this.startBoss){
+      this.playerHealthBar.setVisible(true);
       this.bossHealthBar.setVisible(true);
       this.boss.setVisible(true);
       this.boss.x -= this.bossSpeed;
       this.timer.paused = false;
     }
-    if (this.boss.x < this.sys.game.config.width + 150 && this.boss.x > this.sys.game.config.width + 140){
+    if (this.boss.x < 7000 + 150 && this.boss.x > 7000 + 140){ //this.sys.game.config.width
       this.dinogrowl.play();
     }
     if (this.boss.x <= this.bossMinX) {
@@ -164,7 +179,7 @@ class BossScene extends Phaser.Scene{
     //ability three
     if (this.timer.getProgress().toString().substr(0,4) < 0.4){
       if (this.timer2.getProgress().toString().substr(0,4) >= 0.05 && this.timer2.getProgress().toString().substr(0,4) <= 0.25){
-        this.physics.moveToObject(this.boss, player.sprite, 700);
+        this.physics.moveToObject(this.boss, this.player, 700);
       }
       else if (this.timer2.getProgress().toString().substr(0,4) > 0.25 && this.timer2.getProgress().toString().substr(0,4) <= 0.5){
         this.physics.moveToObject(this.boss, this.treasure, 700);
@@ -174,8 +189,8 @@ class BossScene extends Phaser.Scene{
     if (Phaser.Input.Keyboard.JustDown(this.spacebar))
     {
       this.throwstar.play();
-      let playerx = player.sprite.x;
-      let playery = player.sprite.y;
+      let playerx = this.player.x;
+      let playery = this.player.y;
       let pbullet = this.playerbullets.create(playerx, playery, 'star');
       pbullet.setVelocityX(800);
     }
@@ -183,8 +198,8 @@ class BossScene extends Phaser.Scene{
     else if (Phaser.Input.Keyboard.JustDown(this.zkey))
     {
       this.throwtriplestar.play();
-      let playerx = player.sprite.x;
-      let playery = player.sprite.y;
+      let playerx = this.player.x;
+      let playery = this.player.y;
       let pbullet1 = this.playerbullets.create(playerx, playery - 25, 'star');
       let pbullet2 = this.playerbullets.create(playerx, playery, 'star');
       let pbullet3 = this.playerbullets.create(playerx, playery + 25, 'star');
@@ -198,8 +213,8 @@ class BossScene extends Phaser.Scene{
     else if (Phaser.Input.Keyboard.JustDown(this.xkey))
     {
       this.throwbigstar.play();
-      let playerx = player.sprite.x;
-      let playery = player.sprite.y;
+      let playerx = this.player.x;
+      let playery = this.player.y;
       let pbullet = this.playerbigbullets.create(playerx, playery, 'starbig');
       pbullet.setVelocityX(800);
     }
@@ -208,16 +223,16 @@ class BossScene extends Phaser.Scene{
     {
       this.teleport.play();
       if (this.cursors.right.isDown){
-        player.sprite.x += 100;
+        this.player.x += 100;
       }
       else if (this.cursors.left.isDown){
-        player.sprite.x -= 100;
+        this.player.x -= 100;
       }
       else if (this.cursors.up.isDown){
-        player.sprite.y -= 100;
+        this.player.y -= 100;
       }
       else if (this.cursors.down.isDown){
-        player.sprite.y += 100;
+        this.player.y += 100;
       }
     }
   }
@@ -280,7 +295,7 @@ class BossScene extends Phaser.Scene{
     console.log("using ability two");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    let x = Phaser.Math.Between(0, this.boss.x - 20);
+    let x = Phaser.Math.Between(5600, this.boss.x - 20);
     let y = 0;
     let laser = this.laser.create(x, y, 'laser');
     laser.setVelocityY(260);
@@ -293,63 +308,63 @@ class BossScene extends Phaser.Scene{
     this.ability3.setMute(false);
   }
 
-  getHit(p, bullet)
+  getHit(player, bullet)
   {
     bullet.disableBody(true,true);
-    player.health -= 20;
-    player.healthPercent -= 20;
-    this.setValue(player.healthBar, player.healthPercent);
-    if(player.health <= 0) //things can happen, be safe and less than 0
+    this.playerHP -= 20;
+    this.playerHealthPercent -= 20;
+    this.setValue(this.playerHealthBar, this.playerHealthPercent);
+    if(this.playerHP <= 0) //things can happen, be safe and less than 0
     {
       this.gameOver();
     }
-    console.log("player health is : " + player.health);
+    console.log("player health is : " + this.playerHP);
   }
 
-  dot(p, laser) {
-    if (player.sprite.x >= 200){
-      player.health -= 30;
-      player.healthPercent -= 30;
-      this.setValue(player.healthBar, player.healthPercent);
-      player.sprite.x = player.sprite.x - 150;
-      player.sprite.tint = Math.random() * 0xffffff;
+  dot(player, laser) {
+    if (this.player.x >= 200){
+      this.playerHP -= 30;
+      this.playerHealthPercent -= 30;
+      this.setValue(this.playerHealthBar, this.playerHealthPercent);
+      this.player.x = this.player.x - 150;
+      this.player.tint = Math.random() * 0xffffff;
       this.cameras.main.shake(300);
-      console.log("player health is : " + player.health);
+      console.log("player health is : " + this.playerHP);
     }
     else{
-      player.health -= 30;
-      player.healthPercent -= 30;
-      this.setValue(player.healthBar, player.healthPercent);
-      player.sprite.x = player.sprite.x + 200;
+      this.playerHP -= 30;
+      this.playerHealthPercent -= 30;
+      this.setValue(this.playerHealthBar, this.playerHealthPercent);
+      this.player.x = this.player.x + 200;
       this.laser.tint = Math.random() * 0xffffff;
       this.cameras.main.shake(300);
-      console.log("player health is : " + player.health);
+      console.log("player health is : " + this.playerHP);
     }
-    if (player.health <= 0){
+    if (this.playerHP <= 0){
       this.gameOver();
     }
   }
 
-  hitPlayer(p, boss)
+  hitPlayer(player, boss)
   {
-    player.healthPercent -= 1;
-    this.setValue(player.healthBar, player.healthPercent);
+    this.playerHealthPercent -= 1;
+    this.setValue(this.playerHealthBar, this.playerHealthPercent);
     this.cameras.main.shake(400, 0.01); //duration, intensity
-    player.health -= 1;
-    if(player.health <= 0) //things can happen, be safe and less than 0
+    this.playerHP -= 1;
+    if(this.playerHP <= 0) //things can happen, be safe and less than 0
     {
       this.gameOver();
     }
-    console.log("player health is : " + player.health);
+    console.log("player health is : " + this.playerHP);
   }
 
-  hitBoss(p, boss)
+  hitBoss(player, boss)
   {
     this.bossHealthPercent -= 33.33;
     this.setValue(this.bossHealthBar, this.bossHealthPercent);
     this.cameras.main.shake(400, 0.01); //duration, intensity
     this.bossHP -= 1;
-    this.boss.x = 1550;
+    this.boss.x = 7150; //1550
     this.bossSpeed = 2;
   }
 
@@ -372,7 +387,7 @@ class BossScene extends Phaser.Scene{
   gameOver()
   {
     // flag to set player is dead
-    player.isAlive = false;
+    this.isPlayerAlive = false;
     // shake the camera
     this.cameras.main.shake(500);
     // fade camera
