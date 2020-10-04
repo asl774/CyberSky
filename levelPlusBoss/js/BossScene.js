@@ -30,6 +30,10 @@ class BossScene extends Phaser.Scene{
     // load images
     this.load.image('background1', 'assets/cyberpunk-street3.png');
     this.load.image('background2', 'assets/cyberpunk-street.png');
+    this.load.image('background3', 'assets/cyberpunk-street-sky.png');
+    this.load.image('background4', 'assets/cyberpunk-street-sky-boss.png');
+    this.load.image('background5', 'assets/cyberpunk-street-stars.png');
+    this.load.image('background6', 'assets/cyberpunk-street-stars-boss.png');
     this.load.image('player', 'assets/player.png');
     this.load.image('dragon', 'assets/dragon.png');
     this.load.image('treasure', 'assets/treasure.png');
@@ -73,8 +77,22 @@ class BossScene extends Phaser.Scene{
     //this.add.sprite(0, 0, 'background').setOrigin(0,0);
     this.cameras.main.setBounds(0, 0, 5600 + 1400, 600);
     this.physics.world.setBounds(0, 0, 5600 + 1400, 600);
-    this.add.image(0, 0, 'background1').setOrigin(0);
-    this.add.image(5600, 0, 'background2').setOrigin(0);
+    var randNum = Math.random();
+    if (randNum > 0 && randNum <= 0.33)
+    {
+      this.add.image(0, 0, 'background1').setOrigin(0);
+      this.add.image(5600, 0, 'background2').setOrigin(0);
+    }
+    else if (randNum > 0.33 && randNum <= 0.67)
+    {
+      this.add.image(0, 0, 'background3').setOrigin(0);
+      this.add.image(5600, 0, 'background4').setOrigin(0);
+    }
+    else if (randNum > 0.67 && randNum <= 1)
+    {
+      this.add.image(0, 0, 'background5').setOrigin(0);
+      this.add.image(5600, 0, 'background6').setOrigin(0);
+    }
     //this.add.image(5600, 0, 'bg').setOrigin(0);
     //boss health bar
     this.bossHealthBar = this.makeBar(5600,0,0xe74c3c);
