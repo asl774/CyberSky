@@ -45,9 +45,24 @@ class BossScene extends Phaser.Scene{
     //this.load.image('ninja', 'assets/blockninja2.png');
     this.load.image('ninja', 'assets/blockninja.png');
     //this.load.image('ninja', 'assets/blockninjaold.png');
-    this.load.image('enemy1', 'assets/blockninjaold2.png');
-    this.load.image('enemy2', 'assets/blockninja3.png');
-    this.load.image('enemy3', 'assets/blockninja4.png');
+    //this.load.image('enemy1', 'assets/blockninjaold2.png');
+    //this.load.image('enemy2', 'assets/blockninja3.png');
+    //this.load.image('enemy3', 'assets/blockninja4.png');
+    this.load.image('enemy1', 'assets/enemy1.png');
+    this.load.image('enemy2', 'assets/enemy2.png');
+    this.load.image('enemy3', 'assets/enemy3.png');
+    this.load.image('enemy4', 'assets/enemy4.png');
+    this.load.image('enemy5', 'assets/enemy5.png');
+    this.load.image('enemy6', 'assets/enemy6.png');
+    this.load.image('enemy7', 'assets/enemy7.png');
+    this.load.image('enemy8', 'assets/enemy8.png');
+    this.load.image('enemy9', 'assets/enemy9.png');
+    this.load.image('enemy10', 'assets/enemy10.png');
+    this.load.image('enemy11', 'assets/enemy11.png');
+    this.load.image('enemy12', 'assets/enemy12.png');
+    this.load.image('enemy13', 'assets/enemy13.png');
+    this.load.image('enemy14', 'assets/enemy14.png');
+
     this.load.image('star', 'assets/ninjastar3.png');
     this.load.image('starbig', 'assets/ninjastar.png');
     this.load.image('boss', 'assets/boss.png');
@@ -125,17 +140,39 @@ class BossScene extends Phaser.Scene{
     this.enemies = this.physics.add.group();
     this.physics.add.collider(player, this.enemies);
     //5 random color(black, gray, white) enemies at same 5 y-coordinates
-    for (var i = 775; i < 4776; i += 800)
+    for (var i = 775; i < 5600; i += 400)
     {
         for (var j = 100; j < 600; j += 100)
         {
             var randNum = Math.random();
-            if (randNum > 0 && randNum <= 0.33)
+            if (randNum > 0 && randNum <= 0.07)
                 this.enemies.create(i, j, 'enemy1');
-            else if (randNum > 0.33 && randNum <= 0.67)
+            else if (randNum > 0.07 && randNum <= 0.14)
                 this.enemies.create(i, j, 'enemy2');
-            else if (randNum > 0.67 && randNum <= 1)
+            else if (randNum > 0.14 && randNum <= 0.21)
                 this.enemies.create(i, j, 'enemy3');
+            else if (randNum > 0.21 && randNum <= 0.28)
+                this.enemies.create(i, j, 'enemy4');
+            else if (randNum > 0.28 && randNum <= 0.35)
+                this.enemies.create(i, j, 'enemy5');
+            else if (randNum > 0.35 && randNum <= 0.42)
+                this.enemies.create(i, j, 'enemy6');
+            else if (randNum > 0.42 && randNum <= 0.49)
+                this.enemies.create(i, j, 'enemy7');
+            else if (randNum > 0.49 && randNum <= 0.56)
+                this.enemies.create(i, j, 'enemy8');
+            else if (randNum > 0.56 && randNum <= 0.63)
+                this.enemies.create(i, j, 'enemy9');
+            else if (randNum > 0.63 && randNum <= 0.70)
+                this.enemies.create(i, j, 'enemy10');
+            else if (randNum > 0.70 && randNum <= 0.77)
+                this.enemies.create(i, j, 'enemy11');
+            else if (randNum > 0.77 && randNum <= 0.84)
+                this.enemies.create(i, j, 'enemy12');
+            else if (randNum > 0.84 && randNum <= 0.91)
+                this.enemies.create(i, j, 'enemy13');
+            else if (randNum > 0.91 && randNum <= 1.0)
+                this.enemies.create(i, j, 'enemy14');
         }
     }
     // goal / end of level
