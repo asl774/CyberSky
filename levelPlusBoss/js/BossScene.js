@@ -5,6 +5,7 @@ class BossScene extends Phaser.Scene{
 
   init()
   {
+    this.enemies;
     this.enemySpeed = 2;
     this.enemyMaxY = 490; //280
     this.enemyMinY = 105;  //80
@@ -34,6 +35,8 @@ class BossScene extends Phaser.Scene{
     this.load.image('background4', 'assets/cyberpunk-street-sky-boss.png');
     this.load.image('background5', 'assets/cyberpunk-street-stars.png');
     this.load.image('background6', 'assets/cyberpunk-street-stars-boss.png');
+    this.load.image('background7', 'assets/cyberpunk-street-UT.png');
+    this.load.image('background8', 'assets/cyberpunk-street-UT-boss.png');
     this.load.image('player', 'assets/player.png');
     this.load.image('dragon', 'assets/dragon.png');
     this.load.image('treasure', 'assets/treasure.png');
@@ -42,7 +45,9 @@ class BossScene extends Phaser.Scene{
     //this.load.image('ninja', 'assets/blockninja2.png');
     this.load.image('ninja', 'assets/blockninja.png');
     //this.load.image('ninja', 'assets/blockninjaold.png');
-    //this.load.image('ninja', 'assets/blockninjaold2.png');
+    this.load.image('enemy1', 'assets/blockninjaold2.png');
+    this.load.image('enemy2', 'assets/blockninja3.png');
+    this.load.image('enemy3', 'assets/blockninja4.png');
     this.load.image('star', 'assets/ninjastar3.png');
     this.load.image('starbig', 'assets/ninjastar.png');
     this.load.image('boss', 'assets/boss.png');
@@ -78,20 +83,25 @@ class BossScene extends Phaser.Scene{
     this.cameras.main.setBounds(0, 0, 5600 + 1400, 600);
     this.physics.world.setBounds(0, 0, 5600 + 1400, 600);
     var randNum = Math.random();
-    if (randNum > 0 && randNum <= 0.33)
+    if (randNum > 0 && randNum <= 0.25) //0,0.33
     {
       this.add.image(0, 0, 'background1').setOrigin(0);
       this.add.image(5600, 0, 'background2').setOrigin(0);
     }
-    else if (randNum > 0.33 && randNum <= 0.67)
+    else if (randNum > 0.25 && randNum <= 0.5) //0,0.33
     {
       this.add.image(0, 0, 'background3').setOrigin(0);
       this.add.image(5600, 0, 'background4').setOrigin(0);
     }
-    else if (randNum > 0.67 && randNum <= 1)
+    else if (randNum > 0.5 && randNum <= 0.75) //0,0.33
     {
       this.add.image(0, 0, 'background5').setOrigin(0);
       this.add.image(5600, 0, 'background6').setOrigin(0);
+    }
+    else if (randNum > 0.75 && randNum <= 1)
+    {
+      this.add.image(0, 0, 'background7').setOrigin(0);
+      this.add.image(5600, 0, 'background8').setOrigin(0);
     }
     //this.add.image(5600, 0, 'bg').setOrigin(0);
     //boss health bar
@@ -106,10 +116,28 @@ class BossScene extends Phaser.Scene{
     player.healthBar = this.makeBar(0,this.sys.game.config.height - 30,0x2ecc71);
     this.setValue(player.healthBar,player.healthPercent);
     player.healthBar.setVisible(false);
+    player.healthPercent = 100;
     this.cameras.main.startFollow(player.sprite, true, 0.1, 0.1);
     this.cameras.main.followOffset.set(-500, 0);
     this.playerbullets = this.physics.add.group(); //create stars
     this.playerbigbullets = this.physics.add.group(); //create stars
+    //enemies
+    this.enemies = this.physics.add.group();
+    this.physics.add.collider(player, this.enemies);
+    //5 random color(black, gray, white) enemies at same 5 y-coordinates
+    for (var i = 775; i < 4776; i += 800)
+    {
+        for (var j = 100; j < 600; j += 100)
+        {
+            var randNum = Math.random();
+            if (randNum > 0 && randNum <= 0.33)
+                this.enemies.create(i, j, 'enemy1');
+            else if (randNum > 0.33 && randNum <= 0.67)
+                this.enemies.create(i, j, 'enemy2');
+            else if (randNum > 0.67 && randNum <= 1)
+                this.enemies.create(i, j, 'enemy3');
+        }
+    }
     // goal / end of level
     this.treasure = this.physics.add.sprite(7000 - 50, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
@@ -124,7 +152,9 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(player.sprite, this.treasure, this.gameOver, null, this); //trigger b/w player & treasure
     this.physics.add.overlap(player.sprite, this.boss, this.hitPlayer, null, this); //trigger b/w player & boss
     this.physics.add.overlap(this.boss, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & boss
-    this.physics.add.overlap(this.boss, this.playerbigbullets, this.pierce, null, this); //trigger b/w playerbullets & boss
+    this.physics.add.overlap(this.boss, this.playerbigbullets, this.pierce, null, this); //trigger b/w playerbigbullets & boss
+    this.physics.add.overlap(this.enemies, this.playerbullets, this.collideEnemy, null, this); //trigger b/w playerbullets & enemy
+    this.physics.add.overlap(this.enemies, this.playerbigbullets, this.pierceEnemy, null, this); //trigger b/w playerbigbullets & enemy
     //camera
     this.cameras.main.resetFX(); //reset cameras
     //keyboard input
@@ -379,6 +409,17 @@ class BossScene extends Phaser.Scene{
     this.bossHP -= 1;
     this.boss.x = 7150; //1550
     this.bossSpeed = 2;
+  }
+
+  collideEnemy (enemy, pbullet)
+  {
+    pbullet.disableBody(true,true);
+    enemy.disableBody(true, true);
+  }
+
+  pierceEnemy (enemy, pbullet)
+  {
+    enemy.disableBody(true, true);
   }
 
   collide (boss, pbullet)
