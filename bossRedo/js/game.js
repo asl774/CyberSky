@@ -16,14 +16,15 @@ var player = {
   speed: 10,
   health: 100,
   isAlive: true,
+  healthPercent: 0,
+  healthBar: 0,
 
   check: function()
   {
     console.log("this is the function inside the player");
-  }
+  },
 }
 
 //should also add an enemy object
-
 
 var game = new Phaser.Game(config);
