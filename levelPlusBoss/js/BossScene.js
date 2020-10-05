@@ -65,6 +65,13 @@ class BossScene extends Phaser.Scene{
 
     this.load.image('star', 'assets/ninjastar3.png');
     this.load.image('starbig', 'assets/ninjastar.png');
+    this.load.image('star1', 'assets/star1.png');
+    this.load.image('star2', 'assets/star2.png');
+    this.load.image('star3', 'assets/star3.png');
+    this.load.image('star4', 'assets/star4.png');
+    this.load.image('star5', 'assets/star5.png');
+    this.load.image('star6', 'assets/star6.png');
+
     this.load.image('boss', 'assets/boss.png');
     //this.load.image('boss', 'assets/bossnew.png');
 
@@ -201,6 +208,12 @@ class BossScene extends Phaser.Scene{
     this.zkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
     this.xkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
     this.ckey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
+    this.akey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    this.skey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    this.dkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    this.qkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+    this.wkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    this.ekey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
     //timer testing
     this.timer = this.time.addEvent({delay : 5000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 5000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
@@ -315,6 +328,61 @@ class BossScene extends Phaser.Scene{
         player.sprite.y += 100;
       }
     }
+    //press a to throw extra star1
+    else if (Phaser.Input.Keyboard.JustDown(this.akey))
+    {
+      this.throwstar.play();
+      let playerx = player.sprite.x;
+      let playery = player.sprite.y;
+      let pbullet = this.playerbullets.create(playerx, playery, 'star1');
+      pbullet.setVelocityX(200);
+    }
+    //press s to throw extra star2
+    else if (Phaser.Input.Keyboard.JustDown(this.skey))
+    {
+      this.throwstar.play();
+      let playerx = player.sprite.x;
+      let playery = player.sprite.y;
+      let pbullet = this.playerbullets.create(playerx, playery, 'star2');
+      pbullet.setVelocityX(200);
+    }
+    //press d to throw extra star3
+    else if (Phaser.Input.Keyboard.JustDown(this.dkey))
+    {
+      this.throwstar.play();
+      let playerx = player.sprite.x;
+      let playery = player.sprite.y;
+      let pbullet = this.playerbullets.create(playerx, playery, 'star3');
+      pbullet.setVelocityX(200);
+    }
+    //press q to throw extra star4
+    else if (Phaser.Input.Keyboard.JustDown(this.qkey))
+    {
+      this.throwstar.play();
+      let playerx = player.sprite.x;
+      let playery = player.sprite.y;
+      let pbullet = this.playerbullets.create(playerx, playery, 'star4');
+      pbullet.setVelocityX(200);
+    }
+    //press w to throw extra star5
+    else if (Phaser.Input.Keyboard.JustDown(this.wkey))
+    {
+      this.throwstar.play();
+      let playerx = player.sprite.x;
+      let playery = player.sprite.y;
+      let pbullet = this.playerbullets.create(playerx, playery, 'star5');
+      pbullet.setVelocityX(200);
+    }
+    //press e to throw extra star6
+    else if (Phaser.Input.Keyboard.JustDown(this.ekey))
+    {
+      this.throwstar.play();
+      let playerx = player.sprite.x;
+      let playery = player.sprite.y;
+      let pbullet = this.playerbullets.create(playerx, playery, 'star6');
+      pbullet.setVelocityX(200);
+    }   
+
   }
 
   makeBar(x, y, color){
