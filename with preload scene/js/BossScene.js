@@ -70,7 +70,7 @@ class BossScene extends Phaser.Scene{
     }
     //this.add.image(5600, 0, 'bg').setOrigin(0);
     //boss health bar
-    boss.healthBar = this.makeBar(5600,0,0xe743c);
+    boss.healthBar = this.makeBar(5600,0,0xe74c3c);
     this.setValue(boss.healthBar, 100);
     boss.healthBar.setVisible(false);
     // player
@@ -86,7 +86,10 @@ class BossScene extends Phaser.Scene{
     this.playerbullets = this.physics.add.group(); //create stars
     this.playerbigbullets = this.physics.add.group(); //create stars
     //enemies
-    this.enemies = this.physics.add.group();
+    this.wave1 = this.physics.add.group();
+    this.wave2 = this.physics.add.group();
+    this.wave3 = this.physics.add.group();
+    this.wave4 = this.physics.add.group();
     //powerups
     this.powerup1 = this.physics.add.sprite(40, this.sys.game.config.height / 2, 'piercePU');
     this.powerup2 = this.physics.add.sprite(40, this.sys.game.config.height / 3, 'lightswordPU');
@@ -100,11 +103,23 @@ class BossScene extends Phaser.Scene{
     this.barrier5 = this.physics.add.sprite(6400, 300, 'barrier');
 
     //5 random enemies at same 5 y-coordinates
-    for (var i = 1; i < 5; i += 1)
-    {
-      this.createEnemies(1400 * i - 100);
-    }
-
+    //spawn 5 enemies for each wave
+    //for (var i = 1; i < 5; i += 1)
+    //{
+      this.createWave1(1400); 
+    //}
+    //for (var i = 1; i < 5; i += 1)
+    //{
+      this.createWave2(2800); 
+    //}
+    //for (var i = 1; i < 5; i += 1)
+    //{
+      this.createWave3(4200); 
+    //}
+    //for (var i = 1; i < 5; i += 1)
+    //{
+      this.createWave4(5600); 
+    //}
     // goal / end of level
     this.treasure = this.physics.add.sprite(7000 - 70, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
@@ -120,8 +135,13 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(player.sprite, boss.sprite, this.hitPlayer, null, this); //trigger b/w player & boss
     this.physics.add.overlap(boss.sprite, this.playerbullets, this.collideBoss, null, this); //trigger b/w playerbullets & boss
     this.physics.add.overlap(boss.sprite, this.playerbigbullets, this.pierceBoss, null, this); //trigger b/w playerbigbullets & boss
-    this.physics.add.overlap(this.enemies, this.playerbullets, this.collideEnemy, null, this); //trigger b/w playerbullets & enemy
-    this.physics.add.overlap(this.enemies, this.playerbigbullets, this.pierceEnemy, null, this); //trigger b/w playerbigbullets & enemy
+    this.physics.add.overlap(this.wave1, this.playerbullets, this.collideEnemy, null, this); //trigger b/w playerbullets & enemy
+    this.physics.add.overlap(this.wave1, this.playerbigbullets, this.pierceEnemy, null, this); //trigger b/w playerbigbullets & enemy
+    this.physics.add.overlap(this.wave2, this.playerbullets, this.collideEnemy, null, this); //trigger b/w playerbullets & enemy
+    this.physics.add.overlap(this.wave2, this.playerbigbullets, this.pierceEnemy, null, this); //trigger b/w playerbigbullets & enemy
+    this.physics.add.overlap(this.wave3, this.playerbullets, this.collideEnemy, null, this); //trigger b/w playerbullets & enemy
+    this.physics.add.overlap(this.wave3, this.playerbigbullets, this.pierceEnemy, null, this); //trigger b/w playerbigbullets & enemy
+    this.physics.add.overlap(this.wave4, this.playerbullets, this.collideEnemy, null, this); //trigger b/w playerbullets & enemy
     this.physics.add.overlap(this.barrier, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     this.physics.add.overlap(this.barrier, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
     this.physics.add.overlap(this.barrier2, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
@@ -132,10 +152,10 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(this.barrier4, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
     this.physics.add.overlap(this.barrier5, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     this.physics.add.overlap(this.barrier5, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
-    this.physics.add.overlap(this.barrier, this.bullets, this.collide, null, this); //trigger b/w barrier & enemy bullets
-    this.physics.add.overlap(this.barrier2, this.bullets, this.collide, null, this); //trigger b/w barrier & enemy bullets
-    this.physics.add.overlap(this.barrier3, this.bullets, this.collide, null, this); //trigger b/w barrier & enemy bullets
-    this.physics.add.overlap(this.barrier4, this.bullets, this.collide, null, this); //trigger b/w barrier & enemy bullets
+    //this.physics.add.overlap(this.barrier, this.bullets, this.collide, null, this); //trigger b/w barrier & enemy bullets
+    //this.physics.add.overlap(this.barrier2, this.bullets, this.collide, null, this); //trigger b/w barrier & enemy bullets
+    //this.physics.add.overlap(this.barrier3, this.bullets, this.collide, null, this); //trigger b/w barrier & enemy bullets
+    //this.physics.add.overlap(this.barrier4, this.bullets, this.collide, null, this); //trigger b/w barrier & enemy bullets
     //camera
     this.cameras.main.resetFX(); //reset cameras
     //keyboard input
@@ -154,19 +174,31 @@ class BossScene extends Phaser.Scene{
     //timer testing
     this.timer = this.time.addEvent({delay : 5000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 5000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
-    this.timer3 = this.time.addEvent({delay : 3000, callback: this.enemyAttack, callbackScope: this, loop: true, paused: false });
+    this.timer3 = this.time.addEvent({delay : 3000, callback: this.wave1Attack, callbackScope: this, loop: true, paused: false });
+    this.timer4 = this.time.addEvent({delay : 3000, callback: this.wave2Attack, callbackScope: this, loop: true, paused: true });
+    this.timer5 = this.time.addEvent({delay : 3000, callback: this.wave3Attack, callbackScope: this, loop: true, paused: true });
+    this.timer6 = this.time.addEvent({delay : 3000, callback: this.wave4Attack, callbackScope: this, loop: true, paused: true });
 
     //debugging / things to remove later
     this.timerText = this.add.text(6000, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.text = this.add.text(6000,150,"");
     this.timer3Text = this.add.text(0, 100, "enemy attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.timer4Text = this.add.text(1500, 100, "wave2 attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.timer5Text = this.add.text(2900, 100, "wave3 attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.timer6Text = this.add.text(4300, 100, "wave4 attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
   }
 
   update()
   {
     this.timer3.paused = false;
+    this.timer4.paused = true;
+    this.timer5.paused = true;
+    this.timer6.paused = true;
     this.timerText.setText("timer progress: " + this.timer.getProgress().toString().substr(0,4));
     this.timer3Text.setText("enemy attack progress: " + this.timer3.getProgress().toString().substr(0,4));
+    this.timer4Text.setText("wave2 attack progress: " + this.timer4.getProgress().toString().substr(0,4));
+    this.timer5Text.setText("wave3 attack progress: " + this.timer5.getProgress().toString().substr(0,4));
+    this.timer6Text.setText("wave4 attack progress: " + this.timer6.getProgress().toString().substr(0,4));
     //check if player is alive
     if (!player.isAlive) {
       return;
@@ -184,9 +216,7 @@ class BossScene extends Phaser.Scene{
       player.sprite.y += player.speed;
     }
 
-    //make enemies move
-    //this.enemies.setVelocityX(-150);
-
+    // locked camera conditions
     // can move to wave 2
     if (this.numEnemiesKilled >= 5 && this.numEnemiesKilled < 10){
       //this.timer3.paused = true;
@@ -201,11 +231,56 @@ class BossScene extends Phaser.Scene{
     }
     // can move to wave 4
     if (this.numEnemiesKilled >= 15 && this.numEnemiesKilled < 20){
+      this.cameras.main.setBounds(0, 0, 1400 * 4 - 40, 560);
+      this.physics.world.setBounds(0, 30, 1400 * 4 - 40, 560);
+    }
+    // can move to boss
+    if (this.numEnemiesKilled >= 19 && this.numEnemiesKilled < 20){
       this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
       this.physics.world.setBounds(0, 30, 1400 * 4 + 1000, 560);
     }
+    // make waves attack only when player crosses line
+    if (player.sprite.x > 1400)
+      this.timer4.paused = false;
+    if (player.sprite.x > 2800)
+      this.timer5.paused = false;
+    if (player.sprite.x > 4200)
+      this.timer6.paused = false;
 
-
+    // make enemies respawn at wave start point if they leave camera view
+    for (var i = 0; i < this.wave1.getChildren().length; i++) {
+      var enemy = this.wave1.getChildren()[i];
+      enemy.update();
+      if (enemy.x < 0){
+        enemy.x = 1400;
+      }
+    }   
+    for (var i = 0; i < this.wave2.getChildren().length; i++) {
+      var enemy = this.wave2.getChildren()[i];
+      enemy.update();
+      if (enemy.x < 1400){
+        enemy.x = 2800;
+      }
+    }  
+    for (var i = 0; i < this.wave3.getChildren().length; i++) {
+      var enemy = this.wave3.getChildren()[i];
+      enemy.update();
+      if (enemy.x < 2800){
+        enemy.x = 4200;
+      }
+    }  
+    for (var i = 0; i < this.wave4.getChildren().length; i++) {
+      var enemy = this.wave4.getChildren()[i];
+      enemy.update();
+      if (enemy.x < 4200){
+        enemy.x = 5600;
+      }
+    }  
+    // make player stay in boss area
+    if (player.sprite.x > 5600){
+      this.cameras.main.setBounds(5600, 0, 1300, 560);
+      this.physics.world.setBounds(5600, 30, 1350, 560);
+    }
 
     // spawns boss when player crosses threshold
     if (player.sprite.x + 17 > 6000) { //400
@@ -371,54 +446,200 @@ class BossScene extends Phaser.Scene{
     bar.scaleX = percentage/100;
   }
 
-  createEnemies(xloc) {
+  createWave1(xloc) {
     for (var j = 100; j < 600; j += 100)
     {
       var randNum = Math.random();
       if (randNum > 0 && randNum <= 0.07)
-          this.enemies.create(xloc, j, 'enemy1');
+          this.wave1.create(xloc, j, 'enemy1');
       else if (randNum > 0.07 && randNum <= 0.14)
-          this.enemies.create(xloc, j, 'enemy2');
+          this.wave1.create(xloc, j, 'enemy2');
       else if (randNum > 0.14 && randNum <= 0.21)
-          this.enemies.create(xloc, j, 'enemy3');
+          this.wave1.create(xloc, j, 'enemy3');
       else if (randNum > 0.21 && randNum <= 0.28)
-          this.enemies.create(xloc, j, 'enemy4');
+          this.wave1.create(xloc, j, 'enemy4');
       else if (randNum > 0.28 && randNum <= 0.35)
-          this.enemies.create(xloc, j, 'enemy5');
+          this.wave1.create(xloc, j, 'enemy5');
       else if (randNum > 0.35 && randNum <= 0.42)
-          this.enemies.create(xloc, j, 'enemy6');
+          this.wave1.create(xloc, j, 'enemy6');
       else if (randNum > 0.42 && randNum <= 0.49)
-          this.enemies.create(xloc, j, 'enemy7');
+          this.wave1.create(xloc, j, 'enemy7');
       else if (randNum > 0.49 && randNum <= 0.56)
-          this.enemies.create(xloc, j, 'enemy8');
+          this.wave1.create(xloc, j, 'enemy8');
       else if (randNum > 0.56 && randNum <= 0.63)
-          this.enemies.create(xloc, j, 'enemy9');
+          this.wave1.create(xloc, j, 'enemy9');
       else if (randNum > 0.63 && randNum <= 0.70)
-          this.enemies.create(xloc, j, 'enemy10');
+          this.wave1.create(xloc, j, 'enemy10');
       else if (randNum > 0.70 && randNum <= 0.77)
-          this.enemies.create(xloc, j, 'enemy11');
+          this.wave1.create(xloc, j, 'enemy11');
       else if (randNum > 0.77 && randNum <= 0.84)
-          this.enemies.create(xloc, j, 'enemy12');
+          this.wave1.create(xloc, j, 'enemy12');
       else if (randNum > 0.84 && randNum <= 0.91)
-          this.enemies.create(xloc, j, 'enemy13');
+          this.wave1.create(xloc, j, 'enemy13');
       else if (randNum > 0.91 && randNum <= 1.0)
-          this.enemies.create(xloc, j, 'enemy14');
+          this.wave1.create(xloc, j, 'enemy14');
+    }
+  }
+    
+  createWave2(xloc) {
+    for (var j = 100; j < 600; j += 100)
+    {
+      var randNum = Math.random();
+      if (randNum > 0 && randNum <= 0.07)
+          this.wave2.create(xloc, j, 'enemy1');
+      else if (randNum > 0.07 && randNum <= 0.14)
+          this.wave2.create(xloc, j, 'enemy2');
+      else if (randNum > 0.14 && randNum <= 0.21)
+          this.wave2.create(xloc, j, 'enemy3');
+      else if (randNum > 0.21 && randNum <= 0.28)
+          this.wave2.create(xloc, j, 'enemy4');
+      else if (randNum > 0.28 && randNum <= 0.35)
+          this.wave2.create(xloc, j, 'enemy5');
+      else if (randNum > 0.35 && randNum <= 0.42)
+          this.wave2.create(xloc, j, 'enemy6');
+      else if (randNum > 0.42 && randNum <= 0.49)
+          this.wave2.create(xloc, j, 'enemy7');
+      else if (randNum > 0.49 && randNum <= 0.56)
+          this.wave2.create(xloc, j, 'enemy8');
+      else if (randNum > 0.56 && randNum <= 0.63)
+          this.wave2.create(xloc, j, 'enemy9');
+      else if (randNum > 0.63 && randNum <= 0.70)
+          this.wave2.create(xloc, j, 'enemy10');
+      else if (randNum > 0.70 && randNum <= 0.77)
+          this.wave2.create(xloc, j, 'enemy11');
+      else if (randNum > 0.77 && randNum <= 0.84)
+          this.wave2.create(xloc, j, 'enemy12');
+      else if (randNum > 0.84 && randNum <= 0.91)
+          this.wave2.create(xloc, j, 'enemy13');
+      else if (randNum > 0.91 && randNum <= 1.0)
+          this.wave2.create(xloc, j, 'enemy14');
     }
   }
 
-  enemyAttack()
+  createWave3(xloc) {
+    for (var j = 100; j < 600; j += 100)
+    {
+      var randNum = Math.random();
+      if (randNum > 0 && randNum <= 0.07)
+          this.wave3.create(xloc, j, 'enemy1');
+      else if (randNum > 0.07 && randNum <= 0.14)
+          this.wave3.create(xloc, j, 'enemy2');
+      else if (randNum > 0.14 && randNum <= 0.21)
+          this.wave3.create(xloc, j, 'enemy3');
+      else if (randNum > 0.21 && randNum <= 0.28)
+          this.wave3.create(xloc, j, 'enemy4');
+      else if (randNum > 0.28 && randNum <= 0.35)
+          this.wave3.create(xloc, j, 'enemy5');
+      else if (randNum > 0.35 && randNum <= 0.42)
+          this.wave3.create(xloc, j, 'enemy6');
+      else if (randNum > 0.42 && randNum <= 0.49)
+          this.wave3.create(xloc, j, 'enemy7');
+      else if (randNum > 0.49 && randNum <= 0.56)
+          this.wave3.create(xloc, j, 'enemy8');
+      else if (randNum > 0.56 && randNum <= 0.63)
+          this.wave3.create(xloc, j, 'enemy9');
+      else if (randNum > 0.63 && randNum <= 0.70)
+          this.wave3.create(xloc, j, 'enemy10');
+      else if (randNum > 0.70 && randNum <= 0.77)
+          this.wave3.create(xloc, j, 'enemy11');
+      else if (randNum > 0.77 && randNum <= 0.84)
+          this.wave3.create(xloc, j, 'enemy12');
+      else if (randNum > 0.84 && randNum <= 0.91)
+          this.wave3.create(xloc, j, 'enemy13');
+      else if (randNum > 0.91 && randNum <= 1.0)
+          this.wave3.create(xloc, j, 'enemy14');
+    }
+  }
+
+  createWave4(xloc) {
+    for (var j = 100; j < 600; j += 100)
+    {
+      var randNum = Math.random();
+      if (randNum > 0 && randNum <= 0.07)
+          this.wave4.create(xloc, j, 'enemy1');
+      else if (randNum > 0.07 && randNum <= 0.14)
+          this.wave4.create(xloc, j, 'enemy2');
+      else if (randNum > 0.14 && randNum <= 0.21)
+          this.wave4.create(xloc, j, 'enemy3');
+      else if (randNum > 0.21 && randNum <= 0.28)
+          this.wave4.create(xloc, j, 'enemy4');
+      else if (randNum > 0.28 && randNum <= 0.35)
+          this.wave4.create(xloc, j, 'enemy5');
+      else if (randNum > 0.35 && randNum <= 0.42)
+          this.wave4.create(xloc, j, 'enemy6');
+      else if (randNum > 0.42 && randNum <= 0.49)
+          this.wave4.create(xloc, j, 'enemy7');
+      else if (randNum > 0.49 && randNum <= 0.56)
+          this.wave4.create(xloc, j, 'enemy8');
+      else if (randNum > 0.56 && randNum <= 0.63)
+          this.wave4.create(xloc, j, 'enemy9');
+      else if (randNum > 0.63 && randNum <= 0.70)
+          this.wave4.create(xloc, j, 'enemy10');
+      else if (randNum > 0.70 && randNum <= 0.77)
+          this.wave4.create(xloc, j, 'enemy11');
+      else if (randNum > 0.77 && randNum <= 0.84)
+          this.wave4.create(xloc, j, 'enemy12');
+      else if (randNum > 0.84 && randNum <= 0.91)
+          this.wave4.create(xloc, j, 'enemy13');
+      else if (randNum > 0.91 && randNum <= 1.0)
+          this.wave4.create(xloc, j, 'enemy14');
+    }
+  }
+
+  wave1Attack()
   {
-    for (var i = 0; i < this.enemies.getChildren().length; i++) {
-      var enemy = this.enemies.getChildren()[i];
+    for (var i = 0; i < this.wave1.getChildren().length; i++) {
+      var enemy = this.wave1.getChildren()[i];
       enemy.update();
       if (enemy){
         let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
-        bullet.setVelocityX(-400);
+        bullet.setVelocityX(Phaser.Math.Between(-400,-600));
       }
-    }
+      enemy.setVelocityX(Phaser.Math.Between(-50,-250));
+      enemy.setVelocityY(Phaser.Math.Between(-20,20));
+    }   
+  }
 
+  wave2Attack()
+  {
+    for (var i = 0; i < this.wave2.getChildren().length; i++) {
+      var enemy = this.wave2.getChildren()[i];
+      enemy.update();
+      if (enemy){
+        let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
+        bullet.setVelocityX(Phaser.Math.Between(-400,-600));
+      }
+      enemy.setVelocityX(Phaser.Math.Between(-50,-250));
+      enemy.setVelocityY(Phaser.Math.Between(-20,20));
+    }   
+  }
 
-    //this.enemies.setVelocityX(-150);
+  wave3Attack()
+  {
+    for (var i = 0; i < this.wave3.getChildren().length; i++) {
+      var enemy = this.wave3.getChildren()[i];
+      enemy.update();
+      if (enemy){
+        let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
+        bullet.setVelocityX(Phaser.Math.Between(-400,-600));
+      }
+      enemy.setVelocityX(Phaser.Math.Between(-50,-250));
+      enemy.setVelocityY(Phaser.Math.Between(-20,20));
+    }   
+  }
+
+  wave4Attack()
+  {
+    for (var i = 0; i < this.wave4.getChildren().length; i++) {
+      var enemy = this.wave4.getChildren()[i];
+      enemy.update();
+      if (enemy){
+        let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
+        bullet.setVelocityX(Phaser.Math.Between(-400,-600));
+      }
+      enemy.setVelocityX(Phaser.Math.Between(-50,-250));
+      enemy.setVelocityY(Phaser.Math.Between(-20,20));
+    }   
   }
 
   pickAbility()
@@ -553,14 +774,15 @@ class BossScene extends Phaser.Scene{
   collideEnemy (enemy, pbullet)
   {
     pbullet.disableBody(true,true);
-    enemy.disableBody(true, true);
+    //enemy.disableBody(true, true);
     enemy.destroy();
     this.numEnemiesKilled += 1;
   }
 
   pierceEnemy (enemy, pbullet)
   {
-    enemy.disableBody(true, true);
+    //enemy.disableBody(true, true);
+    enemy.destroy();
     this.numEnemiesKilled += 1;
   }
 
