@@ -133,6 +133,10 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(this.barrier4, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
     this.physics.add.overlap(this.barrier5, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     this.physics.add.overlap(this.barrier5, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
+    this.physics.add.overlap(this.barrier, this.bullets, this.collide, null, this); //trigger b/w barrier & enemy bullets
+    this.physics.add.overlap(this.barrier2, this.bullets, this.collide, null, this); //trigger b/w barrier & enemy bullets
+    this.physics.add.overlap(this.barrier3, this.bullets, this.collide, null, this); //trigger b/w barrier & enemy bullets
+    this.physics.add.overlap(this.barrier4, this.bullets, this.collide, null, this); //trigger b/w barrier & enemy bullets
     //camera
     this.cameras.main.resetFX(); //reset cameras
     //keyboard input
@@ -151,15 +155,20 @@ class BossScene extends Phaser.Scene{
     //timer testing
     this.timer = this.time.addEvent({delay : 5000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 5000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
+    this.timer3 = this.time.addEvent({delay : 3000, callback: this.enemyAttack, callbackScope: this, loop: true, paused: false });
 
     //debugging / things to remove later
     this.timerText = this.add.text(6000, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.text = this.add.text(6000,150,"");
+    this.timer3Text = this.add.text(0, 100, "enemy attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
   }
 
   update()
   {
+    this.timer3.paused = false;
     this.timerText.setText("timer progress: " + this.timer.getProgress().toString().substr(0,4));
+    this.timer3Text.setText("enemy attack progress: " + this.timer3.getProgress().toString().substr(0,4));
+    //check if player is alive
     //check if player is alive
     if (!player.isAlive) {
       return;
@@ -182,6 +191,7 @@ class BossScene extends Phaser.Scene{
 
     // can move to wave 2
     if (this.numEnemiesKilled >= 5 && this.numEnemiesKilled < 10){
+      //this.timer3.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 2 - 40, 560);
       //this.barrier.disableBody(true,true);
@@ -221,6 +231,7 @@ class BossScene extends Phaser.Scene{
       this.barrier5.disableBody(true,true);
     }
     if (this.bossHP <= 0) {
+      this.ability3.setMute(true);
       this.bossAlive = false;
       this.boss.disableBody(true, true);
       this.boss.setActive(false);
@@ -397,6 +408,21 @@ class BossScene extends Phaser.Scene{
     }
   }
 
+  enemyAttack()
+  {
+    for (var i = 0; i < this.enemies.getChildren().length; i++) {
+      var enemy = this.enemies.getChildren()[i];
+      enemy.update();
+      if (enemy){
+        let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
+        bullet.setVelocityX(-400);
+      }
+    }
+
+
+    //this.enemies.setVelocityX(-150);
+  }
+
   pickAbility()
   {
     var ability = Math.floor(Math.random() * 3) + 1;
@@ -521,10 +547,16 @@ class BossScene extends Phaser.Scene{
     pbullet.disableBody(true,true);
   }
 
+  collide (barrier, bullet)
+  {
+    bullet.disableBody(true,true);
+  }
+
   collideEnemy (enemy, pbullet)
   {
     pbullet.disableBody(true,true);
     enemy.disableBody(true, true);
+    enemy.destroy();
     this.numEnemiesKilled += 1;
   }
 
