@@ -5,7 +5,10 @@ class BossScene extends Phaser.Scene{
 
   init()
   {
-    this.enemies;
+    this.enemiesWave1;
+    this.enemiesWave2;
+    this.enemiesWave3;
+    this.numEnemiesKilled = 0;
     this.enemySpeed = 2;
     this.enemyMaxY = 490; //280
     this.enemyMinY = 105;  //80
@@ -40,8 +43,10 @@ class BossScene extends Phaser.Scene{
     this.throwbigstar = this.sound.add('throwbigstar');
     // background
     //this.add.sprite(0, 0, 'background').setOrigin(0,0);
-    this.cameras.main.setBounds(0, 0, 5600 + 1400, 600);
-    this.physics.world.setBounds(0, 0, 5600 + 1400, 600);
+    //this.cameras.main.setBounds(0, 0, 5600 + 1400, 600);
+    //this.physics.world.setBounds(0, 0, 5600 + 1400, 600);
+    this.cameras.main.setBounds(0, 0, 1400 - 40, 560);
+    this.physics.world.setBounds(0, 30, 1400 - 40, 560);
     var randNum = Math.random();
     if (randNum > 0 && randNum <= 0.25) //0,0.33
     {
@@ -83,50 +88,26 @@ class BossScene extends Phaser.Scene{
     this.playerbigbullets = this.physics.add.group(); //create stars
     //enemies
     this.enemies = this.physics.add.group();
-    this.physics.add.collider(player, this.enemies);
     //powerups
     this.powerup1 = this.physics.add.sprite(40, this.sys.game.config.height / 2, 'piercePU');
     this.powerup2 = this.physics.add.sprite(40, this.sys.game.config.height / 3, 'lightswordPU');
     this.powerup3 = this.physics.add.sprite(40, this.sys.game.config.height / 5, 'multishotPU');
     this.powerup4 = this.physics.add.sprite(40, this.sys.game.config.height / 4, 'kaboomPU');
-    //5 random color(black, gray, white) enemies at same 5 y-coordinates
-    for (var i = 775; i < 5600; i += 400)
+    //barrier
+    this.barrier = this.physics.add.sprite(1400, 300, 'barrier');
+    this.barrier2 = this.physics.add.sprite(1400 * 2, 300, 'barrier');
+    this.barrier3 = this.physics.add.sprite(1400 * 3, 300, 'barrier');
+    this.barrier4 = this.physics.add.sprite(1400 * 4, 300, 'barrier');
+    this.barrier5 = this.physics.add.sprite(6400, 300, 'barrier');
+
+    //5 random enemies at same 5 y-coordinates
+    for (var i = 1; i < 5; i += 1)
     {
-        for (var j = 100; j < 600; j += 100)
-        {
-            var randNum = Math.random();
-            if (randNum > 0 && randNum <= 0.07)
-                this.enemies.create(i, j, 'enemy1');
-            else if (randNum > 0.07 && randNum <= 0.14)
-                this.enemies.create(i, j, 'enemy2');
-            else if (randNum > 0.14 && randNum <= 0.21)
-                this.enemies.create(i, j, 'enemy3');
-            else if (randNum > 0.21 && randNum <= 0.28)
-                this.enemies.create(i, j, 'enemy4');
-            else if (randNum > 0.28 && randNum <= 0.35)
-                this.enemies.create(i, j, 'enemy5');
-            else if (randNum > 0.35 && randNum <= 0.42)
-                this.enemies.create(i, j, 'enemy6');
-            else if (randNum > 0.42 && randNum <= 0.49)
-                this.enemies.create(i, j, 'enemy7');
-            else if (randNum > 0.49 && randNum <= 0.56)
-                this.enemies.create(i, j, 'enemy8');
-            else if (randNum > 0.56 && randNum <= 0.63)
-                this.enemies.create(i, j, 'enemy9');
-            else if (randNum > 0.63 && randNum <= 0.70)
-                this.enemies.create(i, j, 'enemy10');
-            else if (randNum > 0.70 && randNum <= 0.77)
-                this.enemies.create(i, j, 'enemy11');
-            else if (randNum > 0.77 && randNum <= 0.84)
-                this.enemies.create(i, j, 'enemy12');
-            else if (randNum > 0.84 && randNum <= 0.91)
-                this.enemies.create(i, j, 'enemy13');
-            else if (randNum > 0.91 && randNum <= 1.0)
-                this.enemies.create(i, j, 'enemy14');
-        }
+      this.createEnemies(1400 * i - 100); 
     }
+
     // goal / end of level
-    this.treasure = this.physics.add.sprite(7000 - 50, this.sys.game.config.height / 2, 'treasure');
+    this.treasure = this.physics.add.sprite(7000 - 70, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
     //boss
     this.boss = this.physics.add.sprite(7150, 300, 'boss'); //1550
@@ -138,10 +119,20 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(player.sprite, this.laser, this.dot, null, this); //trigger b/w player & laser
     this.physics.add.overlap(player.sprite, this.treasure, this.gameOver, null, this); //trigger b/w player & treasure
     this.physics.add.overlap(player.sprite, this.boss, this.hitPlayer, null, this); //trigger b/w player & boss
-    this.physics.add.overlap(this.boss, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & boss
-    this.physics.add.overlap(this.boss, this.playerbigbullets, this.pierce, null, this); //trigger b/w playerbigbullets & boss
+    this.physics.add.overlap(this.boss, this.playerbullets, this.collideBoss, null, this); //trigger b/w playerbullets & boss
+    this.physics.add.overlap(this.boss, this.playerbigbullets, this.pierceBoss, null, this); //trigger b/w playerbigbullets & boss
     this.physics.add.overlap(this.enemies, this.playerbullets, this.collideEnemy, null, this); //trigger b/w playerbullets & enemy
     this.physics.add.overlap(this.enemies, this.playerbigbullets, this.pierceEnemy, null, this); //trigger b/w playerbigbullets & enemy
+    this.physics.add.overlap(this.barrier, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
+    this.physics.add.overlap(this.barrier, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
+    this.physics.add.overlap(this.barrier2, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
+    this.physics.add.overlap(this.barrier2, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
+    this.physics.add.overlap(this.barrier3, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
+    this.physics.add.overlap(this.barrier3, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
+    this.physics.add.overlap(this.barrier4, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
+    this.physics.add.overlap(this.barrier4, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
+    this.physics.add.overlap(this.barrier5, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
+    this.physics.add.overlap(this.barrier5, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
     //camera
     this.cameras.main.resetFX(); //reset cameras
     //keyboard input
@@ -186,10 +177,33 @@ class BossScene extends Phaser.Scene{
       player.sprite.y += player.speed;
     }
 
+    //make enemies move
+    //this.enemies.setVelocityX(-150);
+
+    // can move to wave 2
+    if (this.numEnemiesKilled >= 5 && this.numEnemiesKilled < 10){
+      this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
+      this.physics.world.setBounds(0, 30, 1400 * 2 - 40, 560);
+      //this.barrier.disableBody(true,true);
+    }
+    // can move to wave 3
+    if (this.numEnemiesKilled >= 10 && this.numEnemiesKilled < 15){
+      this.cameras.main.setBounds(0, 0, 1400 * 3 - 40, 560);
+      this.physics.world.setBounds(0, 30, 1400 * 3 - 40, 560);
+    }
+    // can move to wave 4
+    if (this.numEnemiesKilled >= 15 && this.numEnemiesKilled < 20){
+      this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
+      this.physics.world.setBounds(0, 30, 1400 * 4 + 1000, 560);
+    }
+
+
+
+    // spawns boss when player crosses threshold
     if (player.sprite.x + 17 > 6000) { //400
       this.startBoss = true;
       this.cameras.main.setBounds(5600, 0, 1300, 560);
-      this.physics.world.setBounds(5600, 30, 1400, 560);
+      this.physics.world.setBounds(5600, 30, 1350, 560);
     }
     if (this.startBoss){
       player.healthBar.setVisible(true);
@@ -204,6 +218,7 @@ class BossScene extends Phaser.Scene{
     if (this.boss.x <= this.bossMinX) {
       this.bossSpeed = 0;
       this.boss.setCollideWorldBounds(true);
+      this.barrier5.disableBody(true,true);
     }
     if (this.bossHP <= 0) {
       this.bossAlive = false;
@@ -347,6 +362,41 @@ class BossScene extends Phaser.Scene{
     bar.scaleX = percentage/100;
   }
 
+  createEnemies(xloc) {
+    for (var j = 100; j < 600; j += 100)
+    {
+      var randNum = Math.random();
+      if (randNum > 0 && randNum <= 0.07)
+          this.enemies.create(xloc, j, 'enemy1');
+      else if (randNum > 0.07 && randNum <= 0.14)
+          this.enemies.create(xloc, j, 'enemy2');
+      else if (randNum > 0.14 && randNum <= 0.21)
+          this.enemies.create(xloc, j, 'enemy3');
+      else if (randNum > 0.21 && randNum <= 0.28)
+          this.enemies.create(xloc, j, 'enemy4');
+      else if (randNum > 0.28 && randNum <= 0.35)
+          this.enemies.create(xloc, j, 'enemy5');
+      else if (randNum > 0.35 && randNum <= 0.42)
+          this.enemies.create(xloc, j, 'enemy6');
+      else if (randNum > 0.42 && randNum <= 0.49)
+          this.enemies.create(xloc, j, 'enemy7');
+      else if (randNum > 0.49 && randNum <= 0.56)
+          this.enemies.create(xloc, j, 'enemy8');
+      else if (randNum > 0.56 && randNum <= 0.63)
+          this.enemies.create(xloc, j, 'enemy9');
+      else if (randNum > 0.63 && randNum <= 0.70)
+          this.enemies.create(xloc, j, 'enemy10');
+      else if (randNum > 0.70 && randNum <= 0.77)
+          this.enemies.create(xloc, j, 'enemy11');
+      else if (randNum > 0.77 && randNum <= 0.84)
+          this.enemies.create(xloc, j, 'enemy12');
+      else if (randNum > 0.84 && randNum <= 0.91)
+          this.enemies.create(xloc, j, 'enemy13');
+      else if (randNum > 0.91 && randNum <= 1.0)
+          this.enemies.create(xloc, j, 'enemy14');
+    }
+  }
+
   pickAbility()
   {
     var ability = Math.floor(Math.random() * 3) + 1;
@@ -466,18 +516,25 @@ class BossScene extends Phaser.Scene{
     this.bossSpeed = 2;
   }
 
+  collide (barrier, pbullet)
+  {
+    pbullet.disableBody(true,true);
+  }
+
   collideEnemy (enemy, pbullet)
   {
     pbullet.disableBody(true,true);
     enemy.disableBody(true, true);
+    this.numEnemiesKilled += 1;
   }
 
   pierceEnemy (enemy, pbullet)
   {
     enemy.disableBody(true, true);
+    this.numEnemiesKilled += 1;
   }
 
-  collide (boss, pbullet)
+  collideBoss (boss, pbullet)
   {
     pbullet.disableBody(true,true);
     this.bossHealthPercent -= 1;
@@ -486,7 +543,7 @@ class BossScene extends Phaser.Scene{
     //this.cameras.main.shake(400, 0.01); //duration, intensity
   }
 
-  pierce (boss, pbullet)
+  pierceBoss (boss, pbullet)
   {
     this.bossHealthPercent -= 0.1;
     this.bossHP -= 0.1;
