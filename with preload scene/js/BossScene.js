@@ -182,7 +182,7 @@ class BossScene extends Phaser.Scene{
     //debugging / things to remove later
     this.timerText = this.add.text(6000, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.text = this.add.text(6000,150,"");
-    this.timer3Text = this.add.text(0, 100, "enemy attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.timer3Text = this.add.text(100, 100, "wave1 attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.timer4Text = this.add.text(1500, 100, "wave2 attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.timer5Text = this.add.text(2900, 100, "wave3 attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.timer6Text = this.add.text(4300, 100, "wave4 attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
@@ -195,7 +195,7 @@ class BossScene extends Phaser.Scene{
     this.timer5.paused = true;
     this.timer6.paused = true;
     this.timerText.setText("timer progress: " + this.timer.getProgress().toString().substr(0,4));
-    this.timer3Text.setText("enemy attack progress: " + this.timer3.getProgress().toString().substr(0,4));
+    this.timer3Text.setText("wave1 attack progress: " + this.timer3.getProgress().toString().substr(0,4));
     this.timer4Text.setText("wave2 attack progress: " + this.timer4.getProgress().toString().substr(0,4));
     this.timer5Text.setText("wave3 attack progress: " + this.timer5.getProgress().toString().substr(0,4));
     this.timer6Text.setText("wave4 attack progress: " + this.timer6.getProgress().toString().substr(0,4));
