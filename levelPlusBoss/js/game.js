@@ -9,7 +9,7 @@ var config = {
         debug: false
       }
   },
-  scene: [BossScene]
+  scene: [PreloadScene,BossScene]
 }
 var player = {
   speed: 10,
