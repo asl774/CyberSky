@@ -70,6 +70,8 @@ class PreloadScene extends Phaser.Scene{
     }
     create(){
       this.add.text(config.height/2,config.width/2,"Loading Game :)")
+
+
       this.scene.start("bossScene")
     }
 
