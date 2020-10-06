@@ -67,6 +67,8 @@ class PreloadScene extends Phaser.Scene{
       this.load.audio('teleport', [ 'teleport.mp3' ]);
       this.load.audio('throwtriplestar', [ 'throwtriplestar2.mp3' ]);
       this.load.audio('throwbigstar', [ 'throwbigstar.mp3' ]);
+      this.load.audio('heal', ['healingSound.wav']);
+      this.load.audio('shield', ['shieldSound.wav']);
     }
     create(){
       this.add.text(config.height/2,config.width/2,"Loading Game :)")
