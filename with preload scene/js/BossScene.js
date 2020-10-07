@@ -108,11 +108,11 @@ class BossScene extends Phaser.Scene{
 
     //5 random enemies at same 5 y-coordinates
     //spawn 5 enemies for each wave
-    //for (var i = 1; i < 5; i += 1)
+    //for (var i = 1; i < 3; i += 1)
     //{
       this.createWave1(1400); 
     //}
-    //for (var i = 1; i < 5; i += 1)
+    //for (var i = 1; i < 4; i += 1)
     //{
       this.createWave2(2800); 
     //}
@@ -120,7 +120,7 @@ class BossScene extends Phaser.Scene{
     //{
       this.createWave3(4200); 
     //}
-    //for (var i = 1; i < 5; i += 1)
+    //for (var i = 1; i < 6; i += 1)
     //{
       this.createWave4(5600); 
     //}
@@ -222,24 +222,24 @@ class BossScene extends Phaser.Scene{
 
     // locked camera conditions
     // can move to wave 2
-    if (this.numEnemiesKilled >= 5 && this.numEnemiesKilled < 10){
+    if (this.wave1.getChildren().length == 0 && this.wave2.getChildren().length != 0 && this.wave3.getChildren().length != 0 && this.wave4.getChildren().length != 0){
       //this.timer3.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 2 - 40, 560);
       //this.barrier.disableBody(true,true);
     }
     // can move to wave 3
-    if (this.numEnemiesKilled >= 10 && this.numEnemiesKilled < 15){
+    if (this.wave2.getChildren().length == 0 && this.wave3.getChildren().length != 0 && this.wave4.getChildren().length != 0){
       this.cameras.main.setBounds(0, 0, 1400 * 3 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 3 - 40, 560);
     }
     // can move to wave 4
-    if (this.numEnemiesKilled >= 15 && this.numEnemiesKilled < 20){
+    if (this.wave3.getChildren().length == 0 && this.wave4.getChildren().length != 0){
       this.cameras.main.setBounds(0, 0, 1400 * 4 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 4 - 40, 560);
     }
     // can move to boss
-    if (this.numEnemiesKilled >= 19 && this.numEnemiesKilled < 20){
+    if (this.wave4.getChildren().length == 1){
       this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
       this.physics.world.setBounds(0, 30, 1400 * 4 + 1000, 560);
     }
