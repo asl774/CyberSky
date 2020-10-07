@@ -33,6 +33,8 @@ class BossScene extends Phaser.Scene{
   create()
   {
     //audio
+    this.theme = this.sound.add('theme', {volume: 0.3});
+    this.theme.setLoop(true);
     this.ability1 = this.sound.add('ability1', {volume: 0.5});
     this.ability2 = this.sound.add('ability2', {volume: 0.5});
     this.ability3 = this.sound.add('ability3');
@@ -41,6 +43,8 @@ class BossScene extends Phaser.Scene{
     this.teleport = this.sound.add('teleport');
     this.throwtriplestar = this.sound.add('throwtriplestar');
     this.throwbigstar = this.sound.add('throwbigstar');
+
+    this.theme.play();
     // background
     //this.add.sprite(0, 0, 'background').setOrigin(0,0);
     //this.cameras.main.setBounds(0, 0, 5600 + 1400, 600);
