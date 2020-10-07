@@ -10,8 +10,8 @@ class BossScene extends Phaser.Scene{
     this.enemiesWave3;
     this.numEnemiesKilled = 0;
     this.enemySpeed = 2;
-    this.enemyMaxY = 490; //280
-    this.enemyMinY = 105;  //80
+    this.enemyMaxY = 600; //280 490
+    this.enemyMinY = 0;  //80 105
     this.enemyMaxX = 790; //280
     this.enemyMinX = 10;  //80
     // this.bossSpeed = 2;
@@ -258,6 +258,10 @@ class BossScene extends Phaser.Scene{
       if (enemy.x < 0){
         enemy.x = 1400;
       }
+      if (enemy.y < this.enemyMinY || enemy.y > this.enemyMaxY){
+        enemy.x = 1400;
+        enemy.y = Phaser.Math.Between(100, 500);
+      } 
     }   
     for (var i = 0; i < this.wave2.getChildren().length; i++) {
       var enemy = this.wave2.getChildren()[i];
@@ -265,6 +269,10 @@ class BossScene extends Phaser.Scene{
       if (enemy.x < 1400){
         enemy.x = 2800;
       }
+      if (enemy.y < this.enemyMinY || enemy.y > this.enemyMaxY){
+        enemy.x = 2800;
+        enemy.y = Phaser.Math.Between(100, 500);
+      } 
     }  
     for (var i = 0; i < this.wave3.getChildren().length; i++) {
       var enemy = this.wave3.getChildren()[i];
@@ -272,6 +280,10 @@ class BossScene extends Phaser.Scene{
       if (enemy.x < 2800){
         enemy.x = 4200;
       }
+      if (enemy.y < this.enemyMinY || enemy.y > this.enemyMaxY){
+        enemy.x = 4200;
+        enemy.y = Phaser.Math.Between(100, 500);
+      } 
     }  
     for (var i = 0; i < this.wave4.getChildren().length; i++) {
       var enemy = this.wave4.getChildren()[i];
@@ -279,6 +291,10 @@ class BossScene extends Phaser.Scene{
       if (enemy.x < 4200){
         enemy.x = 5600;
       }
+      if (enemy.y < this.enemyMinY || enemy.y > this.enemyMaxY){
+        enemy.x = 5600;
+        enemy.y = Phaser.Math.Between(100, 500);
+      } 
     }  
     // make player stay in boss area
     if (player.sprite.x > 5600){
@@ -599,8 +615,8 @@ class BossScene extends Phaser.Scene{
         let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
         bullet.setVelocityX(Phaser.Math.Between(-400,-600));
       }
-      enemy.setVelocityX(Phaser.Math.Between(-50,-250));
-      enemy.setVelocityY(Phaser.Math.Between(-20,20));
+      enemy.setVelocityX(Phaser.Math.Between(-50,-250)); //-50, -250
+      enemy.setVelocityY(Phaser.Math.Between(-50,50)); //-20, -20
     }   
   }
 
