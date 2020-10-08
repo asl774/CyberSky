@@ -28,7 +28,7 @@ var player = {
 var boss = {
   speed: 2,
   health: 100,
-  minX: 6630,
+  minX: 6700,
   isAlive: true,
   healthPercent: 100,
   healthBar: 0,
