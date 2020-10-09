@@ -72,9 +72,9 @@ class BossScene extends Phaser.Scene{
     player.sprite = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninja');
     player.sprite.setScale(0.5);
     player.sprite.setCollideWorldBounds(true); //can't run off screen
-    player.healthBar = this.makeBar(0, this.sys.game.config.height - 30 ,0x2ecc71);
+    player.healthBar = this.makePlayerBar(0, 50, 0x2ecc71);
     this.setValue(player.healthBar,player.healthPercent);
-    player.healthBar.setVisible(false);
+    player.healthBar.setVisible(true);
     player.healthPercent = 100;
     this.cameras.main.startFollow(player.sprite, true, 0.1, 0.1);
     this.cameras.main.followOffset.set(-500, 0);
@@ -169,10 +169,13 @@ class BossScene extends Phaser.Scene{
     this.numKillsText2 = this.add.text(1500, 200, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.numKillsText3 = this.add.text(2900, 200, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.numKillsText4 = this.add.text(4300, 200, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.bossHPText = this.add.text(5610, 10, "Boss HP: " + boss.healthPercent, { fontSize: '20px', fill: '#000000', align: "center" });
   }
 
   update()
   {
+    this.setHealthBarPosition(player.healthBar, player.sprite.x - 25, player.sprite.y - 40);
+
     this.timerText.setText("timer progress: " + this.timer.getProgress().toString().substr(0,4));
     this.timer3Text.setText("wave1 attack progress: " + this.timer3.getProgress().toString().substr(0,4));
     this.timer4Text.setText("wave2 attack progress: " + this.timer4.getProgress().toString().substr(0,4));
@@ -186,6 +189,7 @@ class BossScene extends Phaser.Scene{
     this.numKillsText2.setText("# enemies killed: " + this.numEnemiesKilled);
     this.numKillsText3.setText("# enemies killed: " + this.numEnemiesKilled);
     this.numKillsText4.setText("# enemies killed: " + this.numEnemiesKilled);
+    this.bossHPText.setText("Boss HP: " + boss.healthPercent);
     //check if player is alive
     if (!player.isAlive) {
       return;
@@ -453,9 +457,28 @@ class BossScene extends Phaser.Scene{
     return bar;
   }
 
+  makePlayerBar(x, y, color){
+    //draw the bar
+    let bar = this.add.graphics();
+    //color the bar
+    bar.fillStyle(color, 1);
+    //fill the bar with a rectangle
+    bar.fillRect(0, 0, 50, 10);
+    //position the bar
+    bar.x = x;
+    bar.y = y;
+    //return the bar
+    return bar;
+  }
+
   setValue(bar, percentage){
     //scale the bar
     bar.scaleX = percentage/100;
+  }
+
+  setHealthBarPosition(bar, x, y){
+    bar.x = x;
+    bar.y = y;
   }
 
   createWave1() {
@@ -760,8 +783,8 @@ class BossScene extends Phaser.Scene{
 
   hitPlayer(p, b)
   {
-    player.health -= 1;
-    player.healthPercent -= 1;
+    player.health -= 5;
+    player.healthPercent -= 5;
     this.setValue(player.healthBar, player.healthPercent);
     this.cameras.main.shake(400, 0.01); //duration, intensity
     if(player.health <= 0) //things can happen, be safe and less than 0
