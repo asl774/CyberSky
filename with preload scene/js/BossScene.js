@@ -144,8 +144,8 @@ class BossScene extends Phaser.Scene{
     this.wkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.ekey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
     //timer testing
-    this.timer = this.time.addEvent({delay : 5000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
-    this.timer2 = this.time.addEvent({delay : 5000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
+    this.timer = this.time.addEvent({delay : 2500, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
+    this.timer2 = this.time.addEvent({delay : 2500, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
     this.timer3 = this.time.addEvent({delay : 3000, callback: this.wave1Attack, callbackScope: this, loop: true, paused: false });
     this.timer4 = this.time.addEvent({delay : 2500, callback: this.wave2Attack, callbackScope: this, loop: true, paused: true });
     this.timer5 = this.time.addEvent({delay : 2250, callback: this.wave3Attack, callbackScope: this, loop: true, paused: true });
@@ -326,10 +326,10 @@ class BossScene extends Phaser.Scene{
     //ability three
     if (this.timer.getProgress().toString().substr(0,4) < 0.4){
       if (this.timer2.getProgress().toString().substr(0,4) >= 0.05 && this.timer2.getProgress().toString().substr(0,4) <= 0.25){
-        this.physics.moveToObject(boss.sprite, player.sprite, 810);
+        this.physics.moveToObject(boss.sprite, player.sprite, 1600);
       }
       else if (this.timer2.getProgress().toString().substr(0,4) > 0.25 && this.timer2.getProgress().toString().substr(0,4) <= 0.5){
-        this.physics.moveToObject(boss.sprite, this.treasure, 810);
+        this.physics.moveToObject(boss.sprite, this.treasure, 1600);
       }
     }
     //press spacebar to throw star
