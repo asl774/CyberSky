@@ -17,6 +17,7 @@ var player = {
   isAlive: true,
   healthPercent: 100,
   healthBar: 0,
+  sheilded: false,
 
   check: function()
   {

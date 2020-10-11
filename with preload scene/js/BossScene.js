@@ -39,6 +39,8 @@ class BossScene extends Phaser.Scene{
     this.teleport = this.sound.add('teleport');
     this.throwtriplestar = this.sound.add('throwtriplestar');
     this.throwbigstar = this.sound.add('throwbigstar');
+    this.healthUp = this.sound.add('heal');
+    this.shieldUp = this.sound.add('shield');
     this.theme.play();
     // background
     this.cameras.main.setBounds(0, 0, 1400 - 40, 560);
@@ -143,6 +145,8 @@ class BossScene extends Phaser.Scene{
     this.qkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
     this.wkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.ekey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    this.vkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
+    this.bkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
     //timer testing
     this.timer = this.time.addEvent({delay : 2500, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 2500, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
@@ -257,8 +261,8 @@ class BossScene extends Phaser.Scene{
       if (enemy.y < this.enemyMinY || enemy.y > this.enemyMaxY){
         enemy.x = 1400;
         enemy.y = Phaser.Math.Between(100, 500);
-      } 
-    }   
+      }
+    }
     for (var i = 0; i < this.wave2.getChildren().length; i++) {
       var enemy = this.wave2.getChildren()[i];
       enemy.update();
@@ -268,8 +272,8 @@ class BossScene extends Phaser.Scene{
       if (enemy.y < this.enemyMinY || enemy.y > this.enemyMaxY){
         enemy.x = 2800;
         enemy.y = Phaser.Math.Between(100, 500);
-      } 
-    }  
+      }
+    }
     for (var i = 0; i < this.wave3.getChildren().length; i++) {
       var enemy = this.wave3.getChildren()[i];
       enemy.update();
@@ -279,8 +283,8 @@ class BossScene extends Phaser.Scene{
       if (enemy.y < this.enemyMinY || enemy.y > this.enemyMaxY){
         enemy.x = 4200;
         enemy.y = Phaser.Math.Between(100, 500);
-      } 
-    }  
+      }
+    }
     for (var i = 0; i < this.wave4.getChildren().length; i++) {
       var enemy = this.wave4.getChildren()[i];
       enemy.update();
@@ -290,8 +294,8 @@ class BossScene extends Phaser.Scene{
       if (enemy.y < this.enemyMinY || enemy.y > this.enemyMaxY){
         enemy.x = 5600;
         enemy.y = Phaser.Math.Between(100, 500);
-      } 
-    }  
+      }
+    }
     // make player stay in boss area
     if (player.sprite.x > 5600){
       this.cameras.main.setBounds(5600, 0, 1300, 560);
@@ -440,6 +444,26 @@ class BossScene extends Phaser.Scene{
       let pbullet = this.playerbullets.create(playerx, playery, 'star6');
       pbullet.setVelocityX(200);
     }
+    //press v to heal - this should go somewhere else
+    else if(Phaser.Input.Keyboard.JustDown(this.vkey) && player.health < 100)
+    {
+      this.healthUp.play();
+      if(player.health > 80)
+      {
+        player.health = 100;
+        player.healthPercent = 100;
+      } else {
+        player.health += 20;
+        player.healthPercent += 20;
+      }
+      this.setValue(player.healthBar, player.healthPercent);
+    }
+    //press b to shield
+    else if(Phaser.Input.Keyboard.JustDown(this.bkey) && !player.shielded)
+    {
+      this.shieldUp.play();
+      player.shielded = true;
+    }
 
   }
 
@@ -515,7 +539,7 @@ class BossScene extends Phaser.Scene{
           this.wave1.create(1400, j, 'enemy14');
     }
   }
-    
+
   createWave2() {
     for (var j = 100; j < 600; j += 100)
     {
@@ -632,7 +656,7 @@ class BossScene extends Phaser.Scene{
       }
       enemy.setVelocityX(Phaser.Math.Between(-50,-400)); //-50, -250
       enemy.setVelocityY(Phaser.Math.Between(-50,50)); //-20, -20
-    }   
+    }
   }
 
   wave2Attack()
@@ -646,7 +670,7 @@ class BossScene extends Phaser.Scene{
       }
       enemy.setVelocityX(Phaser.Math.Between(-100,-500));
       enemy.setVelocityY(Phaser.Math.Between(-75,75));
-    }   
+    }
   }
 
   wave3Attack()
@@ -660,7 +684,7 @@ class BossScene extends Phaser.Scene{
       }
       enemy.setVelocityX(Phaser.Math.Between(-200,-600));
       enemy.setVelocityY(Phaser.Math.Between(-100,100));
-    }   
+    }
   }
 
   wave4Attack()
@@ -674,7 +698,7 @@ class BossScene extends Phaser.Scene{
       }
       enemy.setVelocityX(Phaser.Math.Between(-400,-700));
       enemy.setVelocityY(Phaser.Math.Between(-125,125));
-    }   
+    }
   }
 
   pickAbility()
@@ -693,11 +717,11 @@ class BossScene extends Phaser.Scene{
     if(ability >= 0 && ability < 0.5)
     {
       this.abilityOne();
-    } 
+    }
     else if (ability >= 0.5 && ability < 0.75)
     {
       this.abilityTwo();
-    } 
+    }
     else {
       this.abilityThree();
     }
@@ -741,6 +765,12 @@ class BossScene extends Phaser.Scene{
   getHit(p, bullet)
   {
     bullet.disableBody(true,true);
+    if(player.shielded)
+    {
+      player.shielded = false;
+      console.log("player had a shield");
+      return;
+    }
     player.health -= 20;
     player.healthPercent -= 20;
     this.setValue(player.healthBar, player.healthPercent);
@@ -752,6 +782,12 @@ class BossScene extends Phaser.Scene{
   }
 
   dot(p, laser) {
+    if(player.shielded)
+    {
+      player.shielded = false;
+      console.log("player had a shield");
+      return;
+    }
     if (player.sprite.x >= 200){
       player.health -= 30;
       player.healthPercent-= 30;
@@ -783,6 +819,12 @@ class BossScene extends Phaser.Scene{
 
   hitPlayer(p, b)
   {
+    if(player.shielded)
+    {
+      player.shielded = false;
+      console.log("player had a shield");
+      return;
+    }
     player.health -= 5;
     player.healthPercent -= 5;
     this.setValue(player.healthBar, player.healthPercent);
