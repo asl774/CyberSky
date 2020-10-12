@@ -537,7 +537,7 @@ class BossScene extends Phaser.Scene{
   }
 
   createPowerup1() {
-    let x = Phaser.Math.Between(0, 1400);
+    let x = Phaser.Math.Between(0 + 50, 1400 - 50);
     let y = -100;
     var randNum = Math.random();
     if (randNum > 0 && randNum <= 0.25)
@@ -551,7 +551,7 @@ class BossScene extends Phaser.Scene{
     this.powerups.setVelocityY(100);
   }
   createPowerup2() {
-    let x = Phaser.Math.Between(1400, 2800);
+    let x = Phaser.Math.Between(1400 + 50, 2800 - 50);
     let y = -100;
     var randNum = Math.random();
     if (randNum > 0 && randNum <= 0.25)
@@ -565,7 +565,7 @@ class BossScene extends Phaser.Scene{
     this.powerups.setVelocityY(100);
   }
   createPowerup3() {
-    let x = Phaser.Math.Between(2800, 4200);
+    let x = Phaser.Math.Between(2800 + 50, 4200 - 50);
     let y = -100;
     var randNum = Math.random();
     if (randNum > 0 && randNum <= 0.25)
@@ -579,7 +579,7 @@ class BossScene extends Phaser.Scene{
     this.powerups.setVelocityY(100);
   }
   createPowerup4() {
-    let x = Phaser.Math.Between(4200, 5600);
+    let x = Phaser.Math.Between(4200 + 50, 5600 - 50);
     let y = -100;
     var randNum = Math.random();
     if (randNum > 0 && randNum <= 0.25)
@@ -593,7 +593,7 @@ class BossScene extends Phaser.Scene{
     this.powerups.setVelocityY(100);
   }
   createPowerup5() {
-    let x = Phaser.Math.Between(5600, 6400);
+    let x = Phaser.Math.Between(5600 + 50, 6400 - 50);
     let y = -100;
     var randNum = Math.random();
     if (randNum > 0 && randNum <= 0.25)
@@ -606,6 +606,7 @@ class BossScene extends Phaser.Scene{
       this.powerups.create(x, y, 'kaboomPU');
     this.powerups.setVelocityY(100);
   }
+  
   createWave1() {
     for (var j = 100; j < 600; j += 100)
     {
@@ -916,6 +917,7 @@ class BossScene extends Phaser.Scene{
     powerup.destroy();
     //powerup.disableBody(true,true);
     player.sprite.tint = 0xF5C60C;
+    console.log("powerup: ");
   }
 
   hitPlayer(p, b)
