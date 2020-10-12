@@ -152,12 +152,12 @@ class BossScene extends Phaser.Scene{
     this.timer2 = this.time.addEvent({delay : 2500, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
     this.timer3 = this.time.addEvent({delay : 3000, callback: this.wave1Attack, callbackScope: this, loop: true, paused: false });
     this.timer4 = this.time.addEvent({delay : 2500, callback: this.wave2Attack, callbackScope: this, loop: true, paused: true });
-    this.timer5 = this.time.addEvent({delay : 2250, callback: this.wave3Attack, callbackScope: this, loop: true, paused: true });
-    this.timer6 = this.time.addEvent({delay : 2000, callback: this.wave4Attack, callbackScope: this, loop: true, paused: true });
+    this.timer5 = this.time.addEvent({delay : 2000, callback: this.wave3Attack, callbackScope: this, loop: true, paused: true });
+    this.timer6 = this.time.addEvent({delay : 1500, callback: this.wave4Attack, callbackScope: this, loop: true, paused: true });
     this.timer7 = this.time.addEvent({delay : 1500, callback: this.createWave1, callbackScope: this, loop: true, paused: false });
-    this.timer8 = this.time.addEvent({delay : 1450, callback: this.createWave2, callbackScope: this, loop: true, paused: true });
-    this.timer9 = this.time.addEvent({delay : 1400, callback: this.createWave3, callbackScope: this, loop: true, paused: true });
-    this.timer10 = this.time.addEvent({delay : 1350, callback: this.createWave4, callbackScope: this, loop: true, paused: true });
+    this.timer8 = this.time.addEvent({delay : 1250, callback: this.createWave2, callbackScope: this, loop: true, paused: true });
+    this.timer9 = this.time.addEvent({delay : 1000, callback: this.createWave3, callbackScope: this, loop: true, paused: true });
+    this.timer10 = this.time.addEvent({delay : 750, callback: this.createWave4, callbackScope: this, loop: true, paused: true });
     //debugging / things to remove later
     this.timerText = this.add.text(6000, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.text = this.add.text(6000,150,"");
@@ -213,44 +213,46 @@ class BossScene extends Phaser.Scene{
     // locked camera conditions
     // can move to wave 2
     if (this.numEnemiesKilled >= 50 && this.numEnemiesKilled < 100){
-      this.timer3.paused = true;
+      //this.timer3.paused = true;
       this.timer7.paused = true;
-      this.timer8.paused = false;
       this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 2 - 40, 560);
       //this.barrier.disableBody(true,true);
     }
     // can move to wave 3
     if (this.numEnemiesKilled >= 100 && this.numEnemiesKilled < 150){
-      this.timer4.paused = true;
+      //this.timer4.paused = true;
       this.timer8.paused = true;
-      this.timer9.paused = false;
       this.cameras.main.setBounds(0, 0, 1400 * 3 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 3 - 40, 560);
     }
     // can move to wave 4
     if (this.numEnemiesKilled >= 150 && this.numEnemiesKilled < 200){
-      this.timer5.paused = true;
+      //this.timer5.paused = true;
       this.timer9.paused = true;
-      this.timer10.paused = false;
       this.cameras.main.setBounds(0, 0, 1400 * 4 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 4 - 40, 560);
     }
     // can move to boss
-    if (this.numEnemiesKilled >= 198 && this.numEnemiesKilled < 200){
-      this.timer6.paused = true;
+    if (this.numEnemiesKilled >= 200 && this.numEnemiesKilled < 205){
+      //this.timer6.paused = true;
       this.timer10.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
       this.physics.world.setBounds(0, 30, 1400 * 4 + 1000, 560);
     }
     // make waves attack only when player crosses line
-    if (player.sprite.x > 1400)
+    if (player.sprite.x >= 1400 && this.numEnemiesKilled < 100){
       this.timer4.paused = false;
-    if (player.sprite.x > 2800)
+      this.timer8.paused = false;
+    }
+    if (player.sprite.x >= 2800 && this.numEnemiesKilled < 150){
       this.timer5.paused = false;
-    if (player.sprite.x > 4200)
+      this.timer9.paused = false;
+    }
+    if (player.sprite.x >= 4200 && this.numEnemiesKilled < 200){
       this.timer6.paused = false;
-
+      this.timer10.paused = false;
+    }
     // make enemies respawn at wave start point if they leave camera view
     for (var i = 0; i < this.wave1.getChildren().length; i++) {
       var enemy = this.wave1.getChildren()[i];
@@ -312,7 +314,7 @@ class BossScene extends Phaser.Scene{
       player.healthBar.setVisible(true);
       boss.healthBar.setVisible(true);
       boss.sprite.setVisible(true);
-      boss.sprite.x -= boss.speed;
+      boss.sprite.x -= boss.speed * 2;
       this.timer.paused = false;
     }
     if (boss.sprite.x < 7000 + 150 && boss.sprite.x > 7000 + 140){ //this.sys.game.config.width
@@ -457,12 +459,14 @@ class BossScene extends Phaser.Scene{
         player.healthPercent += 20;
       }
       this.setValue(player.healthBar, player.healthPercent);
+      console.log("player health is : " + player.health);
     }
     //press b to shield
     else if(Phaser.Input.Keyboard.JustDown(this.bkey) && !player.shielded)
     {
       this.shieldUp.play();
       player.shielded = true;
+      console.log("player shield is active");
     }
 
   }
@@ -747,9 +751,9 @@ class BossScene extends Phaser.Scene{
     console.log("using ability two");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    for(let i = 0; i < 3; i++){
-        let x = Phaser.Math.Between(5600, boss.sprite.x - 300);
-        let y = -100;
+    for(let i = 0; i < 2; i++){
+        let x = Phaser.Math.Between(5600, boss.sprite.x - 250);
+        let y = -200;
         let laser = this.laser.create(x, y, 'laser');
         laser.setVelocityY(500);
     }
