@@ -58,6 +58,13 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('multishotPU', 'assets/multishot.png');
       this.load.image('kaboomPU', 'assets/kaboom.png');
 
+      //player sabre colors
+      this.load.image("redsword", "assets/redsword.png")
+      this.load.image("silversword", "assets/silversword.png")
+      this.load.image("purpsword", "assets/purpsword.png")
+      this.load.image("bluesword", "assets/bluesword.png")
+      this.load.image("greensword", "assets/greensword.png")
+
       this.load.setPath('assets');
       this.load.audio('ability1', [ 'fireball1.mp3' ]);
       this.load.audio('ability2', [ 'laser.mp3' ]);

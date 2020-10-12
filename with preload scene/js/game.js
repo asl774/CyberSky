@@ -1,3 +1,4 @@
+
 var config = {
   type: Phaser.AUTO,
   width: window.innerWidth, //640
@@ -18,6 +19,10 @@ var player = {
   healthPercent: 100,
   healthBar: 0,
   sheilded: false,
+  multishot: false,
+  pierce: false,
+  kaboom: false,
+  saber: false,
 
   check: function()
   {
