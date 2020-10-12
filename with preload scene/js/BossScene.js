@@ -88,6 +88,7 @@ class BossScene extends Phaser.Scene{
     this.wave3 = this.physics.add.group();
     this.wave4 = this.physics.add.group();
     //powerups
+    this.powerups = this.physics.add.group();
     this.powerup1 = this.physics.add.sprite(40, this.sys.game.config.height / 2, 'piercePU');
     this.powerup2 = this.physics.add.sprite(40, this.sys.game.config.height / 3, 'lightswordPU');
     this.powerup3 = this.physics.add.sprite(40, this.sys.game.config.height / 5, 'multishotPU');
@@ -111,6 +112,7 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(player.sprite, this.laser, this.dot, null, this); //trigger b/w player & laser
     this.physics.add.overlap(player.sprite, this.treasure, this.gameOver, null, this); //trigger b/w player & treasure
     this.physics.add.overlap(player.sprite, boss.sprite, this.hitPlayer, null, this); //trigger b/w player & boss
+    this.physics.add.overlap(player.sprite, this.powerups, this.powerup, null, this); //trigger b/w player & powerup
     this.physics.add.overlap(boss.sprite, this.playerbullets, this.collideBoss, null, this); //trigger b/w playerbullets & boss
     this.physics.add.overlap(boss.sprite, this.playerbigbullets, this.pierceBoss, null, this); //trigger b/w playerbigbullets & boss
     this.physics.add.overlap(this.wave1, this.playerbullets, this.collideEnemy, null, this); //trigger b/w playerbullets & enemy
@@ -158,6 +160,11 @@ class BossScene extends Phaser.Scene{
     this.timer8 = this.time.addEvent({delay : 1250, callback: this.createWave2, callbackScope: this, loop: true, paused: true });
     this.timer9 = this.time.addEvent({delay : 1000, callback: this.createWave3, callbackScope: this, loop: true, paused: true });
     this.timer10 = this.time.addEvent({delay : 750, callback: this.createWave4, callbackScope: this, loop: true, paused: true });
+    this.poweruptimer1 = this.time.addEvent({delay : 5000, callback: this.createPowerup1, callbackScope: this, loop: true, paused: false });
+    this.poweruptimer2 = this.time.addEvent({delay : 5000, callback: this.createPowerup2, callbackScope: this, loop: true, paused: true });
+    this.poweruptimer3 = this.time.addEvent({delay : 5000, callback: this.createPowerup3, callbackScope: this, loop: true, paused: true });
+    this.poweruptimer4 = this.time.addEvent({delay : 5000, callback: this.createPowerup4, callbackScope: this, loop: true, paused: true });
+    this.poweruptimer5 = this.time.addEvent({delay : 5000, callback: this.createPowerup5, callbackScope: this, loop: true, paused: true });
     //debugging / things to remove later
     this.timerText = this.add.text(6000, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.text = this.add.text(6000,150,"");
@@ -173,6 +180,11 @@ class BossScene extends Phaser.Scene{
     this.numKillsText2 = this.add.text(1500, 200, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.numKillsText3 = this.add.text(2900, 200, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.numKillsText4 = this.add.text(4300, 200, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.poweruptimerText1 = this.add.text(100, 250, "next powerup progress: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.poweruptimerText2 = this.add.text(1500, 250, "next powerup progress: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.poweruptimerText3 = this.add.text(2900, 250, "next powerup progress: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.poweruptimerText4 = this.add.text(4300, 250, "next powerup progress: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.poweruptimerText5 = this.add.text(5700, 250, "next powerup progress: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.bossHPText = this.add.text(5610, 10, "Boss HP: " + boss.healthPercent, { fontSize: '20px', fill: '#000000', align: "center" });
   }
 
@@ -180,19 +192,24 @@ class BossScene extends Phaser.Scene{
   {
     this.setHealthBarPosition(player.healthBar, player.sprite.x - 25, player.sprite.y - 40);
 
-    this.timerText.setText("timer progress: " + this.timer.getProgress().toString().substr(0,4));
-    this.timer3Text.setText("wave1 attack progress: " + this.timer3.getProgress().toString().substr(0,4));
-    this.timer4Text.setText("wave2 attack progress: " + this.timer4.getProgress().toString().substr(0,4));
-    this.timer5Text.setText("wave3 attack progress: " + this.timer5.getProgress().toString().substr(0,4));
-    this.timer6Text.setText("wave4 attack progress: " + this.timer6.getProgress().toString().substr(0,4));
-    this.timer7Text.setText("spawn more enemies:  " + this.timer7.getProgress().toString().substr(0,4));
-    this.timer8Text.setText("spawn more enemies:  " + this.timer8.getProgress().toString().substr(0,4));
-    this.timer9Text.setText("spawn more enemies:  " + this.timer9.getProgress().toString().substr(0,4));
-    this.timer10Text.setText("spawn more enemies:  " + this.timer10.getProgress().toString().substr(0,4));
-    this.numKillsText.setText("# enemies killed: " + this.numEnemiesKilled);
-    this.numKillsText2.setText("# enemies killed: " + this.numEnemiesKilled);
-    this.numKillsText3.setText("# enemies killed: " + this.numEnemiesKilled);
-    this.numKillsText4.setText("# enemies killed: " + this.numEnemiesKilled);
+    this.timerText.setText("Timer Progress: " + this.timer.getProgress().toString().substr(0,4));
+    this.timer3Text.setText("Wave 1 Attack Progress: " + this.timer3.getProgress().toString().substr(0,4));
+    this.timer4Text.setText("Wave 2 Attack Progress: " + this.timer4.getProgress().toString().substr(0,4));
+    this.timer5Text.setText("Wave 3 Attack Progress: " + this.timer5.getProgress().toString().substr(0,4));
+    this.timer6Text.setText("Wave 4 Attack Progress: " + this.timer6.getProgress().toString().substr(0,4));
+    this.timer7Text.setText("Spawn More Enemies:  " + this.timer7.getProgress().toString().substr(0,4));
+    this.timer8Text.setText("Spawn More Enemies:  " + this.timer8.getProgress().toString().substr(0,4));
+    this.timer9Text.setText("Spawn More Enemies:  " + this.timer9.getProgress().toString().substr(0,4));
+    this.timer10Text.setText("Spawn More Enemies:  " + this.timer10.getProgress().toString().substr(0,4));
+    this.numKillsText.setText("# Enemies Killed: " + this.numEnemiesKilled);
+    this.numKillsText2.setText("# Enemies Killed: " + this.numEnemiesKilled);
+    this.numKillsText3.setText("# Enemies Killed: " + this.numEnemiesKilled);
+    this.numKillsText4.setText("# Enemies Killed: " + this.numEnemiesKilled);
+    this.poweruptimerText1.setText("Next Powerup Progress: " + this.poweruptimer1.getProgress().toString().substr(0,4));
+    this.poweruptimerText2.setText("Next Powerup Progress: " + this.poweruptimer2.getProgress().toString().substr(0,4));
+    this.poweruptimerText3.setText("Next Powerup Progress: " + this.poweruptimer3.getProgress().toString().substr(0,4));
+    this.poweruptimerText4.setText("Next Powerup Progress: " + this.poweruptimer4.getProgress().toString().substr(0,4));
+    this.poweruptimerText5.setText("Next Powerup Progress: " + this.poweruptimer5.getProgress().toString().substr(0,4));
     this.bossHPText.setText("Boss HP: " + boss.healthPercent);
     //check if player is alive
     if (!player.isAlive) {
@@ -215,6 +232,7 @@ class BossScene extends Phaser.Scene{
     if (this.numEnemiesKilled >= 50 && this.numEnemiesKilled < 100){
       //this.timer3.paused = true;
       this.timer7.paused = true;
+      this.poweruptimer1.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 2 - 40, 560);
       //this.barrier.disableBody(true,true);
@@ -223,6 +241,7 @@ class BossScene extends Phaser.Scene{
     if (this.numEnemiesKilled >= 100 && this.numEnemiesKilled < 150){
       //this.timer4.paused = true;
       this.timer8.paused = true;
+      this.poweruptimer2.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 3 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 3 - 40, 560);
     }
@@ -230,6 +249,7 @@ class BossScene extends Phaser.Scene{
     if (this.numEnemiesKilled >= 150 && this.numEnemiesKilled < 200){
       //this.timer5.paused = true;
       this.timer9.paused = true;
+      this.poweruptimer3.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 4 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 4 - 40, 560);
     }
@@ -237,6 +257,7 @@ class BossScene extends Phaser.Scene{
     if (this.numEnemiesKilled >= 200 && this.numEnemiesKilled < 205){
       //this.timer6.paused = true;
       this.timer10.paused = true;
+      this.poweruptimer4.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
       this.physics.world.setBounds(0, 30, 1400 * 4 + 1000, 560);
     }
@@ -244,14 +265,20 @@ class BossScene extends Phaser.Scene{
     if (player.sprite.x >= 1400 && this.numEnemiesKilled < 100){
       this.timer4.paused = false;
       this.timer8.paused = false;
+      this.poweruptimer2.paused = false;
     }
     if (player.sprite.x >= 2800 && this.numEnemiesKilled < 150){
       this.timer5.paused = false;
       this.timer9.paused = false;
+      this.poweruptimer3.paused = false;
     }
     if (player.sprite.x >= 4200 && this.numEnemiesKilled < 200){
       this.timer6.paused = false;
       this.timer10.paused = false;
+      this.poweruptimer4.paused = false;
+    }
+    if (player.sprite.x >= 5600){
+      this.poweruptimer5.paused = false;
     }
     // make enemies respawn at wave start point if they leave camera view
     for (var i = 0; i < this.wave1.getChildren().length; i++) {
@@ -509,6 +536,76 @@ class BossScene extends Phaser.Scene{
     bar.y = y;
   }
 
+  createPowerup1() {
+    let x = Phaser.Math.Between(0, 1400);
+    let y = -100;
+    var randNum = Math.random();
+    if (randNum > 0 && randNum <= 0.25)
+      this.powerups.create(x, y, 'piercePU');
+    else if (randNum > 0.25 && randNum <= 0.50)
+      this.powerups.create(x, y, 'lightswordPU');
+    else if (randNum > 0.50 && randNum <= 0.75)
+      this.powerups.create(x, y, 'multishotPU');
+    else if (randNum > 0.75 && randNum <= 1.0)
+      this.powerups.create(x, y, 'kaboomPU');
+    this.powerups.setVelocityY(100);
+  }
+  createPowerup2() {
+    let x = Phaser.Math.Between(1400, 2800);
+    let y = -100;
+    var randNum = Math.random();
+    if (randNum > 0 && randNum <= 0.25)
+      this.powerups.create(x, y, 'piercePU');
+    else if (randNum > 0.25 && randNum <= 0.50)
+      this.powerups.create(x, y, 'lightswordPU');
+    else if (randNum > 0.50 && randNum <= 0.75)
+      this.powerups.create(x, y, 'multishotPU');
+    else if (randNum > 0.75 && randNum <= 1.0)
+      this.powerups.create(x, y, 'kaboomPU');
+    this.powerups.setVelocityY(100);
+  }
+  createPowerup3() {
+    let x = Phaser.Math.Between(2800, 4200);
+    let y = -100;
+    var randNum = Math.random();
+    if (randNum > 0 && randNum <= 0.25)
+      this.powerups.create(x, y, 'piercePU');
+    else if (randNum > 0.25 && randNum <= 0.50)
+      this.powerups.create(x, y, 'lightswordPU');
+    else if (randNum > 0.50 && randNum <= 0.75)
+      this.powerups.create(x, y, 'multishotPU');
+    else if (randNum > 0.75 && randNum <= 1.0)
+      this.powerups.create(x, y, 'kaboomPU');
+    this.powerups.setVelocityY(100);
+  }
+  createPowerup4() {
+    let x = Phaser.Math.Between(4200, 5600);
+    let y = -100;
+    var randNum = Math.random();
+    if (randNum > 0 && randNum <= 0.25)
+      this.powerups.create(x, y, 'piercePU');
+    else if (randNum > 0.25 && randNum <= 0.50)
+      this.powerups.create(x, y, 'lightswordPU');
+    else if (randNum > 0.50 && randNum <= 0.75)
+      this.powerups.create(x, y, 'multishotPU');
+    else if (randNum > 0.75 && randNum <= 1.0)
+      this.powerups.create(x, y, 'kaboomPU');
+    this.powerups.setVelocityY(100);
+  }
+  createPowerup5() {
+    let x = Phaser.Math.Between(5600, 6400);
+    let y = -100;
+    var randNum = Math.random();
+    if (randNum > 0 && randNum <= 0.25)
+      this.powerups.create(x, y, 'piercePU');
+    else if (randNum > 0.25 && randNum <= 0.50)
+      this.powerups.create(x, y, 'lightswordPU');
+    else if (randNum > 0.50 && randNum <= 0.75)
+      this.powerups.create(x, y, 'multishotPU');
+    else if (randNum > 0.75 && randNum <= 1.0)
+      this.powerups.create(x, y, 'kaboomPU');
+    this.powerups.setVelocityY(100);
+  }
   createWave1() {
     for (var j = 100; j < 600; j += 100)
     {
@@ -815,10 +912,10 @@ class BossScene extends Phaser.Scene{
     }
   }
 
-  powerups(p, powerup){
-    powerup.disableBody(true,true);
-    player.sprite.tint = F5C60C;
-
+  powerup(p, powerup){
+    powerup.destroy();
+    //powerup.disableBody(true,true);
+    player.sprite.tint = 0xF5C60C;
   }
 
   hitPlayer(p, b)
