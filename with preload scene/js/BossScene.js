@@ -42,6 +42,8 @@ class BossScene extends Phaser.Scene{
     this.throwbigstar = this.sound.add('throwbigstar');
     this.healthUp = this.sound.add('heal');
     this.shieldUp = this.sound.add('shield');
+    this.beamsound = this.sound.add('beamsound');
+    this.firebreathsound = this.sound.add('firebreathsound');
     this.theme.play();
     // background
     this.cameras.main.setBounds(0, 0, 1400 - 40, 560);
@@ -948,10 +950,11 @@ class BossScene extends Phaser.Scene{
   }
 
   abilityFour() {
+    this.firebreathsound.play();
     console.log("using ability four");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    for(let i = 0; i < 100; i++)
+    for(let i = 0; i < 800; i++)
     {
       let x = boss.sprite.x - 150;
       let y = boss.sprite.y - 150;
@@ -962,6 +965,7 @@ class BossScene extends Phaser.Scene{
   }
 
   abilityFive() {
+    this.beamsound.play();
     console.log("using ability five");
     this.timer2.paused = true;
     this.ability3.setMute(true);
