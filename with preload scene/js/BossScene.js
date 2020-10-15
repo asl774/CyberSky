@@ -100,11 +100,13 @@ class BossScene extends Phaser.Scene{
     //this.powerup3 = this.physics.add.sprite(40, this.sys.game.config.height / 5, 'multishotPU');
     //this.powerup4 = this.physics.add.sprite(40, this.sys.game.config.height / 4, 'kaboomPU');
     //barrier
+    this.barrier0 = this.physics.add.sprite(0, 300, 'barrier');
     this.barrier = this.physics.add.sprite(1400, 300, 'barrier');
     this.barrier2 = this.physics.add.sprite(1400 * 2, 300, 'barrier');
     this.barrier3 = this.physics.add.sprite(1400 * 3, 300, 'barrier');
     this.barrier4 = this.physics.add.sprite(1400 * 4, 300, 'barrier');
     this.barrier5 = this.physics.add.sprite(6470, 300, 'barrier');
+    this.barrier6 = this.physics.add.sprite(6300, 600, 'bottombarrier');
     // goal / end of level
     this.treasure = this.physics.add.sprite(7000 - 70, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
@@ -137,16 +139,19 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(this.wave3, this.playerbigbullets, this.pierceEnemy, null, this); //trigger b/w playerbigbullets & enemy
     this.physics.add.overlap(this.wave4, this.playerbullets, this.collideEnemy, null, this); //trigger b/w playerbullets & enemy
     this.physics.add.overlap(this.wave4, this.playerbigbullets, this.pierceEnemy, null, this); //trigger b/w playerbigbullets & enemy
+    this.physics.add.overlap(this.barrier0, this.bullets, this.collide, null, this); //trigger b/w boss bullets & barrier
     this.physics.add.overlap(this.barrier, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     this.physics.add.overlap(this.barrier, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
     this.physics.add.overlap(this.barrier2, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     this.physics.add.overlap(this.barrier2, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
     this.physics.add.overlap(this.barrier3, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     this.physics.add.overlap(this.barrier3, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
+    this.physics.add.overlap(this.barrier4, this.bullets, this.collide, null, this); //trigger b/w boss bullets & barrier
     this.physics.add.overlap(this.barrier4, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     this.physics.add.overlap(this.barrier4, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
     this.physics.add.overlap(this.barrier5, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     this.physics.add.overlap(this.barrier5, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
+    this.physics.add.overlap(this.barrier6, this.bullets, this.collide, null, this); //trigger b/w boss bullets & bottombarrier
     //camera
     this.cameras.main.resetFX(); //reset cameras
     //keyboard input
@@ -872,26 +877,38 @@ class BossScene extends Phaser.Scene{
   pickAbility()
   {
     var ability = Math.random(); //Math.floor(Math.random() * 3) + 1;
-    if(ability >= 0 && ability < 0.5)
+    if(ability >= 0 && ability < 0.20)
         this.text.setText("Boss is using ability: 1");
-    else if (ability >= 0.5 && ability < 0.75)
+    else if (ability >= 0.20 && ability < 0.40)
         this.text.setText("Boss is using ability: 2");
-    else
+    else if (ability >= 0.40 && ability < 0.60)
         this.text.setText("Boss is using ability: 3");
+    else if (ability >= 0.60 && ability < 0.80)
+        this.text.setText("Boss is using ability: 4");
+    else
+        this.text.setText("Boss is using ability: 5");
     this.useAbility(ability);
   }
 
   useAbility(ability){
-    if(ability >= 0 && ability < 0.5)
+    if(ability >= 0 && ability < 0.20)
     {
       this.abilityOne();
     }
-    else if (ability >= 0.5 && ability < 0.75)
+    else if (ability >= 0.20 && ability < 0.40)
     {
       this.abilityTwo();
     }
-    else {
+    else if (ability >= 0.40 && ability < 0.60)
+    {
       this.abilityThree();
+    }
+    else if (ability >= 0.60 && ability < 0.80)
+    {
+      this.abilityFour();
+    }
+    else {
+      this.abilityFive();
     }
   }
 
@@ -928,6 +945,33 @@ class BossScene extends Phaser.Scene{
     console.log("using ability three");
     this.timer2.paused = false;
     this.ability3.setMute(false);
+  }
+
+  abilityFour() {
+    console.log("using ability four");
+    this.timer2.paused = true;
+    this.ability3.setMute(true);
+    for(let i = 0; i < 100; i++)
+    {
+      let x = boss.sprite.x - 150;
+      let y = boss.sprite.y - 150;
+      let bullet = this.bullets.create(x, y, 'fireball');
+      bullet.setVelocityX(Phaser.Math.Between(-1000,-200));
+      bullet.setVelocityY(Phaser.Math.Between(200,1000));
+    }
+  }
+
+  abilityFive() {
+    console.log("using ability five");
+    this.timer2.paused = true;
+    this.ability3.setMute(true);
+    var x = boss.sprite.x - 180;
+    var y = boss.sprite.y - 120;
+    for(let i = 0; i < 500; i++)
+    {
+      let bullet = this.bullets.create(x, y, 'beam');
+      bullet.setVelocityX(Phaser.Math.Between(-400,-2000));
+    }
   }
 
   getHit(p, bullet)
@@ -1026,24 +1070,28 @@ class BossScene extends Phaser.Scene{
 
   collide (barrier, pbullet)
   {
-    pbullet.disableBody(true,true);
+    //pbullet.disableBody(true,true);
+    pbullet.destroy();
   }
 
   collide (barrier, bullet)
   {
-    bullet.disableBody(true,true);
+    //bullet.disableBody(true,true);
+    bullet.destroy();
   }
 
   collideEnemy (enemy, pbullet)
   {
-    pbullet.disableBody(true,true);
+    //pbullet.disableBody(true,true);
+    pbullet.destroy();
     //enemy.disableBody(true, true);
     enemy.destroy();
     this.numEnemiesKilled += 1;
   }
   meleeEnemy (enemy, psword)
   {
-    psword.disableBody(true,true);
+    //psword.disableBody(true,true);
+    psword.destroy();
     enemy.destroy();
     this.numEnemiesKilled += 1;
     player.speed += 0.1;
@@ -1059,7 +1107,8 @@ class BossScene extends Phaser.Scene{
 
   collideBoss (b, pbullet)
   {
-    pbullet.disableBody(true,true);
+    //pbullet.disableBody(true,true);
+    pbullet.destroy();
     boss.healthPercent -= 1;
     boss.health -= 1;
     this.setValue(boss.healthBar, boss.healthPercent);

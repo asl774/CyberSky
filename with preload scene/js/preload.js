@@ -16,6 +16,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('dragon', 'assets/dragon.png');
       this.load.image('treasure', 'assets/treasure.png');
       this.load.image('barrier', 'assets/finishline.png');
+      this.load.image('bottombarrier', 'assets/bottombarrier.png');
 
       //this.load.image('ninja', 'assets/blockninja2.png');
       this.load.image('ninja', 'assets/blockninja.png');
@@ -52,6 +53,8 @@ class PreloadScene extends Phaser.Scene{
 
       this.load.image('bullet', 'assets/bullet.png');
       this.load.image('laser', 'assets/laser.png');
+      this.load.image('beam', 'assets/beam3.png');
+      this.load.image('fireball', 'assets/fireball4.png');
 
       this.load.image('piercePU', 'assets/piercepu.png');
       this.load.image('lightswordPU', 'assets/lightsword.png');
