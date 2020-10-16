@@ -33,7 +33,7 @@ class Tutorial extends Phaser.Scene{
       player.sheilded = false;
       player.multishot = false;
       player.pierce = false;
-      player.kaboom = false;
+      //player.kaboom = false;
       player.saber = false;
 
     tutorialboss.speed = 2;
@@ -100,7 +100,7 @@ class Tutorial extends Phaser.Scene{
     this.tutorialpowerup1 = this.physics.add.group();
     this.tutorialpowerup2 = this.physics.add.group();
     this.tutorialpowerup3 = this.physics.add.group();
-    this.tutorialpowerup4 = this.physics.add.group();
+    //this.tutorialpowerup4 = this.physics.add.group();
     //barrier
     this.barrier = this.physics.add.sprite(1400, 300, 'barrier');
     this.barrier2 = this.physics.add.sprite(1400 * 2, 300, 'barrier');
@@ -124,7 +124,7 @@ class Tutorial extends Phaser.Scene{
     this.physics.add.overlap(player.sprite, this.tutorialpowerup1, this.powerupOne, null, this);
     this.physics.add.overlap(player.sprite, this.tutorialpowerup2, this.powerupTwo, null, this);
     this.physics.add.overlap(player.sprite, this.tutorialpowerup3, this.powerupThree, null, this);
-    this.physics.add.overlap(player.sprite, this.tutorialpowerup4, this.powerupFour, null, this);
+    //this.physics.add.overlap(player.sprite, this.tutorialpowerup4, this.powerupFour, null, this);
     this.physics.add.overlap(tutorialboss.sprite, this.playerbullets, this.collideBoss, null, this); //trigger b/w playerbullets & boss
     this.physics.add.overlap(this.wave1, this.playersaber, this.meleeEnemy, null, this);//melee enemy
     this.physics.add.overlap(this.wave2, this.playersaber, this.meleeEnemy, null, this);
@@ -583,52 +583,52 @@ class Tutorial extends Phaser.Scene{
     let x = Phaser.Math.Between(2800 + 50, 4200 - 50);
     let y = -100;
     var randNum = Math.random();
-    if (randNum > 0 && randNum <= 0.25)
+    if (randNum > 0 && randNum <= 0.33)
       this.tutorialpowerup1.create(x, y, 'multishotPU');
       this.tutorialpowerup1.setVelocityY(100);
-    if (randNum > 0.25 && randNum <= 0.50)
+    if (randNum > 0.33 && randNum <= 0.67)
       this.tutorialpowerup2.create(x, y, 'piercePU');
       this.tutorialpowerup2.setVelocityY(100);
-     if (randNum > 0.50 && randNum <= 0.75)
+     if (randNum > 0.67 && randNum <= 1.0)
       this.tutorialpowerup3.create(x, y, 'lightswordPU');
       this.tutorialpowerup3.setVelocityY(100);
-     if (randNum > 0.75 && randNum <= 1.0)
-      this.tutorialpowerup4.create(x, y, 'kaboomPU');
-      this.tutorialpowerup4.setVelocityY(100);
+     //if (randNum > 0.75 && randNum <= 1.0)
+      //this.tutorialpowerup4.create(x, y, 'kaboomPU');
+      //this.tutorialpowerup4.setVelocityY(100);
   }
   createPowerup4() {
     let x = Phaser.Math.Between(4200 + 50, 5600 - 50);
     let y = -100;
     var randNum = Math.random();
-    if (randNum > 0 && randNum <= 0.25)
+    if (randNum > 0 && randNum <= 0.33)
       this.tutorialpowerup1.create(x, y, 'multishotPU');
       this.tutorialpowerup1.setVelocityY(100);
-    if (randNum > 0.25 && randNum <= 0.50)
+    if (randNum > 0.33 && randNum <= 0.67)
       this.tutorialpowerup2.create(x, y, 'piercePU');
       this.tutorialpowerup2.setVelocityY(100);
-     if (randNum > 0.50 && randNum <= 0.75)
+     if (randNum > 0.67 && randNum <= 1.0)
       this.tutorialpowerup3.create(x, y, 'lightswordPU');
       this.tutorialpowerup3.setVelocityY(100);
-     if (randNum > 0.75 && randNum <= 1.0)
-      this.tutorialpowerup4.create(x, y, 'kaboomPU');
-      this.tutorialpowerup4.setVelocityY(100);
+     //if (randNum > 0.75 && randNum <= 1.0)
+      //this.tutorialpowerup4.create(x, y, 'kaboomPU');
+      //this.tutorialpowerup4.setVelocityY(100);
   }
   createPowerup5() {
     let x = Phaser.Math.Between(5600 + 50, 6400 - 50);
     let y = -100;
     var randNum = Math.random();
-    if (randNum > 0 && randNum <= 0.25)
+    if (randNum > 0 && randNum <= 0.33)
       this.tutorialpowerup1.create(x, y, 'multishotPU');
       this.tutorialpowerup1.setVelocityY(100);
-    if (randNum > 0.25 && randNum <= 0.50)
+    if (randNum > 0.33 && randNum <= 0.67)
       this.tutorialpowerup2.create(x, y, 'piercePU');
       this.tutorialpowerup2.setVelocityY(100);
-     if (randNum > 0.50 && randNum <= 0.75)
+     if (randNum > 0.67 && randNum <= 1.0)
       this.tutorialpowerup3.create(x, y, 'lightswordPU');
       this.tutorialpowerup3.setVelocityY(100);
-     if (randNum > 0.75 && randNum <= 1.0)
-      this.tutorialpowerup4.create(x, y, 'kaboomPU');
-      this.tutorialpowerup4.setVelocityY(100);
+     //if (randNum > 0.75 && randNum <= 1.0)
+      //this.tutorialpowerup4.create(x, y, 'kaboomPU');
+      //this.tutorialpowerup4.setVelocityY(100);
 
   }
 
@@ -941,10 +941,10 @@ class Tutorial extends Phaser.Scene{
     powerup3.destroy();
     player.saber = true;
   }
-  powerupFour(p, powerup4){
-    powerup4.destroy();
-    player.kaboom = true;
-  }
+  //powerupFour(p, powerup4){
+   // powerup4.destroy();
+    //player.kaboom = true;
+  //}
   hitPlayer(p, b)
   {
     if(player.shielded)

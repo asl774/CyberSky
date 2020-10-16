@@ -33,7 +33,7 @@ class BossScene extends Phaser.Scene{
       player.sheilded = false;
       player.multishot = false;
       player.pierce = false;
-      player.kaboom = false;
+      //player.kaboom = false;
       player.saber = false;
 
     boss.speed = 2;
@@ -121,7 +121,7 @@ class BossScene extends Phaser.Scene{
     this.powerup1 = this.physics.add.group();
     this.powerup2 = this.physics.add.group();
     this.powerup3 = this.physics.add.group();
-    this.powerup4 = this.physics.add.group();
+    //this.powerup4 = this.physics.add.group();
     //this.powerup1 = this.physics.add.sprite(40, this.sys.game.config.height / 2, 'piercePU');
     //this.powerup2 = this.physics.add.sprite(40, this.sys.game.config.height / 3, 'lightswordPU');
     //this.powerup3 = this.physics.add.sprite(40, this.sys.game.config.height / 5, 'multishotPU');
@@ -151,7 +151,7 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(player.sprite, this.powerup1, this.powerupOne, null, this);
     this.physics.add.overlap(player.sprite, this.powerup2, this.powerupTwo, null, this);
     this.physics.add.overlap(player.sprite, this.powerup3, this.powerupThree, null, this);
-    this.physics.add.overlap(player.sprite, this.powerup4, this.powerupFour, null, this);
+    //this.physics.add.overlap(player.sprite, this.powerup4, this.powerupFour, null, this);
     this.physics.add.overlap(boss.sprite, this.playerbullets, this.collideBoss, null, this); //trigger b/w playerbullets & boss
     this.physics.add.overlap(this.wave1, this.playersaber, this.meleeEnemy, null, this);//melee enemy
     this.physics.add.overlap(this.wave2, this.playersaber, this.meleeEnemy, null, this);
@@ -625,86 +625,86 @@ class BossScene extends Phaser.Scene{
     let x = Phaser.Math.Between(0 + 50, 1400 - 50);
     let y = -100;
     var randNum = Math.random();
-    if (randNum > 0 && randNum <= 0.25)
+    if (randNum > 0 && randNum <= 0.33)
       this.powerup1.create(x, y, 'multishotPU');
       this.powerup1.setVelocityY(100);
-    if (randNum > 0.25 && randNum <= 0.50)
+    if (randNum > 0.33 && randNum <= 0.67)
       this.powerup2.create(x, y, 'piercePU');
       this.powerup2.setVelocityY(100);
-     if (randNum > 0.50 && randNum <= 0.75)
+     if (randNum > 0.67 && randNum <= 1.0)
       this.powerup3.create(x, y, 'lightswordPU');
       this.powerup3.setVelocityY(100);
-     if (randNum > 0.75 && randNum <= 1.0)
-      this.powerup4.create(x, y, 'kaboomPU');
-      this.powerup4.setVelocityY(100);
+     //if (randNum > 0.75 && randNum <= 1.0)
+      //this.powerup4.create(x, y, 'kaboomPU');
+      //this.powerup4.setVelocityY(100);
   }
   createPowerup2() {
     let x = Phaser.Math.Between(1400 + 50, 2800 - 50);
     let y = -100;
     var randNum = Math.random();
-    if (randNum > 0 && randNum <= 0.25)
+    if (randNum > 0 && randNum <= 0.33)
       this.powerup1.create(x, y, 'multishotPU');
       this.powerup1.setVelocityY(100);
-    if (randNum > 0.25 && randNum <= 0.50)
+    if (randNum > 0.33 && randNum <= 0.67)
       this.powerup2.create(x, y, 'piercePU');
       this.powerup2.setVelocityY(100);
-     if (randNum > 0.50 && randNum <= 0.75)
+     if (randNum > 0.67 && randNum <= 1.0)
       this.powerup3.create(x, y, 'lightswordPU');
       this.powerup3.setVelocityY(100);
-     if (randNum > 0.75 && randNum <= 1.0)
-      this.powerup4.create(x, y, 'kaboomPU');
-      this.powerup4.setVelocityY(100);
+     //if (randNum > 0.75 && randNum <= 1.0)
+      //this.powerup4.create(x, y, 'kaboomPU');
+      //this.powerup4.setVelocityY(100);
     }
   createPowerup3() {
     let x = Phaser.Math.Between(2800 + 50, 4200 - 50);
     let y = -100;
     var randNum = Math.random();
-    if (randNum > 0 && randNum <= 0.25)
+    if (randNum > 0 && randNum <= 0.33)
       this.powerup1.create(x, y, 'multishotPU');
       this.powerup1.setVelocityY(100);
-    if (randNum > 0.25 && randNum <= 0.50)
+    if (randNum > 0.33 && randNum <= 0.67)
       this.powerup2.create(x, y, 'piercePU');
       this.powerup2.setVelocityY(100);
-     if (randNum > 0.50 && randNum <= 0.75)
+     if (randNum > 0.67 && randNum <= 1.0)
       this.powerup3.create(x, y, 'lightswordPU');
       this.powerup3.setVelocityY(100);
-     if (randNum > 0.75 && randNum <= 1.0)
-      this.powerup4.create(x, y, 'kaboomPU');
-      this.powerup4.setVelocityY(100);
+     //if (randNum > 0.75 && randNum <= 1.0)
+      //this.powerup4.create(x, y, 'kaboomPU');
+      //this.powerup4.setVelocityY(100);
   }
   createPowerup4() {
     let x = Phaser.Math.Between(4200 + 50, 5600 - 50);
     let y = -100;
     var randNum = Math.random();
-    if (randNum > 0 && randNum <= 0.25)
+    if (randNum > 0 && randNum <= 0.33)
       this.powerup1.create(x, y, 'multishotPU');
       this.powerup1.setVelocityY(100);
-    if (randNum > 0.25 && randNum <= 0.50)
+    if (randNum > 0.33 && randNum <= 0.67)
       this.powerup2.create(x, y, 'piercePU');
       this.powerup2.setVelocityY(100);
-     if (randNum > 0.50 && randNum <= 0.75)
+     if (randNum > 0.67 && randNum <= 1.0)
       this.powerup3.create(x, y, 'lightswordPU');
       this.powerup3.setVelocityY(100);
-     if (randNum > 0.75 && randNum <= 1.0)
-      this.powerup4.create(x, y, 'kaboomPU');
-      this.powerup4.setVelocityY(100);
+     //if (randNum > 0.75 && randNum <= 1.0)
+      //this.powerup4.create(x, y, 'kaboomPU');
+      //this.powerup4.setVelocityY(100);
   }
   createPowerup5() {
     let x = Phaser.Math.Between(5600 + 50, 6400 - 50);
     let y = -100;
     var randNum = Math.random();
-    if (randNum > 0 && randNum <= 0.25)
+    if (randNum > 0 && randNum <= 0.33)
       this.powerup1.create(x, y, 'multishotPU');
       this.powerup1.setVelocityY(100);
-    if (randNum > 0.25 && randNum <= 0.50)
+    if (randNum > 0.33 && randNum <= 0.67)
       this.powerup2.create(x, y, 'piercePU');
       this.powerup2.setVelocityY(100);
-     if (randNum > 0.50 && randNum <= 0.75)
+     if (randNum > 0.67 && randNum <= 1.0)
       this.powerup3.create(x, y, 'lightswordPU');
       this.powerup3.setVelocityY(100);
-     if (randNum > 0.75 && randNum <= 1.0)
-      this.powerup4.create(x, y, 'kaboomPU');
-      this.powerup4.setVelocityY(100);
+     //if (randNum > 0.75 && randNum <= 1.0)
+      //this.powerup4.create(x, y, 'kaboomPU');
+      //this.powerup4.setVelocityY(100);
 
   }
 
@@ -1067,10 +1067,10 @@ class BossScene extends Phaser.Scene{
     powerup3.destroy();
     player.saber = true;
   }
-  powerupFour(p, powerup4){
-    powerup4.destroy();
-    player.kaboom = true;
-  }
+  //powerupFour(p, powerup4){
+    //powerup4.destroy();
+    //player.kaboom = true;
+  //}
   hitPlayer(p, b)
   {
     if(player.shielded)

@@ -21,7 +21,7 @@ var tutorialplayer = {
   sheilded: false,
   multishot: false,
   pierce: false,
-  kaboom: false,
+  //kaboom: false,
   saber: false,
 
   check: function()
@@ -40,7 +40,7 @@ var player = {
   sheilded: false,
   multishot: false,
   pierce: false,
-  kaboom: false,
+  //kaboom: false,
   saber: false,
 
   check: function()
