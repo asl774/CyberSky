@@ -54,7 +54,7 @@ class Tutorial extends Phaser.Scene{
 
     //audio
     this.theme = this.sound.add('theme', {volume: 0.3});
-    this.tutorialtheme = this.sound.add('tutorialtheme', {volume: 0.2});
+    this.tutorialtheme = this.sound.add('tutorialtheme', {volume: 0.5});
     this.tutorialtheme.setLoop(true);
     this.ability1 = this.sound.add('ability1', {volume: 0.5});
     this.ability2 = this.sound.add('ability2', {volume: 0.5});

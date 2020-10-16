@@ -80,7 +80,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.audio('heal', ['healingSound.wav']);
       this.load.audio('shield', ['shieldSound.wav']);
       this.load.audio('theme', ['actionthemeloop.mp3']);
-      this.load.audio('tutorialtheme', ['tutorialmusic.wav']);
+      this.load.audio('tutorialtheme', ['ninjabeats.ogg']);
       this.load.audio('beamsound', [ 'beam.mp3' ]);
       this.load.audio('firebreathsound', [ 'fire breath.mp3' ]);
       this.load.audio('firebreathsound2', [ 'fire breath2.ogg' ]);
