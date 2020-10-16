@@ -21,9 +21,11 @@ var tutorialplayer = {
   sheilded: false,
   multishot: false,
   pierce: false,
-  //kaboom: false,
   saber: false,
-
+  canMultishotAgain: false,
+  canPierceAgain: false,
+  canSaberAgain: false,
+  //kaboom: false,
   check: function()
   {
     console.log("this is the function inside the tutorialplayer");
@@ -40,9 +42,11 @@ var player = {
   sheilded: false,
   multishot: false,
   pierce: false,
-  //kaboom: false,
   saber: false,
-
+  canMultishotAgain: false,
+  canPierceAgain: false,
+  canSaberAgain: false,
+  //kaboom: false,
   check: function()
   {
     console.log("this is the function inside the player");

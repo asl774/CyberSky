@@ -214,6 +214,9 @@ class BossScene extends Phaser.Scene{
     this.poweruptimer3 = this.time.addEvent({delay : 5000, callback: this.createPowerup3, callbackScope: this, loop: true, paused: true });
     this.poweruptimer4 = this.time.addEvent({delay : 5000, callback: this.createPowerup4, callbackScope: this, loop: true, paused: true });
     this.poweruptimer5 = this.time.addEvent({delay : 5000, callback: this.createPowerup5, callbackScope: this, loop: true, paused: true });
+    this.abilityTimer1 = this.time.addEvent({delay : 1000, callback: this.pauseAbilityTimer1, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer2 = this.time.addEvent({delay : 1000, callback: this.pauseAbilityTimer2, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer3 = this.time.addEvent({delay : 1000, callback: this.pauseAbilityTimer3, callbackScope: this, loop: true, paused: false });
     //debugging / things to remove later
     this.timerText = this.add.text(6000, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.text = this.add.text(6000,150,"");
@@ -431,8 +434,10 @@ class BossScene extends Phaser.Scene{
       pbullet.setVelocityX(800);
     }
     //press z key to throw 3 stars
-    else if (Phaser.Input.Keyboard.JustDown(this.zkey) && player.multishot == true)
+    else if (Phaser.Input.Keyboard.JustDown(this.zkey) && player.multishot == true && player.canMultishotAgain)
     {
+      this.abilityTimer1.isPaused = false;
+      player.canMultishotAgain = false;
       this.throwtriplestar.play();
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
@@ -446,8 +451,10 @@ class BossScene extends Phaser.Scene{
       pbullet3.setVelocityY(100);
     }
     //press x key to throw big piercing star
-    else if (Phaser.Input.Keyboard.JustDown(this.xkey) && player.pierce == true)
+    else if (Phaser.Input.Keyboard.JustDown(this.xkey) && player.pierce == true && player.canPierceAgain)
     {
+      this.abilityTimer2.isPaused = false;
+      player.canPierceAgain = false;
       this.throwbigstar.play();
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
@@ -455,8 +462,10 @@ class BossScene extends Phaser.Scene{
       pbullet.setVelocityX(800);
     }
     //melee
-    else if ((Phaser.Input.Keyboard.JustDown(this.akey) && player.saber == true))
+    else if (Phaser.Input.Keyboard.JustDown(this.akey) && player.saber == true && player.canSaberAgain)
     {
+      this.abilityTimer3.isPaused = false;
+      player.canSaberAgain = false;
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
       var randNum = Math.random();
@@ -1073,6 +1082,21 @@ class BossScene extends Phaser.Scene{
     //powerup4.destroy();
     //player.kaboom = true;
   //}
+
+  pauseAbilityTimer1(){
+    this.abilityTimer1.isPaused = true;
+    player.canMultishotAgain = true;
+  }
+
+  pauseAbilityTimer2(){
+    this.abilityTimer2.isPaused = true;
+    player.canPierceAgain = true;
+  }
+  pauseAbilityTimer3(){
+    this.abilityTimer3.isPaused = true;
+    player.canSaberAgain = true;
+  }
+
   hitPlayer(p, b)
   {
     if(player.shielded)
