@@ -10,7 +10,7 @@ var config = {
         debug: false
       }
   },
-  scene: [PreloadScene, MainMenu, Tutorial, BossScene]
+  scene: [PreloadScene, MainMenu, Tutorial, BossScene, WinScene, LoseScene, Credits]
 }
 var tutorialplayer = {
   speed: 10,

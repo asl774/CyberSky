@@ -266,7 +266,7 @@ class BossScene extends Phaser.Scene{
     //check if player is alive
 
     if (!player.isAlive) {
-      this.scene.start("mainMenu");
+      this.scene.start("loseScene");
     }
 
     // check for active input
@@ -1183,7 +1183,7 @@ class BossScene extends Phaser.Scene{
   gameOver()
   {
     this.theme.stop();
-    this.scene.start("mainMenu");
+    this.scene.start("loseScene");
     // flag to set player is dead
     player.isAlive = false;
     // shake the camera
@@ -1201,7 +1201,7 @@ class BossScene extends Phaser.Scene{
   moveToMainMenu()
   {
     this.theme.stop();
-    this.scene.start('mainMenu');
+    this.scene.start('winScene');
   }
 
 }

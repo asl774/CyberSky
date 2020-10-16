@@ -221,7 +221,7 @@ class Tutorial extends Phaser.Scene{
 
     if (!player.isAlive) {
       //return;
-      this.scene.start("mainMenu");
+      this.scene.start("loseScene");
     }
     // check for active input
     if (this.cursors.right.isDown) {
@@ -1052,7 +1052,7 @@ class Tutorial extends Phaser.Scene{
   gameOver()
   {
     this.tutorialtheme.stop();
-    this.scene.start('mainMenu');
+    this.scene.start('loseScene');
     //this.theme.stop();
     // flag to set player is dead
     player.isAlive = false;
