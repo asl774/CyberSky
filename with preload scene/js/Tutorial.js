@@ -199,7 +199,7 @@ class Tutorial extends Phaser.Scene{
     this.stage3Text = this.add.text(2900, 70, "Now, let's learn about powerups.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage3Text = this.add.text(2900, 90, "Powerups will occasionally fall from the top of the screen.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage3Text = this.add.text(2900, 110, "Collecting them will grant you extra abilities.", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage3Text = this.add.text(2900, 130, "Try pressing the Z or X key once you have collected a powerup.", { fontSize: '20px', fill: '#00FF00', align: "center" });
+    this.stage3Text = this.add.text(2900, 130, "Try pressing the Z, X, or A key once you have collected a powerup.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     
     this.stage4Text = this.add.text(4300, 50, "Now let's put everything you've learned together.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage4Text = this.add.text(4300, 70, "Here are some tougher enemies to deal with.", { fontSize: '20px', fill: '#00FF00', align: "center" });
@@ -409,7 +409,7 @@ class Tutorial extends Phaser.Scene{
       pbullet.setVelocityX(800);
     }
     //melee
-    else if ((Phaser.Input.Keyboard.JustDown(this.lkey) && player.saber == true))
+    else if ((Phaser.Input.Keyboard.JustDown(this.akey) && player.saber == true))
     {
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
@@ -435,7 +435,7 @@ class Tutorial extends Phaser.Scene{
         psword.setVelocityX(0);
       }
       //let psword = this.playersaber.create(playerx, playery, 'silversword');
-        if ((Phaser.Input.Keyboard.JustUp(this.lkey))){
+        if ((Phaser.Input.Keyboard.JustUp(this.akey))){
           psword.disableBody(true,true);
         }
       }
@@ -458,6 +458,7 @@ class Tutorial extends Phaser.Scene{
         player.sprite.y += 100;
       }
     }
+    /*
     //press a to throw extra star1
     else if (Phaser.Input.Keyboard.JustDown(this.akey))
     {
@@ -467,6 +468,7 @@ class Tutorial extends Phaser.Scene{
       let pbullet = this.playerbullets.create(playerx, playery, 'star1');
       pbullet.setVelocityX(200);
     }
+    */
     //press s to throw extra star2
     else if (Phaser.Input.Keyboard.JustDown(this.skey))
     {

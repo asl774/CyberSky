@@ -455,7 +455,7 @@ class BossScene extends Phaser.Scene{
       pbullet.setVelocityX(800);
     }
     //melee
-    else if ((Phaser.Input.Keyboard.JustDown(this.lkey) && player.saber == true))
+    else if ((Phaser.Input.Keyboard.JustDown(this.akey) && player.saber == true))
     {
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
@@ -481,7 +481,7 @@ class BossScene extends Phaser.Scene{
         psword.setVelocityX(0);
       }
       //let psword = this.playersaber.create(playerx, playery, 'silversword');
-        if ((Phaser.Input.Keyboard.JustUp(this.lkey))){
+        if ((Phaser.Input.Keyboard.JustUp(this.akey))){
           psword.disableBody(true,true);
         }
       }
@@ -504,6 +504,7 @@ class BossScene extends Phaser.Scene{
         player.sprite.y += 100;
       }
     }
+    /*
     //press a to throw extra star1
     else if (Phaser.Input.Keyboard.JustDown(this.akey))
     {
@@ -513,6 +514,7 @@ class BossScene extends Phaser.Scene{
       let pbullet = this.playerbullets.create(playerx, playery, 'star1');
       pbullet.setVelocityX(200);
     }
+    */
     //press s to throw extra star2
     else if (Phaser.Input.Keyboard.JustDown(this.skey))
     {
