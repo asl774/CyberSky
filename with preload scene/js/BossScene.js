@@ -24,11 +24,34 @@ class BossScene extends Phaser.Scene{
     this.ability3;
     this.playerbullets;
     this.playersaber;
+
+      player.speed = 10;
+      player.health = 100;
+      player.isAlive = true;
+      player.healthPercent = 100;
+      player.healthBar = 0;
+      player.sheilded = false;
+      player.multishot = false;
+      player.pierce = false;
+      player.kaboom = false;
+      player.saber = false;
+
+    boss.speed = 2;
+    boss.health = 100;
+    boss.minX = 6700;
+    boss.isAlive = true;
+    boss.healthPercent = 100;
+    boss.healthBar = 0;
   }
 
 
   create()
   {
+    this.input.once('pointerup', function (event) {
+    this.theme.stop();
+    this.scene.start('mainMenu');
+    }, this);
+
     //audio
     this.theme = this.sound.add('theme', {volume: 0.3});
     this.theme.setLoop(true);
@@ -44,6 +67,8 @@ class BossScene extends Phaser.Scene{
     this.shieldUp = this.sound.add('shield');
     this.beamsound = this.sound.add('beamsound');
     this.firebreathsound = this.sound.add('firebreathsound');
+    this.firebreathsound2 = this.sound.add('firebreathsound2');
+    this.dinodie = this.sound.add('dinodie');
     this.theme.play();
     // background
     this.cameras.main.setBounds(0, 0, 1400 - 40, 560);
@@ -120,7 +145,7 @@ class BossScene extends Phaser.Scene{
     //colliders / triggers
     this.physics.add.overlap(player.sprite, this.bullets, this.getHit, null, this); //trigger b/w player & bullets
     this.physics.add.overlap(player.sprite, this.laser, this.dot, null, this); //trigger b/w player & laser
-    this.physics.add.overlap(player.sprite, this.treasure, this.gameOver, null, this); //trigger b/w player & treasure
+    this.physics.add.overlap(player.sprite, this.treasure, this.moveToMainMenu, null, this); //trigger b/w player & treasure
     this.physics.add.overlap(player.sprite, boss.sprite, this.hitPlayer, null, this); //trigger b/w player & boss
     //this.physics.add.overlap(player.sprite, this.powerups, this.powerup, null, this); //trigger b/w player & powerup ////////////////////////////////////////////////////
     this.physics.add.overlap(player.sprite, this.powerup1, this.powerupOne, null, this);
@@ -236,9 +261,11 @@ class BossScene extends Phaser.Scene{
     this.poweruptimerText5.setText("Next Powerup Progress: " + this.poweruptimer5.getProgress().toString().substr(0,4));
     this.bossHPText.setText("Boss HP: " + boss.healthPercent);
     //check if player is alive
+
     if (!player.isAlive) {
-      return;
+      this.scene.start("mainMenu");
     }
+
     // check for active input
     if (this.cursors.right.isDown) {
       // player walks
@@ -377,6 +404,7 @@ class BossScene extends Phaser.Scene{
       this.barrier5.disableBody(true,true);
     }
     if (boss.health <= 0) {
+      //this.dinodie.play();
       this.ability3.setMute(true);
       boss.isAlive = false;
       boss.sprite.disableBody(true, true);
@@ -950,7 +978,7 @@ class BossScene extends Phaser.Scene{
   }
 
   abilityFour() {
-    this.firebreathsound.play();
+    this.firebreathsound2.play();
     console.log("using ability four");
     this.timer2.paused = true;
     this.ability3.setMute(true);
@@ -1129,6 +1157,7 @@ class BossScene extends Phaser.Scene{
   gameOver()
   {
     this.theme.stop();
+    this.scene.start("mainMenu");
     // flag to set player is dead
     player.isAlive = false;
     // shake the camera
@@ -1141,6 +1170,12 @@ class BossScene extends Phaser.Scene{
     this.time.delayedCall(500, function() {
       this.scene.restart();
     }, [], this);
+  }
+
+  moveToMainMenu()
+  {
+    this.theme.stop();
+    this.scene.start('mainMenu');
   }
 
 }

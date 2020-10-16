@@ -10,8 +10,27 @@ var config = {
         debug: false
       }
   },
-  scene: [PreloadScene,BossScene]
+  scene: [PreloadScene, MainMenu, Tutorial, BossScene]
 }
+var tutorialplayer = {
+  speed: 10,
+  health: 100,
+  isAlive: true,
+  healthPercent: 100,
+  healthBar: 0,
+  sheilded: false,
+  multishot: false,
+  pierce: false,
+  kaboom: false,
+  saber: false,
+
+  check: function()
+  {
+    console.log("this is the function inside the tutorialplayer");
+    console.log(tutorialplayer);
+  },
+}
+
 var player = {
   speed: 10,
   health: 100,
@@ -29,6 +48,19 @@ var player = {
     console.log("this is the function inside the player");
     console.log(player);
   },
+}
+
+var tutorialboss = {
+  speed: 2,
+  health: 100,
+  minX: 6700,
+  isAlive: true,
+  healthPercent: 100,
+  healthBar: 0,
+    check: function() {
+    console.log("this is the function inside the tutorialboss");
+    console.log(tutorialboss);
+  }
 }
 
 var boss = {
