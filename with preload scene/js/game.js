@@ -80,6 +80,7 @@ var boss = {
     console.log(boss);
   }
 }
+
 var difficulty = 1;
 
 var game = new Phaser.Game(config);

@@ -145,7 +145,7 @@ class BossScene extends Phaser.Scene{
     //colliders / triggers
     this.physics.add.overlap(player.sprite, this.bullets, this.getHit, null, this); //trigger b/w player & bullets
     this.physics.add.overlap(player.sprite, this.laser, this.dot, null, this); //trigger b/w player & laser
-    this.physics.add.overlap(player.sprite, this.treasure, this.moveToMainMenu, null, this); //trigger b/w player & treasure
+    this.physics.add.overlap(player.sprite, this.treasure, this.endLevel, null, this); //trigger b/w player & treasure
     this.physics.add.overlap(player.sprite, boss.sprite, this.hitPlayer, null, this); //trigger b/w player & boss
     //this.physics.add.overlap(player.sprite, this.powerups, this.powerup, null, this); //trigger b/w player & powerup ////////////////////////////////////////////////////
     this.physics.add.overlap(player.sprite, this.powerup1, this.powerupOne, null, this);
@@ -268,7 +268,6 @@ class BossScene extends Phaser.Scene{
     if (!player.isAlive) {
       this.scene.start("loseScene");
     }
-
     // check for active input
     if (this.cursors.right.isDown) {
       // player walks
@@ -283,8 +282,8 @@ class BossScene extends Phaser.Scene{
     }
     // locked camera conditions
     // can move to wave 2
-    if (this.numEnemiesKilled >= 50 && this.numEnemiesKilled < 100){
-      //this.timer3.paused = true;
+    if (this.numEnemiesKilled >= 10 * difficulty && this.numEnemiesKilled < 20 * difficulty){
+      this.timer3.paused = true;
       this.timer7.paused = true;
       this.poweruptimer1.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
@@ -292,41 +291,41 @@ class BossScene extends Phaser.Scene{
       //this.barrier.disableBody(true,true);
     }
     // can move to wave 3
-    if (this.numEnemiesKilled >= 100 && this.numEnemiesKilled < 150){
-      //this.timer4.paused = true;
+    if (this.numEnemiesKilled >= 20 * difficulty && this.numEnemiesKilled < 30 * difficulty){
+      this.timer4.paused = true;
       this.timer8.paused = true;
       this.poweruptimer2.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 3 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 3 - 40, 560);
     }
     // can move to wave 4
-    if (this.numEnemiesKilled >= 150 && this.numEnemiesKilled < 200){
-      //this.timer5.paused = true;
+    if (this.numEnemiesKilled >= 30 * difficulty && this.numEnemiesKilled < 40 * difficulty){
+      this.timer5.paused = true;
       this.timer9.paused = true;
       this.poweruptimer3.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 4 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 4 - 40, 560);
     }
     // can move to boss
-    if (this.numEnemiesKilled >= 200 && this.numEnemiesKilled < 205){
-      //this.timer6.paused = true;
+    if (this.numEnemiesKilled >= 40 * difficulty && this.numEnemiesKilled < (40 * difficulty) + 5){
+      this.timer6.paused = true;
       this.timer10.paused = true;
       this.poweruptimer4.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
       this.physics.world.setBounds(0, 30, 1400 * 4 + 1000, 560);
     }
     // make waves attack only when player crosses line
-    if (player.sprite.x >= 1400 && this.numEnemiesKilled < 100){
+    if (player.sprite.x >= 1400 && this.numEnemiesKilled < 20 * difficulty){
       this.timer4.paused = false;
       this.timer8.paused = false;
       this.poweruptimer2.paused = false;
     }
-    if (player.sprite.x >= 2800 && this.numEnemiesKilled < 150){
+    if (player.sprite.x >= 2800 && this.numEnemiesKilled < 30 * difficulty){
       this.timer5.paused = false;
       this.timer9.paused = false;
       this.poweruptimer3.paused = false;
     }
-    if (player.sprite.x >= 4200 && this.numEnemiesKilled < 200){
+    if (player.sprite.x >= 4200 && this.numEnemiesKilled < 40 * difficulty){
       this.timer6.paused = false;
       this.timer10.paused = false;
       this.poweruptimer4.paused = false;
@@ -1198,10 +1197,15 @@ class BossScene extends Phaser.Scene{
     }, [], this);
   }
 
-  moveToMainMenu()
+  endLevel()
   {
-    this.theme.stop();
-    this.scene.start('winScene');
+    difficulty += 1; //increase difficulty
+    if(difficulty >= 6) //win condition
+    {
+      this.scene.start("winScene");
+    } else {
+      this.scene.restart(); //start level over
+    }
   }
 
 }

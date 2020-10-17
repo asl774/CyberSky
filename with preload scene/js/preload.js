@@ -85,6 +85,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.audio('firebreathsound', [ 'fire breath.mp3' ]);
       this.load.audio('firebreathsound2', [ 'fire breath2.ogg' ]);
       this.load.audio('dinodie', [ 'dinodie.mp3' ]);
+      this.load.audio('win', ['totalWin.wav']);
     }
     create(){
       this.add.text(window.innerWidth/2, window.innerHeight/2, "Loading Game :)", { font: '20px Courier', fill: '#00ffff' });
