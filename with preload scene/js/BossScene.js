@@ -8,6 +8,7 @@ class BossScene extends Phaser.Scene{
     this.enemiesWave1;
     this.enemiesWave2;
     this.enemiesWave3;
+    this.numEnemiesCreated = 0;
     this.numEnemiesKilled = 0;
     this.enemySpeed = 2;
     this.enemyMaxY = 600; //280 490
@@ -69,7 +70,10 @@ class BossScene extends Phaser.Scene{
     this.firebreathsound = this.sound.add('firebreathsound');
     this.firebreathsound2 = this.sound.add('firebreathsound2');
     this.dinodie = this.sound.add('dinodie');
-    this.theme.play();
+
+    if (difficulty == 1)
+        this.theme.play();
+
     // background
     this.cameras.main.setBounds(0, 0, 1400 - 40, 560);
     this.physics.world.setBounds(0, 30, 1400 - 40, 560);
@@ -208,7 +212,7 @@ class BossScene extends Phaser.Scene{
     this.timer7 = this.time.addEvent({delay : 1500, callback: this.createWave1, callbackScope: this, loop: true, paused: false });
     this.timer8 = this.time.addEvent({delay : 1250, callback: this.createWave2, callbackScope: this, loop: true, paused: true });
     this.timer9 = this.time.addEvent({delay : 1000, callback: this.createWave3, callbackScope: this, loop: true, paused: true });
-    this.timer10 = this.time.addEvent({delay : 750, callback: this.createWave4, callbackScope: this, loop: true, paused: true });
+    this.timer10 = this.time.addEvent({delay : 750, callback: this.createWave4, callbackScope: this, loop: true, paused: true })
     this.poweruptimer1 = this.time.addEvent({delay : 5000, callback: this.createPowerup1, callbackScope: this, loop: true, paused: false });
     this.poweruptimer2 = this.time.addEvent({delay : 5000, callback: this.createPowerup2, callbackScope: this, loop: true, paused: true });
     this.poweruptimer3 = this.time.addEvent({delay : 5000, callback: this.createPowerup3, callbackScope: this, loop: true, paused: true });
@@ -237,6 +241,7 @@ class BossScene extends Phaser.Scene{
     this.poweruptimerText3 = this.add.text(2900, 250, "next powerup progress: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.poweruptimerText4 = this.add.text(4300, 250, "next powerup progress: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.poweruptimerText5 = this.add.text(5700, 250, "next powerup progress: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.enemiesCreatedText1 = this.add.text(100, 300, "enemies created: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.bossHPText = this.add.text(5610, 10, "Boss HP: " + boss.healthPercent, { fontSize: '20px', fill: '#000000', align: "center" });
   }
 
@@ -262,6 +267,7 @@ class BossScene extends Phaser.Scene{
     this.poweruptimerText3.setText("Next Powerup Progress: " + this.poweruptimer3.getProgress().toString().substr(0,4));
     this.poweruptimerText4.setText("Next Powerup Progress: " + this.poweruptimer4.getProgress().toString().substr(0,4));
     this.poweruptimerText5.setText("Next Powerup Progress: " + this.poweruptimer5.getProgress().toString().substr(0,4));
+    this.enemiesCreatedText1.setText("Enemies Created: " + this.numEnemiesCreated);
     this.bossHPText.setText("Boss HP: " + boss.healthPercent);
     //check if player is alive
 
@@ -282,50 +288,59 @@ class BossScene extends Phaser.Scene{
     }
     // locked camera conditions
     // can move to wave 2
-    if (this.numEnemiesKilled >= 10 * difficulty && this.numEnemiesKilled < 20 * difficulty){
-      this.timer3.paused = true;
+    if (this.numEnemiesCreated >= 10 * difficulty && this.numEnemiesCreated < 20 * difficulty){
       this.timer7.paused = true;
+    }
+    // can move to wave 3
+    if (this.numEnemiesCreated >= 20 * difficulty && this.numEnemiesCreated < 30 * difficulty){
+      this.timer8.paused = true;
+    }
+    // can move to wave 4
+    if (this.numEnemiesCreated >= 30 * difficulty && this.numEnemiesCreated < 40 * difficulty){
+      this.timer9.paused = true;
+    }
+    // can move to boss
+    if (this.numEnemiesCreated >= 40 * difficulty && this.numEnemiesCreated < 50 * difficulty){
+      this.timer10.paused = true;
+    }
+
+
+    if (this.numEnemiesKilled >= 10 * difficulty && this.numEnemiesKilled < 20 * difficulty){
       this.poweruptimer1.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 2 - 40, 560);
-      //this.barrier.disableBody(true,true);
     }
     // can move to wave 3
     if (this.numEnemiesKilled >= 20 * difficulty && this.numEnemiesKilled < 30 * difficulty){
-      this.timer4.paused = true;
-      this.timer8.paused = true;
       this.poweruptimer2.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 3 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 3 - 40, 560);
     }
     // can move to wave 4
     if (this.numEnemiesKilled >= 30 * difficulty && this.numEnemiesKilled < 40 * difficulty){
-      this.timer5.paused = true;
-      this.timer9.paused = true;
       this.poweruptimer3.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 4 - 40, 560);
       this.physics.world.setBounds(0, 30, 1400 * 4 - 40, 560);
     }
     // can move to boss
-    if (this.numEnemiesKilled >= 40 * difficulty && this.numEnemiesKilled < (40 * difficulty) + 5){
-      this.timer6.paused = true;
-      this.timer10.paused = true;
+    if (this.numEnemiesKilled >= 39 * difficulty && this.numEnemiesKilled < 40 * difficulty){
       this.poweruptimer4.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
       this.physics.world.setBounds(0, 30, 1400 * 4 + 1000, 560);
     }
+
     // make waves attack only when player crosses line
-    if (player.sprite.x >= 1400 && this.numEnemiesKilled < 20 * difficulty){
+    if (player.sprite.x >= 1400 && this.numEnemiesCreated < 20 * difficulty){
       this.timer4.paused = false;
       this.timer8.paused = false;
       this.poweruptimer2.paused = false;
     }
-    if (player.sprite.x >= 2800 && this.numEnemiesKilled < 30 * difficulty){
+    if (player.sprite.x >= 2800 && this.numEnemiesCreated < 30 * difficulty){
       this.timer5.paused = false;
       this.timer9.paused = false;
       this.poweruptimer3.paused = false;
     }
-    if (player.sprite.x >= 4200 && this.numEnemiesKilled < 40 * difficulty){
+    if (player.sprite.x >= 4200 && this.numEnemiesCreated < 40 * difficulty){
       this.timer6.paused = false;
       this.timer10.paused = false;
       this.poweruptimer4.paused = false;
@@ -751,6 +766,7 @@ class BossScene extends Phaser.Scene{
       else if (randNum > 0.91 && randNum <= 1.0)
           this.wave1.create(1400, j, 'enemy14');
     }
+    this.numEnemiesCreated += 5;
   }
 
   createWave2() {
@@ -786,6 +802,7 @@ class BossScene extends Phaser.Scene{
       else if (randNum > 0.91 && randNum <= 1.0)
           this.wave2.create(2800, j, 'enemy14');
     }
+    this.numEnemiesCreated += 5;
   }
 
   createWave3() {
@@ -821,6 +838,7 @@ class BossScene extends Phaser.Scene{
       else if (randNum > 0.91 && randNum <= 1.0)
           this.wave3.create(4200, j, 'enemy14');
     }
+    this.numEnemiesCreated += 5;
   }
 
   createWave4() {
@@ -856,6 +874,7 @@ class BossScene extends Phaser.Scene{
       else if (randNum > 0.91 && randNum <= 1.0)
           this.wave4.create(5600, j, 'enemy14');
     }
+    this.numEnemiesCreated += 5;
   }
 
   wave1Attack()
