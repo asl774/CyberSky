@@ -1221,6 +1221,7 @@ class BossScene extends Phaser.Scene{
     difficulty += 1; //increase difficulty
     if(difficulty >= 6) //win condition
     {
+      this.theme.stop();
       this.scene.start("winScene");
     } else {
       this.scene.restart(); //start level over
