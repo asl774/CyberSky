@@ -354,6 +354,9 @@ class BossScene extends Phaser.Scene{
         enemy.y = Phaser.Math.Between(100, 500);
       }
     }
+
+
+    
     // make player stay in boss area
     if (player.sprite.x > 5600){
       this.cameras.main.setBounds(5600, 0, 1300, 560);
