@@ -139,16 +139,22 @@ class BossScene extends Phaser.Scene{
     this.barrier4 = this.physics.add.sprite(1400 * 4, 300, 'barrier');
     this.barrier5 = this.physics.add.sprite(6470, 300, 'barrier');
     this.barrier6 = this.physics.add.sprite(6300, 600, 'bottombarrier');
+    this.barrier7 = this.physics.add.sprite(6300, 0, 'bottombarrier');
     // goal / end of level
     this.treasure = this.physics.add.sprite(7000 - 70, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
     //boss
-    boss.sprite = this.physics.add.sprite(7150,300, 'boss');
+    if (difficulty == 1 || difficulty == 3 || difficulty == 5)
+        boss.sprite = this.physics.add.sprite(7150,300, 'boss');
+    else 
+        boss.sprite = this.physics.add.sprite(7150,300, 'octoboss');
     boss.sprite.setVisible(false);
     this.bullets = this.physics.add.group(); //create attack 1
+    this.pierceBullets = this.physics.add.group(); 
     this.laser = this.physics.add.group(); // create attack 2
     //colliders / triggers
     this.physics.add.overlap(player.sprite, this.bullets, this.getHit, null, this); //trigger b/w player & bullets
+    this.physics.add.overlap(player.sprite, this.pierceBullets, this.getHitPierce, null, this); //trigger b/w player & bullets
     this.physics.add.overlap(player.sprite, this.laser, this.dot, null, this); //trigger b/w player & laser
     this.physics.add.overlap(player.sprite, this.treasure, this.endLevel, null, this); //trigger b/w player & treasure
     this.physics.add.overlap(player.sprite, boss.sprite, this.hitPlayer, null, this); //trigger b/w player & boss
@@ -175,6 +181,7 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(this.barrier5, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     this.physics.add.overlap(this.barrier5, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
     this.physics.add.overlap(this.barrier6, this.bullets, this.collide, null, this); //trigger b/w boss bullets & bottombarrier
+    this.physics.add.overlap(this.barrier7, this.bullets, this.collide, null, this); //trigger b/w boss bullets & bottombarrier
     //camera
     this.cameras.main.resetFX(); //reset cameras
     //keyboard input
@@ -197,7 +204,7 @@ class BossScene extends Phaser.Scene{
     //timer testing
     this.timer = this.time.addEvent({delay : 2500, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 2500, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
-    this.waveAttackTimer = this.time.addEvent({delay : 3000, callback: this.waveAttack, callbackScope: this, loop: true, paused: false });
+    this.waveAttackTimer = this.time.addEvent({delay : 2500, callback: this.waveAttack, callbackScope: this, loop: true, paused: false });
     this.waveCreateTimer = this.time.addEvent({delay : 1500, callback: this.createWave, callbackScope: this, loop: true, paused: false });
     this.poweruptimer1 = this.time.addEvent({delay : 5000, callback: this.createPowerup1, callbackScope: this, loop: true, paused: false });
     this.poweruptimer2 = this.time.addEvent({delay : 5000, callback: this.createPowerup2, callbackScope: this, loop: true, paused: true });
@@ -812,9 +819,9 @@ class BossScene extends Phaser.Scene{
       enemy.update();
       if (enemy){
         let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
-        bullet.setVelocityX(Phaser.Math.Between(-800,-1000));
+        bullet.setVelocityX(Phaser.Math.Between(-600,-900));
       }
-      enemy.setVelocityX(Phaser.Math.Between(-400,-700));
+      enemy.setVelocityX(Phaser.Math.Between(-300,-600));
       enemy.setVelocityY(Phaser.Math.Between(-125,125));
     }
   }
@@ -877,11 +884,55 @@ class BossScene extends Phaser.Scene{
     console.log("using ability two");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    for(let i = 0; i < 2; i++){
-        let x = Phaser.Math.Between(5600, boss.sprite.x - 250);
-        let y = -200;
-        let laser = this.laser.create(x, y, 'laser');
-        laser.setVelocityY(500);
+    if (difficulty == 1 || difficulty == 3 || difficulty == 5){
+        for(let i = 0; i < 2; i++){
+            let x = Phaser.Math.Between(5600, boss.sprite.x - 250);
+            let y = -200;
+            let laser = this.laser.create(x, y, 'laser');
+            laser.setVelocityY(500);
+        }
+    }
+    else {
+        var x = 0;
+        var y = 0;
+        var randNum = Math.random();
+        if (randNum > 0 && randNum <= 0.125){
+          x = boss.sprite.x + 150;
+          y = boss.sprite.y - 150;
+        }
+        else if (randNum > 0.125 && randNum <= 0.25){
+          x = boss.sprite.x - 225;
+          y = boss.sprite.y;
+        }
+        else if (randNum > 0.25 && randNum <= 0.375){
+          x = boss.sprite.x - 250;
+          y = boss.sprite.y - 70;
+        }
+        else if (randNum > 0.375 && randNum <= 0.50){
+          x = boss.sprite.x - 260;
+          y = boss.sprite.y + 90;
+        }
+        else if (randNum > 0.50 && randNum <= 0.625){
+          x = boss.sprite.x - 100;
+          y = boss.sprite.y + 150;
+        }
+        else if (randNum > 0.625 && randNum <= 0.75){
+          x = boss.sprite.x - 125;
+          y = boss.sprite.y + 70;
+        }
+        else if (randNum > 0.75 && randNum <= 0.875){
+          x = boss.sprite.x + 180;
+          y = boss.sprite.y - 100;
+        }
+        else if (randNum > 0.875 && randNum <= 1.0){
+          x = boss.sprite.x + 170;
+          y = boss.sprite.y + 40;
+        }
+        for(let i = 0; i < 500; i++)
+        {
+          let bullet = this.bullets.create(x, y, 'octobeam'); 
+          bullet.setVelocityX(Phaser.Math.Between(-400,-2000));
+        }
     }
   }
 
@@ -897,13 +948,21 @@ class BossScene extends Phaser.Scene{
     console.log("using ability four");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    for(let i = 0; i < 800; i++)
-    {
-      let x = boss.sprite.x - 150;
-      let y = boss.sprite.y - 150;
-      let bullet = this.bullets.create(x, y, 'fireball');
-      bullet.setVelocityX(Phaser.Math.Between(-1000,-200));
-      bullet.setVelocityY(Phaser.Math.Between(200,1000));
+    if (difficulty == 1 || difficulty == 3 || difficulty == 5){
+        for(let i = 0; i < 800; i++)
+        {
+          let x = boss.sprite.x - 150;
+          let y = boss.sprite.y - 150;
+          let bullet = this.bullets.create(x, y, 'fireball');
+          bullet.setVelocityX(Phaser.Math.Between(-1000,-200));
+          bullet.setVelocityY(Phaser.Math.Between(200,1000));
+        }
+    }
+    else {
+        var x = boss.sprite.x + 500;
+        var y = boss.sprite.y + 45;
+        let bullet = this.pierceBullets.create(x, y, 'tsunami');
+        bullet.setVelocityX(-800);
     }
   }
 
@@ -912,12 +971,47 @@ class BossScene extends Phaser.Scene{
     console.log("using ability five");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    var x = boss.sprite.x - 180;
-    var y = boss.sprite.y - 120;
-    for(let i = 0; i < 500; i++)
-    {
-      let bullet = this.bullets.create(x, y, 'beam');
-      bullet.setVelocityX(Phaser.Math.Between(-400,-2000));
+    if (difficulty == 1 || difficulty == 3 || difficulty == 5){
+        var x = boss.sprite.x - 180;
+        var y = boss.sprite.y - 120;
+        for(let i = 0; i < 500; i++)
+        {
+          let bullet = this.bullets.create(x, y, 'beam');
+          bullet.setVelocityX(Phaser.Math.Between(-400,-2000));
+        }
+    }
+    else {
+        var x = boss.sprite.x + 140;
+        var y = boss.sprite.y - 50;
+        for(let i = 0; i < 100; i++)
+        {
+          let bullet = this.bullets.create(x, y, 'octobeam3'); 
+          bullet.setVelocityX(Phaser.Math.Between(-500,-2000));
+          let bullet2 = this.bullets.create(x, y, 'octobeam3'); 
+          bullet2.setVelocityX(Phaser.Math.Between(-500,-2000));
+          bullet2.setVelocityY(40);
+          let bullet3 = this.bullets.create(x, y, 'octobeam3'); 
+          bullet3.setVelocityX(Phaser.Math.Between(-500,-2000));
+          bullet3.setVelocityY(-40);
+          let bullet4 = this.bullets.create(x, y, 'octobeam3'); 
+          bullet4.setVelocityX(Phaser.Math.Between(-500,-2000));
+          bullet4.setVelocityY(20);
+          let bullet5 = this.bullets.create(x, y, 'octobeam3'); 
+          bullet5.setVelocityX(Phaser.Math.Between(-500,-2000));
+          bullet5.setVelocityY(-20);
+          let bullet6 = this.bullets.create(x, y, 'octobeam3'); 
+          bullet6.setVelocityX(Phaser.Math.Between(-500,-2000));
+          bullet6.setVelocityY(60);
+          let bullet7 = this.bullets.create(x, y, 'octobeam3'); 
+          bullet7.setVelocityX(Phaser.Math.Between(-500,-2000));
+          bullet7.setVelocityY(-60);
+          let bullet8 = this.bullets.create(x, y, 'octobeambottom'); 
+          bullet8.setVelocityX(Phaser.Math.Between(-500,-2000));
+          bullet8.setVelocityY(80);
+          let bullet9 = this.bullets.create(x, y, 'octobeamtop'); 
+          bullet9.setVelocityX(Phaser.Math.Between(-500,-2000));
+          bullet9.setVelocityY(-80);
+        }
     }
   }
 
@@ -932,6 +1026,18 @@ class BossScene extends Phaser.Scene{
     }
     player.health -= 20;
     player.healthPercent -= 20;
+    this.setValue(player.healthBar, player.healthPercent);
+    if(player.health <= 0) //things can happen, be safe and less than 0
+    {
+      this.gameOver();
+    }
+    console.log("player health is : " + player.health);
+  }
+
+  getHitPierce(p, bullet)
+  {
+    player.health -= 2.5;
+    player.healthPercent -= 2.5;
     this.setValue(player.healthBar, player.healthPercent);
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
