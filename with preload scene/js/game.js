@@ -43,10 +43,11 @@ var player = {
   multishot: false,
   pierce: false,
   saber: false,
+  haste: 0,
   canMultishotAgain: false,
   canPierceAgain: false,
-  canSaberAgain: false,
-  //kaboom: false,
+  canHealAgain: false,
+  canDashAgain: false,
   check: function()
   {
     console.log("this is the function inside the player");

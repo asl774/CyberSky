@@ -12,6 +12,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('background6', 'assets/cyberpunk-street-stars-boss.png');
       this.load.image('background7', 'assets/cyberpunk-street-UT.png');
       this.load.image('background8', 'assets/cyberpunk-street-UT-boss.png');
+      this.load.image('endBG', 'assets/dead.png');
       this.load.image('player', 'assets/player.png');
       this.load.image('dragon', 'assets/dragon.png');
       this.load.image('treasure', 'assets/treasure.png');
@@ -67,6 +68,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('lightswordPU', 'assets/lightsword.png');
       this.load.image('multishotPU', 'assets/multishot.png');
       this.load.image('kaboomPU', 'assets/kaboom.png');
+      this.load.image('hastePU', 'assets/haste powerup.png');
 
       //player sabre colors
       this.load.image("redsword", "assets/redsword.png")
@@ -82,6 +84,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.audio('dinogrowl', [ 'dinogrowl.mp3' ]);
       this.load.audio('throwstar', [ 'throwstar.mp3' ]);
       this.load.audio('teleport', [ 'teleport.mp3' ]);
+      this.load.audio('hastesfx', [ 'hastesfx.mp3' ]);
       this.load.audio('throwtriplestar', [ 'throwtriplestar2.mp3' ]);
       this.load.audio('throwbigstar', [ 'throwbigstar.mp3' ]);
       this.load.audio('heal', ['healingSound.wav']);
@@ -93,6 +96,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.audio('firebreathsound2', [ 'fire breath2.ogg' ]);
       this.load.audio('dinodie', [ 'dinodie.mp3' ]);
       this.load.audio('win', ['totalWin.wav']);
+      this.load.audio('death', [ 'oofSound.mp3' ]);
     }
     create(){
       this.add.text(window.innerWidth/2, window.innerHeight/2, "Loading Game :)", { font: '20px Courier', fill: '#00ffff' });
