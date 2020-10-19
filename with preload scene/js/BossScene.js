@@ -75,7 +75,7 @@ class BossScene extends Phaser.Scene{
     this.firebreathsound2 = this.sound.add('firebreathsound2');
     this.dinodie = this.sound.add('dinodie');
     this.deathSound = this.sound.add('death');
-    this.hastesound = this.sound.add('hastesfx');
+    this.hasteSound = this.sound.add('hastesfx');
 
     if (difficulty == 1)
         this.theme.play();
@@ -139,6 +139,14 @@ class BossScene extends Phaser.Scene{
     this.barrier5 = this.physics.add.sprite(6470, 300, 'barrier');
     this.barrier6 = this.physics.add.sprite(6300, 600, 'bottombarrier');
     this.barrier7 = this.physics.add.sprite(6300, 0, 'bottombarrier');
+    this.barrier0.setVisible(false);
+    this.barrier.setVisible(false);
+    this.barrier2.setVisible(false);
+    this.barrier3.setVisible(false);
+    this.barrier4.setVisible(false);
+    this.barrier5.setVisible(false);
+    this.barrier6.setVisible(false);
+    this.barrier7.setVisible(false);
     // goal / end of level
     this.treasure = this.physics.add.sprite(7000 - 70, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
@@ -215,8 +223,19 @@ class BossScene extends Phaser.Scene{
     this.healTimer = this.time.addEvent({delay : 3000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
     this.dashTimer = this.time.addEvent({delay : 1000 - player.haste, callback: this.pauseDashTimer, callbackScope: this, loop: true, paused: false });
     //debugging / things to remove later
-    this.timerText = this.add.text(6000, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.text = this.add.text(6000,150,"");
+    //this.timerText = this.add.text(6000, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    //this.text = this.add.text(6000,150,"");
+
+    this.levelText = this.add.text(100, 10, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.levelText2 = this.add.text(1500, 10, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.levelText3 = this.add.text(2900, 10, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.levelText4 = this.add.text(4300, 10, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.numKillsText = this.add.text(100, 25, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.numKillsText2 = this.add.text(1500, 25, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.numKillsText3 = this.add.text(2900, 25, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.numKillsText4 = this.add.text(4300, 25, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.bossHPText = this.add.text(5610, 10, "Boss HP: " + boss.healthPercent, { fontSize: '20px', fill: '#000000', align: "center" });
+    /*
     this.timer3Text = this.add.text(100, 100, "wave1 attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.timer4Text = this.add.text(1500, 100, "wave2 attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.timer5Text = this.add.text(2900, 100, "wave3 attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
@@ -225,23 +244,28 @@ class BossScene extends Phaser.Scene{
     this.timer8Text = this.add.text(1500, 150, "spawn more enemies: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.timer9Text = this.add.text(2900, 150, "spawn more enemies: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.timer10Text = this.add.text(4300, 150, "spawn more enemies: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.numKillsText = this.add.text(100, 200, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.numKillsText2 = this.add.text(1500, 200, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.numKillsText3 = this.add.text(2900, 200, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.numKillsText4 = this.add.text(4300, 200, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.poweruptimerText1 = this.add.text(100, 250, "next powerup progress: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.poweruptimerText2 = this.add.text(1500, 250, "next powerup progress: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.poweruptimerText3 = this.add.text(2900, 250, "next powerup progress: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.poweruptimerText4 = this.add.text(4300, 250, "next powerup progress: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.poweruptimerText5 = this.add.text(5700, 250, "next powerup progress: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     this.enemiesCreatedText1 = this.add.text(100, 300, "enemies created: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.bossHPText = this.add.text(5610, 10, "Boss HP: " + boss.healthPercent, { fontSize: '20px', fill: '#000000', align: "center" });
+    */
   }
 
   update()
   {
     this.setHealthBarPosition(player.healthBar, player.sprite.x - 25, player.sprite.y - 40);
-
+    this.levelText.setText("Level: " + difficulty + " Stage: " + "1");
+    this.levelText2.setText("Level: " + difficulty + " Stage: " + "2");
+    this.levelText3.setText("Level: " + difficulty + " Stage: " + "3");
+    this.levelText4.setText("Level: " + difficulty + " Stage: " + "4");
+    this.numKillsText.setText("Enemies Killed: " + this.numEnemiesKilled);
+    this.numKillsText2.setText("Enemies Killed: " + this.numEnemiesKilled);
+    this.numKillsText3.setText("Enemies Killed: " + this.numEnemiesKilled);
+    this.numKillsText4.setText("Enemies Killed: " + this.numEnemiesKilled);
+    this.bossHPText.setText("Boss HP: " + boss.healthPercent);
+    /*
     this.timerText.setText("Timer Progress: " + this.timer.getProgress().toString().substr(0,4));
     this.timer3Text.setText("Wave 1 Attack Progress: " + this.waveAttackTimer.getProgress().toString().substr(0,4));
     this.timer4Text.setText("Wave 2 Attack Progress: " + this.waveAttackTimer.getProgress().toString().substr(0,4));
@@ -251,17 +275,13 @@ class BossScene extends Phaser.Scene{
     this.timer8Text.setText("Spawn More Enemies:  " + this.waveCreateTimer.getProgress().toString().substr(0,4));
     this.timer9Text.setText("Spawn More Enemies:  " + this.waveCreateTimer.getProgress().toString().substr(0,4));
     this.timer10Text.setText("Spawn More Enemies:  " + this.waveCreateTimer.getProgress().toString().substr(0,4));
-    this.numKillsText.setText("# Enemies Killed: " + this.numEnemiesKilled);
-    this.numKillsText2.setText("# Enemies Killed: " + this.numEnemiesKilled);
-    this.numKillsText3.setText("# Enemies Killed: " + this.numEnemiesKilled);
-    this.numKillsText4.setText("# Enemies Killed: " + this.numEnemiesKilled);
     this.poweruptimerText1.setText("Next Powerup Progress: " + this.poweruptimer1.getProgress().toString().substr(0,4));
     this.poweruptimerText2.setText("Next Powerup Progress: " + this.poweruptimer2.getProgress().toString().substr(0,4));
     this.poweruptimerText3.setText("Next Powerup Progress: " + this.poweruptimer3.getProgress().toString().substr(0,4));
     this.poweruptimerText4.setText("Next Powerup Progress: " + this.poweruptimer4.getProgress().toString().substr(0,4));
     this.poweruptimerText5.setText("Next Powerup Progress: " + this.poweruptimer5.getProgress().toString().substr(0,4));
     this.enemiesCreatedText1.setText("Enemies Created: " + this.numEnemiesCreated);
-    this.bossHPText.setText("Boss HP: " + boss.healthPercent);
+    */
     //check if player is alive
 
     if (!player.isAlive) {
@@ -478,8 +498,6 @@ class BossScene extends Phaser.Scene{
           psword.disableBody(true,true);
         }
       }
-
-
     //press c key to teleport 100 pixels in direction of arrow key
     else if (Phaser.Input.Keyboard.JustDown(this.ckey) && player.canDashAgain == true)
     {
@@ -499,6 +517,31 @@ class BossScene extends Phaser.Scene{
         player.sprite.y += 100;
       }
     }
+    //press v to heal - this should go somewhere else
+    else if(Phaser.Input.Keyboard.JustDown(this.vkey) && player.health < 100 && player.canHealAgain == true)
+    {
+      this.healTimer.isPaused = false;
+      player.canHealAgain = false;
+      this.healthUp.play();
+      if(player.health > 80)
+      {
+        player.health = 100;
+        player.healthPercent = 100;
+      } else {
+        player.health += 20;
+        player.healthPercent += 20;
+      }
+      this.setValue(player.healthBar, player.healthPercent);
+      console.log("player health is : " + player.health);
+    }
+    //press b to shield
+    else if(Phaser.Input.Keyboard.JustDown(this.bkey) && !player.shielded)
+    {
+      this.shieldUp.play();
+      player.shielded = true;
+      console.log("player shield is active");
+    }
+
     /*
     //press a to throw extra star1
     else if (Phaser.Input.Keyboard.JustDown(this.akey))
@@ -509,7 +552,7 @@ class BossScene extends Phaser.Scene{
       let pbullet = this.playerbullets.create(playerx, playery, 'star1');
       pbullet.setVelocityX(200);
     }
-    */
+
     //press s to throw extra star2
     else if (Phaser.Input.Keyboard.JustDown(this.skey))
     {
@@ -555,30 +598,9 @@ class BossScene extends Phaser.Scene{
       let pbullet = this.playerbullets.create(playerx, playery, 'star6');
       pbullet.setVelocityX(200);
     }
-    //press v to heal - this should go somewhere else
-    else if(Phaser.Input.Keyboard.JustDown(this.vkey) && player.health < 100 && player.canHealAgain == true)
-    {
-      this.healTimer.isPaused = false;
-      player.canHealAgain = false;
-      this.healthUp.play();
-      if(player.health > 80)
-      {
-        player.health = 100;
-        player.healthPercent = 100;
-      } else {
-        player.health += 20;
-        player.healthPercent += 20;
-      }
-      this.setValue(player.healthBar, player.healthPercent);
-      console.log("player health is : " + player.health);
-    }
-    //press b to shield
-    else if(Phaser.Input.Keyboard.JustDown(this.bkey) && !player.shielded)
-    {
-      this.shieldUp.play();
-      player.shielded = true;
-      console.log("player shield is active");
-    }
+ */
+
+
 
   }
 
@@ -820,27 +842,27 @@ class BossScene extends Phaser.Scene{
       var enemy = wave.getChildren()[i];
       enemy.update();
       if (enemy){
-        let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
-        bullet.setVelocityX(Phaser.Math.Between(-600,-900));
+        let bullet = this.bullets.create(enemy.x - 50, enemy.y, 'bullet');
+        bullet.setVelocityX(Phaser.Math.Between(-700,-900));
       }
-      enemy.setVelocityX(Phaser.Math.Between(-300,-600));
-      enemy.setVelocityY(Phaser.Math.Between(-125,125));
+      enemy.setVelocityX(Phaser.Math.Between(-400,-700)); //-50, -250
+      enemy.setVelocityY(Phaser.Math.Between(-125,125)); //-20, -20
     }
   }
 
   pickAbility()
   {
     var ability = Math.random(); //Math.floor(Math.random() * 3) + 1;
-    if(ability >= 0 && ability < 0.20)
-        this.text.setText("Boss is using ability: 1");
-    else if (ability >= 0.20 && ability < 0.40)
-        this.text.setText("Boss is using ability: 2");
-    else if (ability >= 0.40 && ability < 0.60)
-        this.text.setText("Boss is using ability: 3");
-    else if (ability >= 0.60 && ability < 0.80)
-        this.text.setText("Boss is using ability: 4");
-    else
-        this.text.setText("Boss is using ability: 5");
+    //if(ability >= 0 && ability < 0.20)
+        //this.text.setText("Boss is using ability: 1");
+    //else if (ability >= 0.20 && ability < 0.40)
+        //this.text.setText("Boss is using ability: 2");
+    //else if (ability >= 0.40 && ability < 0.60)
+        //this.text.setText("Boss is using ability: 3");
+    //else if (ability >= 0.60 && ability < 0.80)
+        //this.text.setText("Boss is using ability: 4");
+    //else
+        //this.text.setText("Boss is using ability: 5");
     this.useAbility(ability);
   }
 
@@ -1110,6 +1132,16 @@ class BossScene extends Phaser.Scene{
   pauseAbilityTimer2(){
     this.abilityTimer2.isPaused = true;
     player.canPierceAgain = true;
+  }
+
+  pauseDashTimer(){
+    this.dashTimer.isPaused = true;
+    player.canDashAgain = true;
+  }
+
+  pauseHealTimer(){
+    this.healTimer.isPaused = true;
+    player.canHealAgain = true;
   }
 
   hitPlayer(p, b)
