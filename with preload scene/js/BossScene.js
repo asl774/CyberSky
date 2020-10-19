@@ -258,6 +258,7 @@ class BossScene extends Phaser.Scene{
     //check if player is alive
 
     if (!player.isAlive) {
+      this.theme.stop();
       this.scene.start("loseScene");
     }
     // check for active input

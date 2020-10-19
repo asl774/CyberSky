@@ -226,6 +226,7 @@ class Tutorial extends Phaser.Scene{
 
     if (!player.isAlive) {
       //return;
+      this.tutorialtheme.stop();
       this.scene.start("loseScene");
     }
     // check for active input
