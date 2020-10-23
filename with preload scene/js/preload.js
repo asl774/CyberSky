@@ -51,6 +51,8 @@ class PreloadScene extends Phaser.Scene{
 
       this.load.image('boss', 'assets/boss.png');
       this.load.image('octoboss', 'assets/octoboss2.png');
+      this.load.image('yakuzaboss', 'assets/yakuza4.png');
+      this.load.image('horsemanboss', 'assets/horseman2.png');
       //this.load.image('boss', 'assets/bossnew.png');
 
       this.load.image('bullet', 'assets/bullet.png');
@@ -63,6 +65,9 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('octobeam3', 'assets/octobeam3.png');
       this.load.image('octobeamtop', 'assets/octobeamtop.png');
       this.load.image('octobeambottom', 'assets/octobeambottom.png');
+      this.load.image('firerain', 'assets/firerain12.png');
+      this.load.image('skeleton', 'assets/skeleton8.png');
+      this.load.image('bat', 'assets/bat2.png');
 
       this.load.image('piercePU', 'assets/piercepu.png');
       this.load.image('lightswordPU', 'assets/lightsword.png');

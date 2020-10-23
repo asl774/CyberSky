@@ -26,16 +26,16 @@ class BossScene extends Phaser.Scene{
     this.playerbullets;
     this.playersaber;
 
-      player.speed = 10;
+      //player.speed = 10;
       player.health = 100;
       player.isAlive = true;
       player.healthPercent = 100;
       player.healthBar = 0;
-      player.sheilded = false;
-      player.multishot = false;
-      player.pierce = false;
+      //player.sheilded = false;
+      //player.multishot = false;
+      //player.pierce = false;
       //player.kaboom = false;
-      player.saber = false;
+      //player.saber = false;
 
     boss.speed = 2;
     boss.health = 100;
@@ -151,10 +151,14 @@ class BossScene extends Phaser.Scene{
     this.treasure = this.physics.add.sprite(7000 - 70, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
     //boss
-    if (difficulty == 1 || difficulty == 3 || difficulty == 5)
-        boss.sprite = this.physics.add.sprite(7150,300, 'boss');
-    else
+    if (difficulty == 1 || difficulty == 5)
+        boss.sprite = this.physics.add.sprite(7150,300, 'boss'); //boss
+    else if (difficulty == 2)
         boss.sprite = this.physics.add.sprite(7150,300, 'octoboss');
+    else if (difficulty == 3)
+        boss.sprite = this.physics.add.sprite(7150,300, 'yakuzaboss');
+    else if (difficulty == 4)
+        boss.sprite = this.physics.add.sprite(7150,300, 'horsemanboss');
     boss.sprite.setVisible(false);
     this.bullets = this.physics.add.group(); //create attack 1
     this.pierceBullets = this.physics.add.group();
@@ -211,8 +215,8 @@ class BossScene extends Phaser.Scene{
     //timer testing
     this.timer = this.time.addEvent({delay : 2500, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 2500, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
-    this.waveAttackTimer = this.time.addEvent({delay : 2500, callback: this.waveAttack, callbackScope: this, loop: true, paused: false });
-    this.waveCreateTimer = this.time.addEvent({delay : 1500, callback: this.createWave, callbackScope: this, loop: true, paused: false });
+    this.waveAttackTimer = this.time.addEvent({delay : 4000, callback: this.waveAttack, callbackScope: this, loop: true, paused: false }); //2500
+    this.waveCreateTimer = this.time.addEvent({delay : 2000, callback: this.createWave, callbackScope: this, loop: true, paused: false }); //1500
     this.poweruptimer1 = this.time.addEvent({delay : 5000, callback: this.createPowerup1, callbackScope: this, loop: true, paused: false });
     this.poweruptimer2 = this.time.addEvent({delay : 5000, callback: this.createPowerup2, callbackScope: this, loop: true, paused: true });
     this.poweruptimer3 = this.time.addEvent({delay : 5000, callback: this.createPowerup3, callbackScope: this, loop: true, paused: true });
@@ -264,7 +268,7 @@ class BossScene extends Phaser.Scene{
     this.numKillsText2.setText("Enemies Killed: " + this.numEnemiesKilled);
     this.numKillsText3.setText("Enemies Killed: " + this.numEnemiesKilled);
     this.numKillsText4.setText("Enemies Killed: " + this.numEnemiesKilled);
-    this.bossHPText.setText("Boss HP: " + boss.healthPercent);
+    this.bossHPText.setText("Boss HP: " + boss.healthPercent.toString().substr(0,4));
     /*
     this.timerText.setText("Timer Progress: " + this.timer.getProgress().toString().substr(0,4));
     this.timer3Text.setText("Wave 1 Attack Progress: " + this.waveAttackTimer.getProgress().toString().substr(0,4));
@@ -375,7 +379,7 @@ class BossScene extends Phaser.Scene{
       var enemy = this.wave1.getChildren()[i];
       enemy.update();
       if (enemy.x < this.physics.world.bounds.x){
-        enemy.x = this.enemyx - 1400;
+        enemy.x = this.enemyx - 1400; // - 1400
       }
       if (enemy.y < this.enemyMinY || enemy.y > this.enemyMaxY){
         enemy.x = this.enemyx - 1400;
@@ -801,10 +805,10 @@ class BossScene extends Phaser.Scene{
       enemy.update();
       if (enemy){
         let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
-        bullet.setVelocityX(Phaser.Math.Between(-450,-600));
+        bullet.setVelocityX(Phaser.Math.Between(-300,-400)); //-450,-600
       }
-      enemy.setVelocityX(Phaser.Math.Between(-50,-400)); //-50, -250
-      enemy.setVelocityY(Phaser.Math.Between(-50,50)); //-20, -20
+      enemy.setVelocityX(Phaser.Math.Between(-100,-300)); //-50,-400
+      enemy.setVelocityY(Phaser.Math.Between(-50,50)); //-50,50
     }
   }
 
@@ -815,10 +819,10 @@ class BossScene extends Phaser.Scene{
       enemy.update();
       if (enemy){
         let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
-        bullet.setVelocityX(Phaser.Math.Between(-500,-700));
+        bullet.setVelocityX(Phaser.Math.Between(-300,-400)); //-500,-700
       }
-      enemy.setVelocityX(Phaser.Math.Between(-100,-500));
-      enemy.setVelocityY(Phaser.Math.Between(-75,75));
+      enemy.setVelocityX(Phaser.Math.Between(-100,-500)); //-100,-500
+      enemy.setVelocityY(Phaser.Math.Between(-50,50)); //-75,75
     }
   }
 
@@ -829,10 +833,10 @@ class BossScene extends Phaser.Scene{
       enemy.update();
       if (enemy){
         let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
-        bullet.setVelocityX(Phaser.Math.Between(-600,-800));
+        bullet.setVelocityX(Phaser.Math.Between(-300,-400)); //-600,-800
       }
-      enemy.setVelocityX(Phaser.Math.Between(-200,-600));
-      enemy.setVelocityY(Phaser.Math.Between(-100,100));
+      enemy.setVelocityX(Phaser.Math.Between(-100,-500)); //-200,-600
+      enemy.setVelocityY(Phaser.Math.Between(-50,50)); //-100,100
     }
   }
 
@@ -843,10 +847,10 @@ class BossScene extends Phaser.Scene{
       enemy.update();
       if (enemy){
         let bullet = this.bullets.create(enemy.x - 50, enemy.y, 'bullet');
-        bullet.setVelocityX(Phaser.Math.Between(-700,-900));
+        bullet.setVelocityX(Phaser.Math.Between(-300,-400)); //-700,-900
       }
-      enemy.setVelocityX(Phaser.Math.Between(-400,-700)); //-50, -250
-      enemy.setVelocityY(Phaser.Math.Between(-125,125)); //-20, -20
+      enemy.setVelocityX(Phaser.Math.Between(-100,-500)); // -400,-700
+      enemy.setVelocityY(Phaser.Math.Between(-50,50)); // //-125,125
     }
   }
 
@@ -867,25 +871,70 @@ class BossScene extends Phaser.Scene{
   }
 
   useAbility(ability){
-    if(ability >= 0 && ability < 0.20)
-    {
-      this.abilityOne();
+    if (difficulty > 1){
+        if(ability >= 0 && ability < 0.20)
+        {
+          this.abilityOne();
+        }
+        else if (ability >= 0.20 && ability < 0.40)
+        {
+          this.abilityTwo();
+        }
+        else if (ability >= 0.40 && ability < 0.60)
+        {
+          this.abilityThree();
+        }
+        else if (ability >= 0.60 && ability < 0.80)
+        {
+          this.abilityFour();
+        }
+        else {
+          this.abilityFive();
+        }
     }
-    else if (ability >= 0.20 && ability < 0.40)
-    {
-      this.abilityTwo();
+    else{
+        if(ability >= 0 && ability < 0.33)
+        {
+          this.abilityOne();
+        }
+        else if (ability >= 0.33 && ability < 0.67)
+        {
+          this.abilityTwo();
+        }
+        else
+        {
+          this.abilityThree();
+        }
     }
-    else if (ability >= 0.40 && ability < 0.60)
-    {
-      this.abilityThree();
-    }
-    else if (ability >= 0.60 && ability < 0.80)
-    {
-      this.abilityFour();
-    }
-    else {
-      this.abilityFive();
-    }
+
+  }
+
+  useDash(){
+      var dash = Math.random();
+      if(dash > 0 && dash <= 0.5)
+      {
+        boss.sprite.y += 100;
+      } 
+      else if (dash > 0.5 && dash <= 1.0)
+      {
+        boss.sprite.y -= 100;
+      }
+  }
+
+  bossMove() {
+      var move = Math.random();
+      if(move > 0 && move <= 0.5)
+      {
+        boss.sprite.setVelocityY(Phaser.Math.Between(50,100));
+      } 
+      else if (move > 0.5 && move <= 1.0)
+      {
+        boss.sprite.setVelocityY(Phaser.Math.Between(-50,-100));
+      }
+      if (boss.sprite.y < 100)
+        boss.sprite.setVelocityY(Phaser.Math.Between(50,100));
+      if (boss.sprite.y > 500)
+        boss.sprite.setVelocityY(Phaser.Math.Between(-50,-100));
   }
 
   abilityOne() {
@@ -893,7 +942,7 @@ class BossScene extends Phaser.Scene{
     console.log("using ability one");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    for(let i = 0; i < 10; i++)
+    for(let i = 0; i < 5; i++) //10
     {
       let x = boss.sprite.x;
       let y = Phaser.Math.Between(boss.sprite.y - 300, boss.sprite.y + 300); //can and should randomize this
@@ -908,15 +957,15 @@ class BossScene extends Phaser.Scene{
     console.log("using ability two");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    if (difficulty == 1 || difficulty == 3 || difficulty == 5){
-        for(let i = 0; i < 2; i++){
+    if (difficulty == 1 || difficulty == 5){
+        for(let i = 0; i < 1; i++){
             let x = Phaser.Math.Between(5600, boss.sprite.x - 250);
             let y = -200;
             let laser = this.laser.create(x, y, 'laser');
-            laser.setVelocityY(500);
+            laser.setVelocityY(400);
         }
     }
-    else {
+    else if (difficulty == 2){
         var x = 0;
         var y = 0;
         var randNum = Math.random();
@@ -958,6 +1007,42 @@ class BossScene extends Phaser.Scene{
           bullet.setVelocityX(Phaser.Math.Between(-400,-2000));
         }
     }
+    else if (difficulty == 3){
+      let x = boss.sprite.x;
+      let y = boss.sprite.y;
+      let bullet = this.pierceBullets.create(x, y, 'starbig');
+      bullet.setVelocityX(-800);
+      //this.physics.moveToObject(bullet, this.player, 1600);
+      this.bossMove();
+    }
+    else if (difficulty == 4){
+        // skeleton army
+        if (this.wave1.getLength() > 1){
+          var randNum = Math.random();
+          if (randNum > 0 && randNum <= 0.50){
+            boss.sprite.y += 50;
+          }
+          else {
+            boss.sprite.y -= 50;
+          }
+        }
+
+        else{
+          var x = boss.sprite.x - 280;
+          var y = boss.sprite.y - 180;
+          for (var i = 0; i < 7; i++){
+            let bullet = this.wave1.create(x, y, 'skeleton');
+            y += 60;
+          }
+          x = boss.sprite.x - 350;
+          y = boss.sprite.y - 180;
+          for (var i = 0; i < 7; i++){
+            let bullet = this.wave1.create(x, y, 'skeleton');
+            y += 60;
+          }
+        }
+    }
+
   }
 
   abilityThree() {
@@ -972,7 +1057,7 @@ class BossScene extends Phaser.Scene{
     console.log("using ability four");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    if (difficulty == 1 || difficulty == 3 || difficulty == 5){
+    if (difficulty == 1 || difficulty == 5){
         for(let i = 0; i < 800; i++)
         {
           let x = boss.sprite.x - 150;
@@ -982,12 +1067,40 @@ class BossScene extends Phaser.Scene{
           bullet.setVelocityY(Phaser.Math.Between(200,1000));
         }
     }
-    else {
+    else if (difficulty == 2){
         var x = boss.sprite.x + 500;
         var y = boss.sprite.y + 45;
         let bullet = this.pierceBullets.create(x, y, 'tsunami');
         bullet.setVelocityX(-800);
     }
+
+    else if (difficulty == 3){
+      let x = boss.sprite.x; //boss.sprite.x
+      let y = boss.sprite.y;
+      let bullet1 = this.bullets.create(x, y - 25, 'star');
+      let bullet2 = this.bullets.create(x, y, 'star');
+      let bullet3 = this.bullets.create(x, y + 25, 'star');
+      bullet1.setVelocityX(-800);
+      bullet1.setVelocityY(-100);
+      bullet2.setVelocityX(-800);
+      bullet3.setVelocityX(-800);
+      bullet3.setVelocityY(100);
+      //this.physics.moveToObject(bullet1, this.player, 1600);
+      //this.physics.moveToObject(bullet2, this.player, 1600);
+      //this.physics.moveToObject(bullet3, this.player, 1600);
+      this.bossMove();
+    }
+
+    else if (difficulty == 4){
+                // firerain
+        for(let i = 0; i < 5; i++){
+            let x = Phaser.Math.Between(5600, boss.sprite.x - 250);
+            let y = -200;
+            let laser = this.laser.create(x, y, 'firerain');
+            laser.setVelocityY(500);
+        }
+    }
+
   }
 
   abilityFive() {
@@ -995,7 +1108,7 @@ class BossScene extends Phaser.Scene{
     console.log("using ability five");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    if (difficulty == 1 || difficulty == 3 || difficulty == 5){
+    if (difficulty == 1 || difficulty == 5){
         var x = boss.sprite.x - 180;
         var y = boss.sprite.y - 120;
         for(let i = 0; i < 500; i++)
@@ -1004,7 +1117,7 @@ class BossScene extends Phaser.Scene{
           bullet.setVelocityX(Phaser.Math.Between(-400,-2000));
         }
     }
-    else {
+    else if (difficulty == 2){
         var x = boss.sprite.x + 140;
         var y = boss.sprite.y - 50;
         for(let i = 0; i < 100; i++)
@@ -1037,6 +1150,30 @@ class BossScene extends Phaser.Scene{
           bullet9.setVelocityY(-80);
         }
     }
+
+    else if (difficulty == 3){
+        // yakuza single star throw
+      let x = boss.sprite.x;
+      let y = boss.sprite.y;
+      let bullet = this.bullets.create(x, y, 'star');
+      bullet.setVelocityX(-800);
+      //this.physics.moveToObject(bullet, this.player, 1600);
+      this.bossMove();
+    }
+    else if (difficulty == 4){
+      // horseman bat beam
+      var x = boss.sprite.x - 180;
+      var y = boss.sprite.y - 120;
+      var vel = -300;
+      for (var i = 0; i < 5; i++){
+        let bullet = this.bullets.create(x, y, 'bat');
+        bullet.setVelocityX(vel);
+        x -= 70;
+      }
+    }
+
+
+
   }
 
   getHit(p, bullet)
