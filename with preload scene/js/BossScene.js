@@ -953,11 +953,12 @@ class BossScene extends Phaser.Scene{
   }
 
   abilityTwo(){
-    this.ability2.play();
+    //this.ability2.play();
     console.log("using ability two");
     this.timer2.paused = true;
     this.ability3.setMute(true);
     if (difficulty == 1 || difficulty == 5){
+        this.ability2.play();
         for(let i = 0; i < 1; i++){
             let x = Phaser.Math.Between(5600, boss.sprite.x - 250);
             let y = -200;
@@ -966,6 +967,7 @@ class BossScene extends Phaser.Scene{
         }
     }
     else if (difficulty == 2){
+        this.ability2.play();
         var x = 0;
         var y = 0;
         var randNum = Math.random();
@@ -1008,6 +1010,7 @@ class BossScene extends Phaser.Scene{
         }
     }
     else if (difficulty == 3){
+      this.throwbigstar.play();
       let x = boss.sprite.x;
       let y = boss.sprite.y;
       let bullet = this.pierceBullets.create(x, y, 'starbig');
@@ -1016,6 +1019,7 @@ class BossScene extends Phaser.Scene{
       this.bossMove();
     }
     else if (difficulty == 4){
+        this.ability2.play();
         // skeleton army
         if (this.wave1.getLength() > 1){
           var randNum = Math.random();
@@ -1046,18 +1050,27 @@ class BossScene extends Phaser.Scene{
   }
 
   abilityThree() {
-    this.ability3.play();
-    console.log("using ability three");
-    this.timer2.paused = false;
-    this.ability3.setMute(false);
+    if (difficulty == 1 || difficulty == 2 || difficulty == 4 || difficulty == 5)    {
+        this.ability3.play();
+        console.log("using ability three");
+        this.timer2.paused = false;
+        this.ability3.setMute(false);
+    }
+    else {
+        this.teleport.play();
+        this.timer2.paused = true;
+        this.ability3.setMute(true);
+        this.useDash();
+    }
   }
 
   abilityFour() {
-    this.firebreathsound2.play();
+    //this.firebreathsound2.play();
     console.log("using ability four");
     this.timer2.paused = true;
     this.ability3.setMute(true);
     if (difficulty == 1 || difficulty == 5){
+        this.firebreathsound2.play();
         for(let i = 0; i < 800; i++)
         {
           let x = boss.sprite.x - 150;
@@ -1068,6 +1081,7 @@ class BossScene extends Phaser.Scene{
         }
     }
     else if (difficulty == 2){
+        this.firebreathsound2.play();
         var x = boss.sprite.x + 500;
         var y = boss.sprite.y + 45;
         let bullet = this.pierceBullets.create(x, y, 'tsunami');
@@ -1075,6 +1089,7 @@ class BossScene extends Phaser.Scene{
     }
 
     else if (difficulty == 3){
+      this.throwtriplestar.play();
       let x = boss.sprite.x; //boss.sprite.x
       let y = boss.sprite.y;
       let bullet1 = this.bullets.create(x, y - 25, 'star');
@@ -1092,6 +1107,7 @@ class BossScene extends Phaser.Scene{
     }
 
     else if (difficulty == 4){
+        this.firebreathsound2.play();
                 // firerain
         for(let i = 0; i < 5; i++){
             let x = Phaser.Math.Between(5600, boss.sprite.x - 250);
@@ -1104,11 +1120,12 @@ class BossScene extends Phaser.Scene{
   }
 
   abilityFive() {
-    this.beamsound.play();
+    //this.beamsound.play();
     console.log("using ability five");
     this.timer2.paused = true;
     this.ability3.setMute(true);
     if (difficulty == 1 || difficulty == 5){
+        this.beamsound.play();
         var x = boss.sprite.x - 180;
         var y = boss.sprite.y - 120;
         for(let i = 0; i < 500; i++)
@@ -1118,6 +1135,7 @@ class BossScene extends Phaser.Scene{
         }
     }
     else if (difficulty == 2){
+        this.beamsound.play();
         var x = boss.sprite.x + 140;
         var y = boss.sprite.y - 50;
         for(let i = 0; i < 100; i++)
@@ -1152,6 +1170,7 @@ class BossScene extends Phaser.Scene{
     }
 
     else if (difficulty == 3){
+        this.throwstar.play();
         // yakuza single star throw
       let x = boss.sprite.x;
       let y = boss.sprite.y;
@@ -1161,6 +1180,7 @@ class BossScene extends Phaser.Scene{
       this.bossMove();
     }
     else if (difficulty == 4){
+        this.beamsound.play();
       // horseman bat beam
       var x = boss.sprite.x - 180;
       var y = boss.sprite.y - 120;
