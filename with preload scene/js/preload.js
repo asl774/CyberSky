@@ -99,6 +99,8 @@ class PreloadScene extends Phaser.Scene{
       this.load.audio('beamsound', [ 'beam.mp3' ]);
       this.load.audio('firebreathsound', [ 'fire breath.mp3' ]);
       this.load.audio('firebreathsound2', [ 'fire breath2.ogg' ]);
+      this.load.audio('batsound', [ 'bats2.mp3' ]);
+      this.load.audio('bonesound', [ 'bones2.mp3' ]);
       this.load.audio('dinodie', [ 'dinodie.mp3' ]);
       this.load.audio('win', ['totalWin.wav']);
       this.load.audio('death', [ 'oofSound.mp3' ]);

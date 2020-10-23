@@ -73,6 +73,8 @@ class BossScene extends Phaser.Scene{
     this.beamsound = this.sound.add('beamsound');
     this.firebreathsound = this.sound.add('firebreathsound');
     this.firebreathsound2 = this.sound.add('firebreathsound2');
+    this.batsound = this.sound.add('batsound');
+    this.bonesound = this.sound.add('bonesound');
     this.dinodie = this.sound.add('dinodie');
     this.deathSound = this.sound.add('death');
     this.hasteSound = this.sound.add('hastesfx');
@@ -1019,9 +1021,10 @@ class BossScene extends Phaser.Scene{
       this.bossMove();
     }
     else if (difficulty == 4){
-        this.ability2.play();
+
         // skeleton army
         if (this.wave1.getLength() > 1){
+          this.teleport.play();
           var randNum = Math.random();
           if (randNum > 0 && randNum <= 0.50){
             boss.sprite.y += 50;
@@ -1032,6 +1035,7 @@ class BossScene extends Phaser.Scene{
         }
 
         else{
+          this.bonesound.play();
           var x = boss.sprite.x - 280;
           var y = boss.sprite.y - 180;
           for (var i = 0; i < 7; i++){
@@ -1180,7 +1184,7 @@ class BossScene extends Phaser.Scene{
       this.bossMove();
     }
     else if (difficulty == 4){
-        this.beamsound.play();
+        this.batsound.play();
       // horseman bat beam
       var x = boss.sprite.x - 180;
       var y = boss.sprite.y - 120;
