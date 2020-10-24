@@ -8,23 +8,23 @@ class MainMenu extends Phaser.Scene{
   create(){
 
         //background image goes here
-
-        this.add.text(window.innerWidth/2 - 300, window.innerHeight/2, 'MAIN MENU - title goes here', { font: '50px Courier', fill: '#00ffff' });
+        this.add.image(680, 310, 'mainmenubg');
+        //this.add.text(550, 300, 'CYBERSKY', { font: '50px Courier', fill: '#00ffff' });
 
         // tutorial button
-        var r1 = this.add.rectangle(600, 425, 500, 50, 0x9966ff).setInteractive();
+        var r1 = this.add.rectangle(703, 425, 450, 50, 0x5C2C4F).setInteractive();
         r1.setStrokeStyle(4, 0xefc53f);
-        this.add.text(window.innerWidth/2 - 300, window.innerHeight/2 + 100, 'PLAY TUTORIAL', { font: '20px Courier', fill: '#00ffff' });
+        this.add.text(625, 420, 'PLAY TUTORIAL', { font: '20px Courier', fill: '#ffffff' });
 
         // main game button
-        var r2 = this.add.rectangle(600, 490, 500, 50, 0x9966ff).setInteractive();
+        var r2 = this.add.rectangle(703, 490, 450, 50, 0x5C2C4F).setInteractive();
         r2.setStrokeStyle(4, 0xefc53f);
-        this.add.text(window.innerWidth/2 - 300, window.innerHeight/2 + 165, 'PLAY GAME', { font: '20px Courier', fill: '#00ffff' });
+        this.add.text(625, 480, 'PLAY GAME', { font: '20px Courier', fill: '#ffffff' });
         
         // infinite mode button
-        var r3 = this.add.rectangle(600, 555, 500, 50, 0x9966ff).setInteractive();
+        var r3 = this.add.rectangle(703, 555, 450, 50, 0x5C2C4F).setInteractive();
         r3.setStrokeStyle(4, 0xefc53f);
-        this.add.text(window.innerWidth/2 - 300, window.innerHeight/2 + 230, 'PLAY INFINITE MODE', { font: '20px Courier', fill: '#00ffff' });
+        this.add.text(625, 550, 'PLAY INFINITE MODE', { font: '20px Courier', fill: '#ffffff' });
 
         r1.on('pointerup', function (event) {
         this.scene.start('tutorial');

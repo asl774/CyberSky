@@ -4,6 +4,9 @@ class PreloadScene extends Phaser.Scene{
   }
   preload(){
       // load images
+      //main menu
+      this.load.image('mainmenubg', 'assets/mainmenu2.png');
+
       this.load.image('background1', 'assets/cyberpunk-street3.png');
       this.load.image('background2', 'assets/cyberpunk-street.png');
       this.load.image('background3', 'assets/cyberpunk-street-sky.png');
