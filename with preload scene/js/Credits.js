@@ -14,3 +14,12 @@ class Credits extends Phaser.Scene{
     }
 
 }
+
+/* list of all the credits  we need to put in:
+   background art - ansimuz.com via opengameart.org
+   boss art - Albert Liang
+   enemy art - warlloyd on opengameart.org
+   music - tutorial + main screen
+   sfx - MATRIXXX, JustInvoke, Mativve via freesound.org,
+   programmers - Albert Liang, Christopher Perry, Kat Byers
+   font - Bitwise by Digital Graphics Lab */

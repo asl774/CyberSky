@@ -2,6 +2,14 @@ class PreloadScene extends Phaser.Scene{
   constructor(){
     super("preloadScene");
   }
+
+  init(){
+    var element = document.createElement('style');
+    document.head.appendChild(element);
+    var sheet = element.sheet;
+    var styles = '@font-face { font-family: "Bitwise"; src: url("assets/Bitwise.ttf") format("opentype"); }\n';
+    sheet.insertRule(styles,0);
+  }
   preload(){
       // load images
       //main menu
@@ -107,6 +115,8 @@ class PreloadScene extends Phaser.Scene{
       this.load.audio('dinodie', [ 'dinodie.mp3' ]);
       this.load.audio('win', ['totalWin.wav']);
       this.load.audio('death', [ 'oofSound.mp3' ]);
+
+      //fonts :))
     }
     create(){
       this.add.text(window.innerWidth/2, window.innerHeight/2, "Loading Game :)", { font: '20px Courier', fill: '#00ffff' });
