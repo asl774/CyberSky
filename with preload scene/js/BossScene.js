@@ -648,6 +648,8 @@ class BossScene extends Phaser.Scene{
     bar.y = y;
   }
 
+
+  //this can be one function
   createPowerup1() {
     let x = Phaser.Math.Between(0 + 50, 1400 - 50);
     let y = -100;
@@ -916,7 +918,7 @@ class BossScene extends Phaser.Scene{
       if(dash > 0 && dash <= 0.5)
       {
         boss.sprite.y += 100;
-      } 
+      }
       else if (dash > 0.5 && dash <= 1.0)
       {
         boss.sprite.y -= 100;
@@ -928,7 +930,7 @@ class BossScene extends Phaser.Scene{
       if(move > 0 && move <= 0.5)
       {
         boss.sprite.setVelocityY(Phaser.Math.Between(50,100));
-      } 
+      }
       else if (move > 0.5 && move <= 1.0)
       {
         boss.sprite.setVelocityY(Phaser.Math.Between(-50,-100));
@@ -959,6 +961,7 @@ class BossScene extends Phaser.Scene{
     console.log("using ability two");
     this.timer2.paused = true;
     this.ability3.setMute(true);
+    //TODO: switch out difficulty for a string w/ the selected (random) boss
     if (difficulty == 1 || difficulty == 5){
         this.ability2.play();
         for(let i = 0; i < 1; i++){
@@ -1054,7 +1057,7 @@ class BossScene extends Phaser.Scene{
   }
 
   abilityThree() {
-    if (difficulty == 1 || difficulty == 2 || difficulty == 4 || difficulty == 5)    {
+    if (difficulty != 3)    {
         this.ability3.play();
         console.log("using ability three");
         this.timer2.paused = false;
@@ -1209,8 +1212,8 @@ class BossScene extends Phaser.Scene{
       console.log("player had a shield");
       return;
     }
-    player.health -= 20;
-    player.healthPercent -= 20;
+    player.health -= 10 + (difficulty*2);
+    player.healthPercent -= 10 + (difficulty*2);
     this.setValue(player.healthBar, player.healthPercent);
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
@@ -1313,8 +1316,8 @@ class BossScene extends Phaser.Scene{
       console.log("player had a shield");
       return;
     }
-    player.health -= 5;
-    player.healthPercent -= 5;
+    player.health -= 1 * difficulty;
+    player.healthPercent -= 1 * difficulty;
     this.setValue(player.healthBar, player.healthPercent);
     this.cameras.main.shake(400, 0.01); //duration, intensity
     if(player.health <= 0) //things can happen, be safe and less than 0
@@ -1334,15 +1337,14 @@ class BossScene extends Phaser.Scene{
     boss.speed = 2;
   }
 
+  //why cant these be one function? its the same thing
   collide (barrier, pbullet)
   {
-    //pbullet.disableBody(true,true);
     pbullet.destroy();
   }
 
   collide (barrier, bullet)
   {
-    //bullet.disableBody(true,true);
     bullet.destroy();
   }
 
@@ -1365,17 +1367,15 @@ class BossScene extends Phaser.Scene{
 
   pierceEnemy (enemy, pbullet)
   {
-    //enemy.disableBody(true, true);
     enemy.destroy();
     this.numEnemiesKilled += 1;
   }
 
   collideBoss (b, pbullet)
   {
-    //pbullet.disableBody(true,true);
     pbullet.destroy();
-    boss.healthPercent -= 1;
-    boss.health -= 1;
+    boss.healthPercent -= 0.5 + (difficulty/2);
+    boss.health -= 0.5 + (difficulty/2);
     this.setValue(boss.healthBar, boss.healthPercent);
     //this.cameras.main.shake(400, 0.01); //duration, intensity
   }
