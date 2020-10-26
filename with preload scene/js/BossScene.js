@@ -24,7 +24,7 @@ class BossScene extends Phaser.Scene{
     this.ability2;
     this.ability3;
     this.playerbullets;
-    this.playersaber;
+    this.playertrap;
 
       //player.speed = 10;
       player.health = 100;
@@ -77,7 +77,9 @@ class BossScene extends Phaser.Scene{
     this.bonesound = this.sound.add('bonesound');
     this.dinodie = this.sound.add('dinodie');
     this.deathSound = this.sound.add('death');
-    this.hasteSound = this.sound.add('hastesfx');
+    this.hastesound = this.sound.add('hastesfx');
+    this.trapsfx = this.sound.add('trapsfx')
+
 
     if (firstLevel) //difficulty == 1 && infiniteMode == false
         this.theme.play();
@@ -122,7 +124,7 @@ class BossScene extends Phaser.Scene{
     this.cameras.main.followOffset.set(-500, 0);
     this.playerbullets = this.physics.add.group(); //create stars
     this.playerbigbullets = this.physics.add.group(); //create stars
-    this.playersaber = this.physics.add.group(); //create melee
+    this.playertrap = this.physics.add.group(); //create trap
     //enemies
     this.wave1 = this.physics.add.group();
     //powerups
@@ -131,6 +133,8 @@ class BossScene extends Phaser.Scene{
     this.powerup2 = this.physics.add.group();
     this.powerup3 = this.physics.add.group();
     this.powerup4 = this.physics.add.group();
+    // ---- ui for pu-----//
+    this.puui =this.add.image(500, 685, 'PUUI');
 
     //barrier
     this.barrier0 = this.physics.add.sprite(0, 300, 'barrier');
@@ -181,7 +185,7 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(player.sprite, this.powerup3, this.powerupThree, null, this);
     this.physics.add.overlap(player.sprite, this.powerup4, this.powerupFour, null, this);
     this.physics.add.overlap(boss.sprite, this.playerbullets, this.collideBoss, null, this); //trigger b/w playerbullets & boss
-    this.physics.add.overlap(this.wave1, this.playersaber, this.meleeEnemy, null, this);//melee enemy
+    this.physics.add.overlap(this.wave1, this.playertrap, this.meleeEnemy, null, this);//melee enemy
     this.physics.add.overlap(boss.sprite, this.playerbigbullets, this.pierceBoss, null, this); //trigger b/w playerbigbullets & boss
     this.physics.add.overlap(this.wave1, this.playerbullets, this.collideEnemy, null, this); //trigger b/w playerbullets & enemy
     this.physics.add.overlap(this.wave1, this.playerbigbullets, this.pierceEnemy, null, this); //trigger b/w playerbigbullets & enemy
@@ -230,7 +234,8 @@ class BossScene extends Phaser.Scene{
     this.poweruptimer5 = this.time.addEvent({delay : 5000, callback: this.createPowerup5, callbackScope: this, loop: true, paused: true });
     this.abilityTimer1 = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseAbilityTimer1, callbackScope: this, loop: true, paused: false });
     this.abilityTimer2 = this.time.addEvent({delay : 1000 - player.haste, callback: this.pauseAbilityTimer2, callbackScope: this, loop: true, paused: false });
-    this.healTimer = this.time.addEvent({delay : 3000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer3 = this.time.addEvent({delay : 3001 - player.haste, callback: this.pauseAbilityTimer3, callbackScope: this, loop: true, paused: false });
+    this.healTimer = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
     this.dashTimer = this.time.addEvent({delay : 1000 - player.haste, callback: this.pauseDashTimer, callbackScope: this, loop: true, paused: false });
     //debugging / things to remove later
     //this.timerText = this.add.text(6000, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
@@ -450,7 +455,7 @@ class BossScene extends Phaser.Scene{
       pbullet.setVelocityX(800);
     }
     //press z key to throw 3 stars
-    else if (Phaser.Input.Keyboard.JustDown(this.zkey) && player.multishot == true && player.canMultishotAgain)
+    else if (Phaser.Input.Keyboard.JustDown(this.ckey) && player.multishot == true && player.canMultishotAgain)
     {
       this.abilityTimer1.isPaused = false;
       player.canMultishotAgain = false;
@@ -467,7 +472,7 @@ class BossScene extends Phaser.Scene{
       pbullet3.setVelocityY(100);
     }
     //press x key to throw big piercing star
-    else if (Phaser.Input.Keyboard.JustDown(this.xkey) && player.pierce == true && player.canPierceAgain)
+    else if (Phaser.Input.Keyboard.JustDown(this.wkey) && player.pierce == true && player.canPierceAgain)
     {
       this.abilityTimer2.isPaused = false;
       player.canPierceAgain = false;
@@ -477,39 +482,17 @@ class BossScene extends Phaser.Scene{
       let pbullet = this.playerbigbullets.create(playerx, playery, 'starbig');
       pbullet.setVelocityX(800);
     }
-    //melee
-    else if (Phaser.Input.Keyboard.JustDown(this.akey) && player.saber == true )
+    //t r a p c a r d
+    else if (Phaser.Input.Keyboard.JustDown(this.ekey) && player.trap == true && player.canTrapAgain)
     {
+      this.abilityTimer3.isPaused = false;
+      player.canTrapAgain = false;
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
-      var randNum = Math.random();
-      if (randNum >= 0 && randNum <= 0.25){
-        let psword = this.playersaber.create(playerx + 18, playery, 'silversword');
-        psword.setVelocityX(0);
-      }
-      if (randNum > 0.25 && randNum <= 0.45){
-        let psword = this.playersaber.create(playerx + 18, playery, 'redsword');
-        psword.setVelocityX(0);
-      }
-      if (randNum > 0.45 && randNum <= 0.65){
-        let psword = this.playersaber.create(playerx + 18, playery, 'bluesword');
-        psword.setVelocityX(0);
-      }
-      if (randNum > 0.65 && randNum <= 0.85){
-        let psword = this.playersaber.create(playerx + 18, playery, 'greensword');
-        psword.setVelocityX(0);
-      }
-      if (randNum > 0.85 && randNum <= 1.0){
-        let psword = this.playersaber.create(playerx + 18, playery, 'silversword');
-        psword.setVelocityX(0);
-      }
-      //let psword = this.playersaber.create(playerx, playery, 'silversword');
-      else if ((Phaser.Input.Keyboard.JustUp(this.akey))){
-          psword.disableBody(true,true);
-        }
+      let ptrap = this.playertrap.create(playerx, playery, 'trap');
       }
     //press c key to teleport 100 pixels in direction of arrow key
-    else if (Phaser.Input.Keyboard.JustDown(this.ckey) && player.canDashAgain == true)
+    else if (Phaser.Input.Keyboard.JustDown(this.dkey) && player.canDashAgain == true)
     {
       this.dashTimer.isPaused = false;
       player.canDashAgain = false;
@@ -528,7 +511,7 @@ class BossScene extends Phaser.Scene{
       }
     }
     //press v to heal - this should go somewhere else
-    else if(Phaser.Input.Keyboard.JustDown(this.vkey) && player.health < 100 && player.canHealAgain == true)
+    else if(Phaser.Input.Keyboard.JustDown(this.akey) && player.health < 100 && player.canHealAgain == true)
     {
       this.healTimer.isPaused = false;
       player.canHealAgain = false;
@@ -545,7 +528,7 @@ class BossScene extends Phaser.Scene{
       console.log("player health is : " + player.health);
     }
     //press b to shield
-    else if(Phaser.Input.Keyboard.JustDown(this.bkey) && !player.shielded)
+    else if(Phaser.Input.Keyboard.JustDown(this.skey) && !player.shielded)
     {
       this.shieldUp.play();
       player.shielded = true;
@@ -665,7 +648,7 @@ class BossScene extends Phaser.Scene{
       this.powerup2.create(x, y, 'piercePU');
       this.powerup2.setVelocityY(100);
      if (randNum > 0.55 && randNum <= 0.85)
-      this.powerup3.create(x, y, 'lightswordPU');
+      this.powerup3.create(x, y, 'trapPU');
       this.powerup3.setVelocityY(100);
      if (randNum > 0.85 && randNum <= 1.0)
       this.powerup4.create(x, y, 'hastePU');
@@ -682,7 +665,7 @@ class BossScene extends Phaser.Scene{
       this.powerup2.create(x, y, 'piercePU');
       this.powerup2.setVelocityY(100);
      if (randNum > 0.55 && randNum <= 0.85)
-      this.powerup3.create(x, y, 'lightswordPU');
+      this.powerup3.create(x, y, 'trapPU');
       this.powerup3.setVelocityY(100);
      if (randNum > 0.85 && randNum <= 1.0)
       this.powerup4.create(x, y, 'hastePU');
@@ -699,7 +682,7 @@ class BossScene extends Phaser.Scene{
       this.powerup2.create(x, y, 'piercePU');
       this.powerup2.setVelocityY(100);
      if (randNum > 0.55 && randNum <= 0.85)
-      this.powerup3.create(x, y, 'lightswordPU');
+      this.powerup3.create(x, y, 'trapPU');
       this.powerup3.setVelocityY(100);
      if (randNum > 0.85 && randNum <= 1.0)
       this.powerup4.create(x, y, 'hastePU');
@@ -716,7 +699,7 @@ class BossScene extends Phaser.Scene{
       this.powerup2.create(x, y, 'piercePU');
       this.powerup2.setVelocityY(100);
      if (randNum > 0.55 && randNum <= 0.85)
-      this.powerup3.create(x, y, 'lightswordPU');
+      this.powerup3.create(x, y, 'trapPU');
       this.powerup3.setVelocityY(100);
      if (randNum > 0.85 && randNum <= 1.0)
       this.powerup4.create(x, y, 'hastePU');
@@ -733,7 +716,7 @@ class BossScene extends Phaser.Scene{
       this.powerup2.create(x, y, 'piercePU');
       this.powerup2.setVelocityY(100);
      if (randNum > 0.55 && randNum <= 0.85)
-      this.powerup3.create(x, y, 'lightswordPU');
+      this.powerup3.create(x, y, 'trapPU');
       this.powerup3.setVelocityY(100);
      if (randNum > 0.85 && randNum <= 1.0)
       this.powerup4.create(x, y, 'hastePU');
@@ -1271,23 +1254,58 @@ class BossScene extends Phaser.Scene{
   powerupOne(p, powerup1){
     powerup1.destroy();
     player.multishot = true;
+    if(player.health > 90)
+    {
+      player.health = 100;
+      player.healthPercent = 100;
+    } else {
+      player.health += 10;
+      player.healthPercent += 10;
+    }
+    this.setValue(player.healthBar, player.healthPercent);
   }
   powerupTwo(p, powerup2){
     powerup2.destroy();
     player.pierce = true;
+    if(player.health > 90)
+    {
+      player.health = 100;
+      player.healthPercent = 100;
+    } else {
+      player.health += 10;
+      player.healthPercent += 10;
+    }
+    this.setValue(player.healthBar, player.healthPercent);
   }
   powerupThree(p, powerup3){
     powerup3.destroy();
-    player.saber = true;
+    player.trap = true;
+    if(player.health > 90)
+    {
+      player.health = 100;
+      player.healthPercent = 100;
+    } else {
+      player.health += 10;
+      player.healthPercent += 10;
+    }
+    this.setValue(player.healthBar, player.healthPercent);
   }
   powerupFour(p, powerup4){
     powerup4.destroy();
-    this.hasteSound.play()
+    this.hastesound.play()
     if (player.haste >= 900){
-      player.haste += 0;
-      console.log("player.haste is: ", player.haste)
+      if(player.health > 90)
+      {
+        player.health = 100;
+        player.healthPercent = 100;
+      } else {
+        player.health += 10;
+        player.healthPercent += 10;
+        console.log("player.haste is: ", player.haste)
+      }
+      this.setValue(player.healthBar, player.healthPercent);
     }else{
-      player.haste += 50;
+      player.haste += 150;
       console.log("player.haste is: ", player.haste)
       }
   }
@@ -1300,6 +1318,11 @@ class BossScene extends Phaser.Scene{
   pauseAbilityTimer2(){
     this.abilityTimer2.isPaused = true;
     player.canPierceAgain = true;
+  }
+
+  pauseAbilityTimer3(){
+    this.abilityTimer3.isPaused = true;
+    player.canTrapAgain = true;
   }
 
   pauseDashTimer(){
@@ -1360,14 +1383,14 @@ class BossScene extends Phaser.Scene{
     enemy.destroy();
     this.numEnemiesKilled += 1;
   }
-  meleeEnemy (enemy, psword)
+  meleeEnemy (enemy, ptrap)
   {
-    psword.disableBody(true,true);
+    ptrap.disableBody(true,true);
+    this.trapsfx.play();
     enemy.destroy();
     this.numEnemiesKilled += 1;
     player.speed += 0.1;
   }
-
 
   pierceEnemy (enemy, pbullet)
   {
@@ -1418,7 +1441,7 @@ class BossScene extends Phaser.Scene{
     {
       this.sound.stopAll();
       this.scene.start("winScene");
-    } 
+    }
     else {
       this.scene.restart(); //start level over
     }
