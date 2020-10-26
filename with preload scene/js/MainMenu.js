@@ -8,7 +8,8 @@ class MainMenu extends Phaser.Scene{
         //background image goes here
         add.image(0,0, 'background2').setOrigin(0,0);
 
-        var title = add.rectangle(650, 250, 700, 150, 0x5C2C4F);
+        var title = add.rectangle(650, 250, 2000, 150, 0x5C2C4F);
+        title.setStrokeStyle(4, 0x37092C);
         add.text(400,205, 'CYBERSKY', { fontFamily: 'Bitwise', fontSize: 100,fill: '#ffffff'});
         // tutorial button
         var r1 = add.rectangle(650, 425, 450, 50, 0x5C2C4F).setInteractive();
@@ -39,7 +40,7 @@ class MainMenu extends Phaser.Scene{
         r3.on('pointerover', () => this.enterHoverState(r3));
         r3.on('pointerout', () => this.enterRestState(r3));
         r3.on('pointerdown', () => this.enterDownState(r3));
-        r3.on('pointerup', () => this.changeScenes('bossScene', true)); 
+        r3.on('pointerup', () => this.changeScenes('bossScene', true));
     }
 
     enterRestState(button)
