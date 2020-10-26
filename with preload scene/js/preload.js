@@ -29,6 +29,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('treasure', 'assets/treasure.png');
       this.load.image('barrier', 'assets/finishline.png');
       this.load.image('bottombarrier', 'assets/bottombarrier.png');
+      this.load.image('PUUI', 'assets/powerUPUI.png')
 
       //this.load.image('ninja', 'assets/blockninja2.png');
       this.load.image('ninja', 'assets/blockninja.png');
@@ -81,9 +82,8 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('bat', 'assets/bat2.png');
 
       this.load.image('piercePU', 'assets/piercepu.png');
-      this.load.image('lightswordPU', 'assets/lightsword.png');
+      this.load.image('trapPU', 'assets/trappu.png');
       this.load.image('multishotPU', 'assets/multishot.png');
-      this.load.image('kaboomPU', 'assets/kaboom.png');
       this.load.image('hastePU', 'assets/haste powerup.png');
 
       //player sabre colors
@@ -92,6 +92,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.image("purpsword", "assets/purpsword.png")
       this.load.image("bluesword", "assets/bluesword.png")
       this.load.image("greensword", "assets/greensword.png")
+      this.load.image("trap", "assets/trap.png")
 
       this.load.setPath('assets');
       this.load.audio('ability1', [ 'fireball1.mp3' ]);
@@ -101,6 +102,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.audio('throwstar', [ 'throwstar.mp3' ]);
       this.load.audio('teleport', [ 'teleport.mp3' ]);
       this.load.audio('hastesfx', [ 'hastesfx.mp3' ]);
+      this.load.audio('trapsfx', [ 'trapsound.mp3' ]);
       this.load.audio('throwtriplestar', [ 'throwtriplestar2.mp3' ]);
       this.load.audio('throwbigstar', [ 'throwbigstar.mp3' ]);
       this.load.audio('heal', ['healingSound.wav']);
