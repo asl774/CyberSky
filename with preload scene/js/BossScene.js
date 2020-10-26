@@ -153,6 +153,8 @@ class BossScene extends Phaser.Scene{
     this.treasure = this.physics.add.sprite(7000 - 70, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
     //boss
+    if (infiniteMode == true)
+        difficulty = Phaser.Math.Between(1,4);
     if (difficulty == 1 || difficulty == 5)
         boss.sprite = this.physics.add.sprite(7150,300, 'boss'); //boss
     else if (difficulty == 2)
@@ -809,9 +811,9 @@ class BossScene extends Phaser.Scene{
       enemy.update();
       if (enemy){
         let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
-        bullet.setVelocityX(Phaser.Math.Between(-300,-400)); //-450,-600
+        bullet.setVelocityX(Phaser.Math.Between(-300 - (25 * difficulty), -400 - (25 * difficulty))); //-450,-600
       }
-      enemy.setVelocityX(Phaser.Math.Between(-100,-300)); //-50,-400
+      enemy.setVelocityX(Phaser.Math.Between(-100 - (25 * difficulty), -300 - (25 * difficulty))); //-50,-400
       enemy.setVelocityY(Phaser.Math.Between(-50,50)); //-50,50
     }
   }
@@ -823,9 +825,9 @@ class BossScene extends Phaser.Scene{
       enemy.update();
       if (enemy){
         let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
-        bullet.setVelocityX(Phaser.Math.Between(-300,-400)); //-500,-700
+        bullet.setVelocityX(Phaser.Math.Between(-300 - (25 * difficulty), -400 - (25 * difficulty))); //-500,-700
       }
-      enemy.setVelocityX(Phaser.Math.Between(-100,-500)); //-100,-500
+      enemy.setVelocityX(Phaser.Math.Between(-100 - (25 * difficulty), -300 - (25 * difficulty))); //-100,-500
       enemy.setVelocityY(Phaser.Math.Between(-50,50)); //-75,75
     }
   }
@@ -837,9 +839,9 @@ class BossScene extends Phaser.Scene{
       enemy.update();
       if (enemy){
         let bullet = this.bullets.create(enemy.x, enemy.y, 'bullet');
-        bullet.setVelocityX(Phaser.Math.Between(-300,-400)); //-600,-800
+        bullet.setVelocityX(Phaser.Math.Between(-300 - (25 * difficulty), -400 - (25 * difficulty))); //-600,-800
       }
-      enemy.setVelocityX(Phaser.Math.Between(-100,-500)); //-200,-600
+      enemy.setVelocityX(Phaser.Math.Between(-100 - (25 * difficulty), -300 - (25 * difficulty))); //-200,-600
       enemy.setVelocityY(Phaser.Math.Between(-50,50)); //-100,100
     }
   }
@@ -851,9 +853,9 @@ class BossScene extends Phaser.Scene{
       enemy.update();
       if (enemy){
         let bullet = this.bullets.create(enemy.x - 50, enemy.y, 'bullet');
-        bullet.setVelocityX(Phaser.Math.Between(-300,-400)); //-700,-900
+        bullet.setVelocityX(Phaser.Math.Between(-300 - (25 * difficulty), -400 - (25 * difficulty))); //-700,-900
       }
-      enemy.setVelocityX(Phaser.Math.Between(-100,-500)); // -400,-700
+      enemy.setVelocityX(Phaser.Math.Between(-100 - (25 * difficulty), -300 - (25 * difficulty))); // -400,-700
       enemy.setVelocityY(Phaser.Math.Between(-50,50)); // //-125,125
     }
   }
@@ -1409,7 +1411,7 @@ class BossScene extends Phaser.Scene{
   endLevel()
   {
     difficulty += 1; //increase difficulty
-    if(difficulty >= 6) //win condition
+    if(difficulty >= 6 && infiniteMode == false) //win condition
     {
       this.theme.stop();
       this.scene.start("winScene");

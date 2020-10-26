@@ -83,5 +83,6 @@ var boss = {
 }
 
 var difficulty = 1;
+var infiniteMode = false;
 
 var game = new Phaser.Game(config);

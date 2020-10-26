@@ -26,11 +26,20 @@ class MainMenu extends Phaser.Scene{
         add.text(585, 542, 'PLAY INFINITE MODE', { fontFamily: 'Bitwise', fontSize: 25, fill: '#ffffff' });
 
         r1.on('pointerup', function (event) {
-        this.scene.start('tutorial');
+            infiniteMode = false;
+            difficulty = 1;
+            this.scene.start('tutorial');
         }, this);
 
         r2.on('pointerup', function (event) {
-        this.scene.start('bossScene');
+            infiniteMode = false;
+            difficulty = 1;
+            this.scene.start('bossScene');
+        }, this);
+
+        r3.on('pointerup', function (event) {
+            infiniteMode = true;
+            this.scene.start('bossScene');
         }, this);
 
         // this.add.text(128, 128, 'This is a test.', {
