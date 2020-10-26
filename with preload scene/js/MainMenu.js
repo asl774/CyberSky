@@ -13,17 +13,17 @@ class MainMenu extends Phaser.Scene{
         add.text(400,205, 'CYBERSKY', { fontFamily: 'Bitwise', fontSize: 100,fill: '#ffffff'});
         // tutorial button
         var r1 = add.rectangle(650, 425, 450, 50, 0x5C2C4F).setInteractive();
-        r1.setStrokeStyle(4, 0xefc53f);
+        r1.setStrokeStyle(4, 0x37092C);
         add.text(550, 412, 'PLAY TUTORIAL', { fontFamily: 'Bitwise', fontSize: 25, fill: '#ffffff' });
 
         // main game button
         var r2 = add.rectangle(650, 490, 450, 50, 0x5C2C4F).setInteractive();
-        r2.setStrokeStyle(4, 0xefc53f);
+        r2.setStrokeStyle(4, 0x37092C);
         add.text(580, 478, 'PLAY GAME', { fontFamily: 'Bitwise', fontSize: 25, fill: '#ffffff' });
 
         // infinite mode button
         var r3 = add.rectangle(650, 555, 450, 50, 0x5C2C4F).setInteractive();
-        r3.setStrokeStyle(4, 0xefc53f);
+        r3.setStrokeStyle(4, 0x37092C);
         add.text(535, 542, 'PLAY INFINITE MODE', { fontFamily: 'Bitwise', fontSize: 25, fill: '#ffffff' });
 
 
@@ -46,11 +46,13 @@ class MainMenu extends Phaser.Scene{
     enterRestState(button)
     {
       button.fillColor = 0x5C2C4F;
+      button.setStrokeStyle(4, 0x37092C);
     }
 
     enterHoverState(button)
     {
       button.fillColor = 0x7B456C;
+      button.setStrokeStyle(4, 0xefc53f);
     }
 
     enterDownState(button)
