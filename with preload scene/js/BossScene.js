@@ -81,8 +81,17 @@ class BossScene extends Phaser.Scene{
     this.trapsfx = this.sound.add('trapsfx')
 
 
-    if (firstLevel) //difficulty == 1 && infiniteMode == false
+    if (firstLevel) {
         this.theme.play();
+        player.sheilded = false;
+        player.multishot = false;
+        player.pierce = false;
+        player.trap = false;
+        player.haste = 0;
+        player.canMultishotAgain = false;
+        player.canPierceAgain = false;
+        player.canTrapAgain = false;
+    }
 
     // background
     this.cameras.main.setBounds(0, 0, 1400 - 40, 560);
