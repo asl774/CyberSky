@@ -212,17 +212,19 @@ class Tutorial extends Phaser.Scene{
     this.stage3Text = this.add.text(2900, 110, "Collecting them will grant you extra abilities, or if collected previously, it will heal you.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage3Text = this.add.text(2900, 130, "Try pressing the Q, W, or E key once you have collected a powerup.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage3Text = this.add.text(2900, 150, "The Haste powerup is not to be underestimated!", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage3Text = this.add.text(2900, 169, "It wont be notcible the first time you pick it up but surely will the more you stack it!", { fontSize: '20px', fill: '#00FF00', align: "center" });
+    this.stage3Text = this.add.text(2900, 169, "It won't be noticeable the first time you pick it up but surely will the more you stack it!", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage3UI = this.add.image(3250, 685, 'PUUI');
 
     this.stage4Text = this.add.text(4300, 50, "Now let's put everything you've learned together.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage4Text = this.add.text(4300, 70, "Here are some tougher enemies to deal with.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage4Text = this.add.text(4300, 90, "Remember to occasionally shield yourself, heal yourself, and collect powerups.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage4Text = this.add.text(4300, 110, "The boss is after this stage!", { fontSize: '20px', fill: '#00FF00', align: "center" });
+    this.stage4UI = this.add.image(4650, 685, 'PUUI');
 
     this.bossHPText = this.add.text(5610, 10, "Boss HP: " + tutorialboss.healthPercent, { fontSize: '20px', fill: '#000000', align: "center" });
     this.bossStageText = this.add.text(5700, 50, "Give it all you've got and take out the big, bad dino!!!", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.bossStageText = this.add.text(5700, 70, "Touch the treasure chest to start the main game!", { fontSize: '20px', fill: '#00FF00', align: "center" });
+    this.bossStageUI = this.add.image(6050, 685, 'PUUI');
   }
 
   update()
@@ -463,7 +465,30 @@ class Tutorial extends Phaser.Scene{
       let playery = player.sprite.y;
       let ptrap = this.playertrap.create(playerx, playery, 'trap');
       }
-
+    //press v to heal - this should go somewhere else
+    else if(Phaser.Input.Keyboard.JustDown(this.akey) && player.health < 100 && player.canHealAgain)
+    {
+      this.healTimer.isPaused = false;
+      player.canHealAgain = false;
+      this.healthUp.play();
+      if(player.health > 80)
+      {
+        player.health = 100;
+        player.healthPercent = 100;
+      } else {
+        player.health += 20;
+        player.healthPercent += 20;
+      }
+      this.setValue(player.healthBar, player.healthPercent);
+      console.log("player health is : " + player.health);
+    }
+    //press S to shield
+    else if(Phaser.Input.Keyboard.JustDown(this.skey) && !player.shielded)
+    {
+      this.shieldUp.play();
+      player.shielded = true;
+      console.log("player shield is active");
+    }
 
     //press d key to teleport 100 pixels in direction of arrow key
     else if (Phaser.Input.Keyboard.JustDown(this.dkey))
@@ -492,7 +517,7 @@ class Tutorial extends Phaser.Scene{
       let pbullet = this.playerbullets.create(playerx, playery, 'star1');
       pbullet.setVelocityX(200);
     }
-    */
+
     //press s to throw extra star2
     else if (Phaser.Input.Keyboard.JustDown(this.ckey))
     {
@@ -511,33 +536,7 @@ class Tutorial extends Phaser.Scene{
       let pbullet = this.playerbullets.create(playerx, playery, 'star3');
       pbullet.setVelocityX(200);
     }
-
-
-
-    //press v to heal - this should go somewhere else
-    else if(Phaser.Input.Keyboard.JustDown(this.akey) && player.health < 100 && player.canHealAgain)
-    {
-      this.healTimer.isPaused = false;
-      player.canHealAgain = false;
-      this.healthUp.play();
-      if(player.health > 80)
-      {
-        player.health = 100;
-        player.healthPercent = 100;
-      } else {
-        player.health += 20;
-        player.healthPercent += 20;
-      }
-      this.setValue(player.healthBar, player.healthPercent);
-      console.log("player health is : " + player.health);
-    }
-    //press S to shield
-    else if(Phaser.Input.Keyboard.JustDown(this.skey) && !player.shielded)
-    {
-      this.shieldUp.play();
-      player.shielded = true;
-      console.log("player shield is active");
-    }
+    */
 
   }
 
@@ -994,6 +993,7 @@ class Tutorial extends Phaser.Scene{
   moveToGame()
   {
     this.tutorialtheme.stop();
+    firstLevel = true;
     this.scene.start('bossScene');
   }
 

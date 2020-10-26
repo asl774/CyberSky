@@ -134,7 +134,11 @@ class BossScene extends Phaser.Scene{
     this.powerup3 = this.physics.add.group();
     this.powerup4 = this.physics.add.group();
     // ---- ui for pu-----//
-    this.puui =this.add.image(500, 685, 'PUUI');
+    this.puui = this.add.image(500, 685, 'PUUI');
+    this.puui2 = this.add.image(1900, 685, 'PUUI');
+    this.puui3 = this.add.image(3400, 685, 'PUUI');
+    this.puui4 = this.add.image(4700, 685, 'PUUI');
+    this.puui4 = this.add.image(6000, 685, 'PUUI');
 
     //barrier
     this.barrier0 = this.physics.add.sprite(0, 300, 'barrier');
@@ -224,6 +228,7 @@ class BossScene extends Phaser.Scene{
     this.lkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     //timer testing
     this.timer = this.time.addEvent({delay : 2500, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
+    this.yakuzaTimer = this.time.addEvent({delay : 1000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 2500, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
     this.waveAttackTimer = this.time.addEvent({delay : 4000, callback: this.waveAttack, callbackScope: this, loop: true, paused: false }); //2500
     this.waveCreateTimer = this.time.addEvent({delay : 2000, callback: this.createWave, callbackScope: this, loop: true, paused: false }); //1500
@@ -417,7 +422,10 @@ class BossScene extends Phaser.Scene{
       boss.healthBar.setVisible(true);
       boss.sprite.setVisible(true);
       boss.sprite.x -= boss.speed * 2;
-      this.timer.paused = false;
+      if (difficulty != 3)
+        this.timer.paused = false;
+      if (difficulty == 3)
+        this.yakuzaTimer.paused = false;
     }
     if (boss.sprite.x < 7000 + 150 && boss.sprite.x > 7000 + 140){ //this.sys.game.config.width
       this.dinogrowl.play();
@@ -434,7 +442,10 @@ class BossScene extends Phaser.Scene{
       boss.sprite.disableBody(true, true);
       boss.sprite.setActive(false);
       boss.sprite.setVisible(false);
-      this.timer.paused = true;
+      if (difficulty != 3)
+        this.timer.paused = true;
+      if (difficulty == 3)
+        this.yakuzaTimer.paused = true;
     }
     //ability three
     if (this.timer.getProgress().toString().substr(0,4) < 0.4){
@@ -455,7 +466,7 @@ class BossScene extends Phaser.Scene{
       pbullet.setVelocityX(800);
     }
     //press z key to throw 3 stars
-    else if (Phaser.Input.Keyboard.JustDown(this.ckey) && player.multishot == true && player.canMultishotAgain)
+    else if (Phaser.Input.Keyboard.JustDown(this.qkey) && player.multishot == true && player.canMultishotAgain)
     {
       this.abilityTimer1.isPaused = false;
       player.canMultishotAgain = false;
