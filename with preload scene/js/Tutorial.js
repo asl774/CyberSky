@@ -54,6 +54,7 @@ class Tutorial extends Phaser.Scene{
   {
     this.input.once('pointerup', function (event) {
     this.tutorialtheme.stop();
+    firstLevel = true;
     this.scene.start('bossScene');
     }, this);
 
