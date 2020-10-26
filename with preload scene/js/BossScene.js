@@ -147,7 +147,7 @@ class BossScene extends Phaser.Scene{
     this.puui2 = this.add.image(1900, 685, 'PUUI');
     this.puui3 = this.add.image(3400, 685, 'PUUI');
     this.puui4 = this.add.image(4700, 685, 'PUUI');
-    this.puui4 = this.add.image(6000, 685, 'PUUI');
+    this.puui5 = this.add.image(6100, 685, 'PUUI');
 
     //barrier
     this.barrier0 = this.physics.add.sprite(0, 300, 'barrier');
