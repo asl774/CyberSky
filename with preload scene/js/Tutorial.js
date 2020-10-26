@@ -213,18 +213,18 @@ class Tutorial extends Phaser.Scene{
     this.stage3Text = this.add.text(2900, 130, "Try pressing the Q, W, or E key once you have collected a powerup.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage3Text = this.add.text(2900, 150, "The Haste powerup is not to be underestimated!", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage3Text = this.add.text(2900, 169, "It won't be noticeable the first time you pick it up but surely will the more you stack it!", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage3UI = this.add.image(3250, 685, 'PUUI');
+    this.stage3UI = this.add.image(3300, 685, 'PUUI');
 
     this.stage4Text = this.add.text(4300, 50, "Now let's put everything you've learned together.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage4Text = this.add.text(4300, 70, "Here are some tougher enemies to deal with.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage4Text = this.add.text(4300, 90, "Remember to occasionally shield yourself, heal yourself, and collect powerups.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage4Text = this.add.text(4300, 110, "The boss is after this stage!", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage4UI = this.add.image(4650, 685, 'PUUI');
+    this.stage4UI = this.add.image(4700, 685, 'PUUI');
 
     this.bossHPText = this.add.text(5610, 10, "Boss HP: " + tutorialboss.healthPercent, { fontSize: '20px', fill: '#000000', align: "center" });
     this.bossStageText = this.add.text(5700, 50, "Give it all you've got and take out the big, bad dino!!!", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.bossStageText = this.add.text(5700, 70, "Touch the treasure chest to start the main game!", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.bossStageUI = this.add.image(6050, 685, 'PUUI');
+    this.bossStageUI = this.add.image(6100, 685, 'PUUI');
   }
 
   update()
@@ -413,10 +413,10 @@ class Tutorial extends Phaser.Scene{
     //ability three
     if (this.timer.getProgress().toString().substr(0,4) < 0.4){
       if (this.timer2.getProgress().toString().substr(0,4) >= 0.05 && this.timer2.getProgress().toString().substr(0,4) <= 0.25){
-        this.physics.moveToObject(tutorialboss.sprite, player.sprite, 800);
+        this.physics.moveToObject(tutorialboss.sprite, player.sprite, 790);
       }
       else if (this.timer2.getProgress().toString().substr(0,4) > 0.25 && this.timer2.getProgress().toString().substr(0,4) <= 0.5){
-        this.physics.moveToObject(tutorialboss.sprite, this.tutorialtreasure, 800);
+        this.physics.moveToObject(tutorialboss.sprite, this.tutorialtreasure, 790);
       }
     }
     //press spacebar to throw star
@@ -779,7 +779,7 @@ class Tutorial extends Phaser.Scene{
     console.log("using ability one");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    for(let i = 0; i < 10; i++)
+    for(let i = 0; i < 3; i++)
     {
       let x = tutorialboss.sprite.x;
       let y = Phaser.Math.Between(tutorialboss.sprite.y - 300, tutorialboss.sprite.y + 300); //can and should randomize this
