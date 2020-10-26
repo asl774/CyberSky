@@ -53,7 +53,7 @@ class BossScene extends Phaser.Scene{
   create()
   {
     this.input.once('pointerup', function (event) {
-    this.theme.stop();
+    this.sound.stopAll();
     this.scene.start('mainMenu');
     }, this);
 
@@ -79,7 +79,7 @@ class BossScene extends Phaser.Scene{
     this.deathSound = this.sound.add('death');
     this.hasteSound = this.sound.add('hastesfx');
 
-    if (difficulty == 1)
+    if (firstLevel) //difficulty == 1 && infiniteMode == false
         this.theme.play();
 
     // background
@@ -153,8 +153,10 @@ class BossScene extends Phaser.Scene{
     this.treasure = this.physics.add.sprite(7000 - 70, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
     //boss
-    if (infiniteMode == true)
+    if (infiniteMode == true){
+        //this.theme.play();
         difficulty = Phaser.Math.Between(1,4);
+    }
     if (difficulty == 1 || difficulty == 5)
         boss.sprite = this.physics.add.sprite(7150,300, 'boss'); //boss
     else if (difficulty == 2)
@@ -293,7 +295,7 @@ class BossScene extends Phaser.Scene{
     //check if player is alive
 
     if (!player.isAlive) {
-      this.theme.stop();
+      this.sound.stopAll();
       this.scene.start("loseScene");
     }
     // check for active input
@@ -1391,7 +1393,7 @@ class BossScene extends Phaser.Scene{
 
   gameOver()
   {
-    this.theme.stop();
+    this.sound.stopAll();
     this.deathSound.play();
     this.scene.start("loseScene");
     // flag to set player is dead
@@ -1411,11 +1413,13 @@ class BossScene extends Phaser.Scene{
   endLevel()
   {
     difficulty += 1; //increase difficulty
+    firstLevel = false;
     if(difficulty >= 6 && infiniteMode == false) //win condition
     {
-      this.theme.stop();
+      this.sound.stopAll();
       this.scene.start("winScene");
-    } else {
+    } 
+    else {
       this.scene.restart(); //start level over
     }
   }

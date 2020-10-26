@@ -30,17 +30,17 @@ class MainMenu extends Phaser.Scene{
         r1.on('pointerover', () => this.enterHoverState(r1));
         r1.on('pointerout', () => this.enterRestState(r1));
         r1.on('pointerdown', () => this.enterDownState(r1));
-        r1.on('pointerup', () => this.changeScenes('tutorial', false));
+        r1.on('pointerup', () => this.changeScenes('tutorial', false, false));
 
         r2.on('pointerover', () => this.enterHoverState(r2));
         r2.on('pointerout', () => this.enterRestState(r2));
         r2.on('pointerdown', () => this.enterDownState(r2));
-        r2.on('pointerup', () => this.changeScenes('bossScene', false));
+        r2.on('pointerup', () => this.changeScenes('bossScene', false, true));
 
         r3.on('pointerover', () => this.enterHoverState(r3));
         r3.on('pointerout', () => this.enterRestState(r3));
         r3.on('pointerdown', () => this.enterDownState(r3));
-        r3.on('pointerup', () => this.changeScenes('bossScene', true));
+        r3.on('pointerup', () => this.changeScenes('bossScene', true, true));
     }
 
     enterRestState(button)
@@ -60,9 +60,10 @@ class MainMenu extends Phaser.Scene{
       button.fillColor = 0x37092C;
     }
 
-    changeScenes(sceneName, infinite)
+    changeScenes(sceneName, infinite, first)
     {
       infiniteMode = infinite;
+      firstLevel = first;
       if(!infinite) { difficulty = 1; }
       this.scene.start(sceneName);
     }
