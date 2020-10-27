@@ -235,6 +235,7 @@ class BossScene extends Phaser.Scene{
     this.bkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
     this.kkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
     this.lkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
+    this.pkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
     //timer testing
     this.timer = this.time.addEvent({delay : 2500, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.yakuzaTimer = this.time.addEvent({delay : 1000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
@@ -314,7 +315,9 @@ class BossScene extends Phaser.Scene{
     //check if player is alive
 
     if (!player.isAlive) {
+      this.deathSound.play();
       this.sound.stopAll();
+      this.deathSound.play();
       this.scene.start("loseScene");
     }
     // check for active input
@@ -555,6 +558,23 @@ class BossScene extends Phaser.Scene{
       console.log("player shield is active");
     }
 
+    else if(Phaser.Input.Keyboard.JustDown(this.pkey) && gamePaused == false)
+    {
+        gamePaused = true;
+        this.theme.pause();
+        this.scene.pause("bossScene");
+        this.scene.launch("pauseScene");
+    }
+    if (gamePaused == false){
+        this.theme.resume();
+    }
+    /*
+    else if(Phaser.Input.Keyboard.JustDown(this.pkey) && gamePaused == true)
+    {
+        this.theme.resume();
+        game.scene.resume("bossScene");
+    }
+    */
     /*
     //press a to throw extra star1
     else if (Phaser.Input.Keyboard.JustDown(this.akey))
@@ -1436,6 +1456,7 @@ class BossScene extends Phaser.Scene{
 
   gameOver()
   {
+    this.deathSound.play();
     this.sound.stopAll();
     this.deathSound.play();
     this.scene.start("loseScene");
