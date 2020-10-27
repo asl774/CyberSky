@@ -40,7 +40,7 @@ class MainMenu extends Phaser.Scene{
         r3.on('pointerover', () => this.enterHoverState(r3));
         r3.on('pointerout', () => this.enterRestState(r3));
         r3.on('pointerdown', () => this.enterDownState(r3));
-        r3.on('pointerup', () => this.changeScenes('bossScene', true, true));
+        r3.on('pointerup', () => this.changeScenes('infiniteScene', true, true));
     }
 
     enterRestState(button)
@@ -64,7 +64,12 @@ class MainMenu extends Phaser.Scene{
     {
       infiniteMode = infinite;
       firstLevel = first;
-      if(!infinite) { difficulty = 1; }
+      if(!infinite) { 
+        difficulty = 1; 
+      }
+      else {
+        difficulty = 5;
+      }
       this.scene.start(sceneName);
     }
 

@@ -10,7 +10,7 @@ var config = {
         debug: false
       }
   },
-  scene: [PreloadScene, MainMenu, Tutorial, BossScene, PauseScene, WinScene, LoseScene, Credits]
+  scene: [PreloadScene, MainMenu, Tutorial, BossScene, InfiniteScene, PauseScene, WinScene, LoseScene, Credits]
 }
 var tutorialplayer = {
   speed: 10,
@@ -88,5 +88,6 @@ var difficulty = 1;
 var infiniteMode = false;
 var firstLevel = false;
 var gamePaused = false;
+var bossNumber = 0;
 
 var game = new Phaser.Game(config);
