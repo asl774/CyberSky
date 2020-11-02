@@ -26,6 +26,12 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('background9', 'assets/cyberpunk-tokyo.png');
       this.load.image('background10', 'assets/cyberpunk-day.png');
       this.load.image('backgroun11', 'assets/recolor-street.png');
+      this.load.image('background12', 'assets/cyberpunk-day3.png');
+      this.load.image('background13', 'assets/cyberpunk-day3-boss.png');
+      this.load.image('background14', 'assets/recolor-street3.png');
+      this.load.image('background15', 'assets/recolor-street3-boss.png');
+      this.load.image('background16', 'assets/cyberpunk-tokyo3.png');
+      this.load.image('background17', 'assets/cyberpunk-tokyo3-boss.png');
       this.load.image('endBG', 'assets/dead.png');
       this.load.image('player', 'assets/player.png');
       this.load.image('dragon', 'assets/dragon.png');

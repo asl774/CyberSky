@@ -99,23 +99,23 @@ class BossScene extends Phaser.Scene{
     var randNum = Math.random();
     if (randNum > 0 && randNum <= 0.25) //0,0.33
     {
-      this.add.image(0, 0, 'background1').setOrigin(0);
-      this.add.image(5600, 0, 'background2').setOrigin(0);
+      this.add.image(0, 0, 'background12').setOrigin(0);     //background1
+      this.add.image(5600, 0, 'background13').setOrigin(0);   //background2
     }
     else if (randNum > 0.25 && randNum <= 0.5) //0,0.33
     {
-      this.add.image(0, 0, 'background3').setOrigin(0);
-      this.add.image(5600, 0, 'background4').setOrigin(0);
+      this.add.image(0, 0, 'background14').setOrigin(0);      //background3
+      this.add.image(5600, 0, 'background15').setOrigin(0);   //background4
     }
     else if (randNum > 0.5 && randNum <= 0.75) //0,0.33
     {
-      this.add.image(0, 0, 'background5').setOrigin(0);
-      this.add.image(5600, 0, 'background6').setOrigin(0);
+      this.add.image(0, 0, 'background16').setOrigin(0);      //background5
+      this.add.image(5600, 0, 'background17').setOrigin(0);   //background6
     }
     else if (randNum > 0.75 && randNum <= 1)
     {
-      this.add.image(0, 0, 'background7').setOrigin(0);
-      this.add.image(5600, 0, 'background8').setOrigin(0);
+      this.add.image(0, 0, 'background7').setOrigin(0);     
+      this.add.image(5600, 0, 'background8').setOrigin(0);     
     }
     //boss health bar
     boss.healthBar = this.makeBar(5600,0,0xe74c3c);
