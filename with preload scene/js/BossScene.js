@@ -582,6 +582,10 @@ class BossScene extends Phaser.Scene{
 
     else if(Phaser.Input.Keyboard.JustDown(this.pkey) && gamePaused == false)
     {
+        this.cursors.right.reset();
+        this.cursors.left.reset();
+        this.cursors.up.reset();
+        this.cursors.down.reset();
         gamePaused = true;
         this.theme.pause();
         this.scene.pause("bossScene");
