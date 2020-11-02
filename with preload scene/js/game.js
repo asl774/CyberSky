@@ -89,5 +89,6 @@ var infiniteMode = false;
 var firstLevel = false;
 var gamePaused = false;
 var bossNumber = 0;
+var backgrounds = []; //TODO: add the backgrounds to this in preload and randomly pick from it 
 
 var game = new Phaser.Game(config);
