@@ -87,7 +87,8 @@ var boss = {
 var difficulty = 1;
 var infiniteMode = false;
 var firstLevel = false;
-var gamePaused = false;
+var bossScenePaused = false;
+var infiniteScenePaused = false;
 var bossNumber = 0;
 
 var game = new Phaser.Game(config);

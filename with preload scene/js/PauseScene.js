@@ -22,9 +22,19 @@ class PauseScene extends Phaser.Scene{
   update(){
       if (Phaser.Input.Keyboard.JustDown(this.pkey))
       {
-        this.scene.stop();
-        gamePaused = false;
-        this.scene.resume('bossScene');
+        if (infiniteScenePaused){
+          console.log("got to this point");
+          this.scene.stop();
+          infiniteScenePaused = false;
+          this.scene.resume('infiniteScene');
+        }
+        else{
+          this.scene.stop();
+          bossScenePaused = false;
+          this.scene.resume('bossScene');
+        }
       }
+
+
   }
 }

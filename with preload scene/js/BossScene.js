@@ -580,18 +580,18 @@ class BossScene extends Phaser.Scene{
       console.log("player shield is active");
     }
 
-    else if(Phaser.Input.Keyboard.JustDown(this.pkey) && gamePaused == false)
+    else if(Phaser.Input.Keyboard.JustDown(this.pkey) && bossScenePaused == false)
     {
         this.cursors.right.reset();
         this.cursors.left.reset();
         this.cursors.up.reset();
         this.cursors.down.reset();
-        gamePaused = true;
+        bossScenePaused = true;
         this.theme.pause();
         this.scene.pause("bossScene");
         this.scene.launch("pauseScene");
     }
-    if (gamePaused == false){
+    if (bossScenePaused == false){
         this.theme.resume();
     }
     /*

@@ -522,14 +522,19 @@ class InfiniteScene extends Phaser.Scene{
       console.log("player shield is active");
     }
 
-    else if(Phaser.Input.Keyboard.JustDown(this.pkey) && gamePaused == false)
+    else if(Phaser.Input.Keyboard.JustDown(this.pkey) && infiniteScenePaused == false)
     {
-        gamePaused = true;
+        this.cursors.right.reset();
+        this.cursors.left.reset();
+        this.cursors.up.reset();
+        this.cursors.down.reset();
+        infiniteScenePaused = true;
         this.theme.pause();
-        this.scene.pause("bossScene");
+        this.scene.pause("infiniteScene");
         this.scene.launch("pauseScene");
+        console.log("got here?");
     }
-    if (gamePaused == false){
+    if (infiniteScenePaused == false){
         this.theme.resume();
     }
 
