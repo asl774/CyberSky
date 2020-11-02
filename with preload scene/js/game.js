@@ -2,7 +2,7 @@
 var config = {
   type: Phaser.AUTO,
   width: window.innerWidth, //640 1400 window.innerWidth
-  height: 800, //360 600 window.innerHeight
+  height: window.innerHeight, //360 600 window.innerHeight
   physics: { //needed for physics to work in game
     default: 'arcade',
     arcade: {
