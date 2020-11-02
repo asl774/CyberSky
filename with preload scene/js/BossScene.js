@@ -143,11 +143,21 @@ class BossScene extends Phaser.Scene{
     this.powerup3 = this.physics.add.group();
     this.powerup4 = this.physics.add.group();
     // ---- ui for pu-----//
-    this.puui = this.add.image(500, 685, 'PUUI');
-    this.puui2 = this.add.image(1900, 685, 'PUUI');
-    this.puui3 = this.add.image(3400, 685, 'PUUI');
-    this.puui4 = this.add.image(4700, 685, 'PUUI');
-    this.puui5 = this.add.image(6100, 685, 'PUUI');
+    //this.puui = this.add.image(500, 685, 'PUUI');
+    //this.puui2 = this.add.image(1900, 685, 'PUUI');
+    //this.puui3 = this.add.image(3400, 685, 'PUUI');
+    //this.puui4 = this.add.image(4700, 685, 'PUUI');
+    //this.puui5 = this.add.image(6100, 685, 'PUUI');
+
+    this.powerupBar = this.makePowerupBar(350, 0, 0xffffff);
+    this.powerupIcon1 = this.add.image(480, 24, "multishotPU");
+    this.powerupIcon2 = this.add.image(530, 24, "piercePU");
+    this.powerupIcon3 = this.add.image(580, 27, "trapPU");
+    this.powerupIcon4 = this.add.image(630, 25, "hastePU");
+    this.powerupIcon1.setVisible(false);
+    this.powerupIcon2.setVisible(false);
+    this.powerupIcon3.setVisible(false);
+    this.powerupIcon4.setVisible(false);
 
     //barrier
     this.barrier0 = this.physics.add.sprite(0, 300, 'barrier');
@@ -256,14 +266,26 @@ class BossScene extends Phaser.Scene{
     //this.timerText = this.add.text(6000, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     //this.text = this.add.text(6000,150,"");
 
-    this.levelText = this.add.text(100, 10, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.levelText2 = this.add.text(1500, 10, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.levelText3 = this.add.text(2900, 10, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.levelText4 = this.add.text(4300, 10, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.numKillsText = this.add.text(100, 25, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.numKillsText2 = this.add.text(1500, 25, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.numKillsText3 = this.add.text(2900, 25, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.numKillsText4 = this.add.text(4300, 25, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.levelText = this.add.text(100, 0, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.levelText2 = this.add.text(1500, 0, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.levelText3 = this.add.text(2900, 0, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.levelText4 = this.add.text(4300, 0, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.numKillsText = this.add.text(100, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.numKillsText2 = this.add.text(1500, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.numKillsText3 = this.add.text(2900, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.numKillsText4 = this.add.text(4300, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.powerupBarText = this.add.text(350, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
+    this.powerupBarText2 = this.add.text(1750, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
+    this.powerupBarText3 = this.add.text(3150, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
+    this.powerupBarText4 = this.add.text(4550, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
+    this.powerupText = this.add.text(478, 0, "Q", { fontSize: 'bold 12px', fill: '#000000', align: "center" });
+    this.powerupText2 = this.add.text(529, 0, "W", { fontSize: 'bold 12px', fill: '#000000', align: "center" });
+    this.powerupText3 = this.add.text(579, 0, "E", { fontSize: 'bold 12px', fill: '#000000', align: "center" });
+    this.powerupText4 = this.add.text(620, 0, "N/A", { fontSize: 'bold 12px', fill: '#000000', align: "center" });
+    this.powerupText.setVisible(false);
+    this.powerupText2.setVisible(false);
+    this.powerupText3.setVisible(false);
+    this.powerupText4.setVisible(false);
     this.bossHPText = this.add.text(5610, 10, "Boss HP: " + boss.healthPercent, { fontSize: '20px', fill: '#000000', align: "center" });
     /*
     this.timer3Text = this.add.text(100, 100, "wave1 attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
@@ -658,6 +680,20 @@ class BossScene extends Phaser.Scene{
     bar.fillStyle(color, 1);
     //fill the bar with a rectangle
     bar.fillRect(0, 0, 50, 10);
+    //position the bar
+    bar.x = x;
+    bar.y = y;
+    //return the bar
+    return bar;
+  }
+
+  makePowerupBar(x, y, color){
+    //draw the bar
+    let bar = this.add.graphics();
+    //color the bar
+    bar.fillStyle(color, 1);
+    //fill the bar with a rectangle
+    bar.fillRect(0, 0, 300, 40);
     //position the bar
     bar.x = x;
     bar.y = y;
@@ -1294,6 +1330,8 @@ class BossScene extends Phaser.Scene{
   powerupOne(p, powerup1){
     powerup1.destroy();
     player.multishot = true;
+    this.powerupIcon1.setVisible(true);
+    this.powerupText.setVisible(true);
     if(player.health > 90)
     {
       player.health = 100;
@@ -1307,6 +1345,8 @@ class BossScene extends Phaser.Scene{
   powerupTwo(p, powerup2){
     powerup2.destroy();
     player.pierce = true;
+    this.powerupIcon2.setVisible(true);
+    this.powerupText2.setVisible(true);
     if(player.health > 90)
     {
       player.health = 100;
@@ -1320,6 +1360,8 @@ class BossScene extends Phaser.Scene{
   powerupThree(p, powerup3){
     powerup3.destroy();
     player.trap = true;
+    this.powerupIcon3.setVisible(true);
+    this.powerupText3.setVisible(true);
     if(player.health > 90)
     {
       player.health = 100;
@@ -1332,7 +1374,9 @@ class BossScene extends Phaser.Scene{
   }
   powerupFour(p, powerup4){
     powerup4.destroy();
-    this.hastesound.play()
+    this.hastesound.play();
+    this.powerupIcon4.setVisible(true);
+    this.powerupText4.setVisible(true);
     if (player.haste >= 900){
       if(player.health > 90)
       {
