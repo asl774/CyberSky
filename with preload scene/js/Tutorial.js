@@ -52,11 +52,13 @@ class Tutorial extends Phaser.Scene{
 
   create()
   {
+/*
     this.input.once('pointerup', function (event) {
       this.tutorialtheme.stop();
       firstLevel = true;
       this.scene.start('bossScene');
     }, this);
+*/
 
     //audio
     this.tutorialtheme = this.sound.add('tutorialtheme', {volume: 0.5});
@@ -182,6 +184,15 @@ class Tutorial extends Phaser.Scene{
     this.healTimer = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
 
     //TODO: edit this into more specific stages
+    this.stage1Text1 = this.add.text(350, 30, "Use ARROW KEYS to move", { fontSize: '20px', fill: '#00FF00', align: "center" });
+    this.stage1Text2 = this.add.text(350, 45, "SPACEBAR to attack", { fontSize: '20px', fill: '#00FF00', align: "center" });
+    this.stage1Text3 = this.add.text(350, 60, "Press A to recover health", { fontSize: '20px', fill: '#00FF00', align: "center" }).setAlpha(0);
+    this.stage1Text4 = this.add.text(350, 75, "Press S to shield", { fontSize: '20px', fill: '#00FF00', align: "center" }).setAlpha(0);
+    this.stage1Text5 = this.add.text(350, 90, "Press D + ARROW KEY to dash", { fontSize: '20px', fill: '#00FF00', align: "center" }).setAlpha(0);
+   
+
+
+    /*
     this.stage1Text = this.add.text(10, 30, "(Click to skip tutorial)", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage1Text = this.add.text(10, 50, "Hello and welcome to CyberSky. I will be your instructor.", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage1Text = this.add.text(10, 70, "First, let's take out 10 enemies to work on your aim.", { fontSize: '20px', fill: '#00FF00', align: "center" });
@@ -211,7 +222,7 @@ class Tutorial extends Phaser.Scene{
     this.bossStageText = this.add.text(5700, 50, "Give it all you've got and take out the big, bad dino!!!", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.bossStageText = this.add.text(5700, 70, "Touch the treasure chest to start the main game!", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.bossStageUI = this.add.image(6100, 685, 'PUUI');
-
+    */
 
     this.createStage1();
   }
@@ -219,7 +230,7 @@ class Tutorial extends Phaser.Scene{
   update()
   {
     this.setHealthBarPosition(player.healthBar, player.sprite.x - 25, player.sprite.y - 40);
-    this.bossHPText.setText("Boss HP: " + tutorialboss.healthPercent.toString().substr(0,4));
+    //this.bossHPText.setText("Boss HP: " + tutorialboss.healthPercent.toString().substr(0,4));
 
     if (!player.isAlive) {
       this.gameOver();
@@ -238,6 +249,56 @@ class Tutorial extends Phaser.Scene{
     }
 
     //stage 1 enemies
+    if(this.numEnemiesKilled >= 1){
+        this.tweens.add({
+          targets: this.stage1Text1,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+        });
+        this.tweens.add({
+          targets: this.stage1Text2,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+        });
+    }
+    if(this.numEnemiesKilled >= 1){
+        this.tweens.add({
+          targets: this.stage1Text3,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+        });
+    }
+    if(this.numEnemiesKilled >= 2){
+        this.tweens.add({
+          targets: this.stage1Text3,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+        });
+        this.tweens.add({
+          targets: this.stage1Text4,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+        });
+    }
+    if(this.numEnemiesKilled >= 3){
+        this.tweens.add({
+          targets: this.stage1Text4,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+        });
+        this.tweens.add({
+          targets: this.stage1Text5,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+        });
+    }
     if(this.numEnemiesKilled == 4 )
     {
       this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
@@ -454,6 +515,7 @@ class Tutorial extends Phaser.Scene{
     {
       this.shieldUp.play();
       player.shielded = true;
+      player.sprite.setTexture('shield');
       console.log("player shield is active");
     }
 
@@ -744,6 +806,7 @@ class Tutorial extends Phaser.Scene{
     if(player.shielded)
     {
       player.shielded = false;
+      player.sprite.setTexture('ninja');
       console.log("player had a shield");
       return;
     }
