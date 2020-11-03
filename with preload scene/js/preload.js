@@ -42,6 +42,7 @@ class PreloadScene extends Phaser.Scene{
 
       //this.load.image('ninja', 'assets/blockninja2.png');
       this.load.image('ninja', 'assets/blockninja.png');
+      this.load.image('shield', 'assets/blockninjashielded2.png');
       //this.load.image('ninja', 'assets/blockninjaold.png');
       //this.load.image('enemy1', 'assets/blockninjaold2.png');
       //this.load.image('enemy2', 'assets/blockninja3.png');

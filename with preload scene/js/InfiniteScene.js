@@ -77,7 +77,7 @@ class InfiniteScene extends Phaser.Scene{
 
     if (firstLevel) {
         this.theme.play();
-        player.sheilded = false;
+        player.shielded = false;
         player.multishot = false;
         player.pierce = false;
         player.trap = false;
@@ -370,11 +370,11 @@ class InfiniteScene extends Phaser.Scene{
     for (var i = 0; i < this.wave1.getChildren().length; i++) {
       var enemy = this.wave1.getChildren()[i];
       enemy.update();
-      if (enemy.x < this.physics.world.bounds.x){
-        enemy.x = this.enemyx - 1400; // - 1400
+      if (enemy.x <= this.worldsX){
+        enemy.x = this.enemyx; // - 1400
       }
       if (enemy.y < this.enemyMinY || enemy.y > this.enemyMaxY){
-        enemy.x = this.enemyx - 1400;
+        enemy.x = this.enemyx; // - 1400
         enemy.y = Phaser.Math.Between(100, 500);
       }
     }
@@ -519,6 +519,7 @@ class InfiniteScene extends Phaser.Scene{
     {
       this.shieldUp.play();
       player.shielded = true;
+      player.sprite.setTexture('shield');
       console.log("player shield is active");
     }
 
@@ -1112,6 +1113,7 @@ class InfiniteScene extends Phaser.Scene{
     if(player.shielded)
     {
       player.shielded = false;
+      player.sprite.setTexture('ninja');
       console.log("player had a shield");
       return;
     }
