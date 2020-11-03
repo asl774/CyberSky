@@ -360,6 +360,9 @@ class BossScene extends Phaser.Scene{
       this.deathSound.play();
       this.scene.start("loseScene");
     }
+    if (player.shielded){
+      player.sprite.setTexture('shield');
+    }
     // check for active input
     if (this.cursors.right.isDown) {
       // player walks
