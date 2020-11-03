@@ -36,10 +36,12 @@ class Tutorial extends Phaser.Scene{
       player.pierce = false;
       //player.kaboom = false;
       player.trap = false;
+      player.hasteCollected = false;
+      this.haste = false;
 
     tutorialboss.speed = 2;
     tutorialboss.health = 100;
-    tutorialboss.minX = 6700;
+    tutorialboss.minX = 2500; //6700
     tutorialboss.isAlive = true;
     tutorialboss.healthPercent = 100;
     tutorialboss.healthBar = 0;
@@ -47,6 +49,12 @@ class Tutorial extends Phaser.Scene{
     this.enemyx = 1400;
     this.enemyWave = 1;
     this.worldsX = 0;
+
+    this.createdPowerup1 = false;
+    this.createdPowerup2 = false;
+    this.createdPowerup3 = false;
+    this.createdPowerup4 = false;
+    this.createdPowerup5 = false;
   }
 
 
@@ -67,6 +75,7 @@ class Tutorial extends Phaser.Scene{
     this.ability2 = this.sound.add('ability2', {volume: 0.5});
     this.ability3 = this.sound.add('ability3');
     this.dinogrowl = this.sound.add('dinogrowl');
+    this.blocyell = this.sound.add('bloc');
     this.throwstar = this.sound.add('throwstar');
     this.teleport = this.sound.add('teleport');
     this.throwtriplestar = this.sound.add('throwtriplestar');
@@ -82,7 +91,7 @@ class Tutorial extends Phaser.Scene{
     this.add.image(0, 0, 'background1').setOrigin(0);
     this.add.image(5600, 0, 'background2').setOrigin(0);
     //boss health bar
-    tutorialboss.healthBar = this.makeBar(this.sys.game.config.width, 30, 5600,0,0xe74c3c);
+    tutorialboss.healthBar = this.makeBar(this.sys.game.config.width, 30, 1400,0,0xe74c3c); //5600
     this.setValue(tutorialboss.healthBar, 100);
     tutorialboss.healthBar.setVisible(false);
     // player
@@ -105,18 +114,19 @@ class Tutorial extends Phaser.Scene{
     this.tutorialpowerup1 = this.physics.add.group();
     this.tutorialpowerup2 = this.physics.add.group();
     this.tutorialpowerup3 = this.physics.add.group();
+    this.tutorialpowerup4 = this.physics.add.group();
     //this.tutorialpowerup4 = this.physics.add.group();
     //barrier
     this.barrier = this.physics.add.sprite(1400, 300, 'barrier');
     this.barrier2 = this.physics.add.sprite(1400 * 2, 300, 'barrier');
     this.barrier3 = this.physics.add.sprite(1400 * 3, 300, 'barrier');
     this.barrier4 = this.physics.add.sprite(1400 * 4, 300, 'barrier');
-    this.barrier5 = this.physics.add.sprite(6470, 300, 'barrier');
+    this.barrier5 = this.physics.add.sprite(6470, 300, 'barrier'); //6470
     // goal / end of level
-    this.tutorialtreasure = this.physics.add.sprite(7000 - 70, this.sys.game.config.height / 2, 'treasure');
+    this.tutorialtreasure = this.physics.add.sprite(2800 - 70, this.sys.game.config.height / 2, 'treasure'); //7000
     this.tutorialtreasure.setScale(0.6);
     //boss
-    tutorialboss.sprite = this.physics.add.sprite(7150,300, 'boss');
+    tutorialboss.sprite = this.physics.add.sprite(2800 + 150,300, 'blocboss'); //7150
     tutorialboss.sprite.setVisible(false);
     this.bullets = this.physics.add.group(); //create attack 1
     this.laser = this.physics.add.group(); // create attack 2
@@ -130,6 +140,7 @@ class Tutorial extends Phaser.Scene{
     addPhysics.overlap(player.sprite, this.tutorialpowerup1, this.powerupOne, null, this);
     addPhysics.overlap(player.sprite, this.tutorialpowerup2, this.powerupTwo, null, this);
     addPhysics.overlap(player.sprite, this.tutorialpowerup3, this.powerupThree, null, this);
+    addPhysics.overlap(player.sprite, this.tutorialpowerup4, this.powerupFour, null, this);
     //boss triggers
     addPhysics.overlap(tutorialboss.sprite, this.playerbullets, this.collideBoss, null, this); //trigger b/w playerbullets & boss
     addPhysics.overlap(tutorialboss.sprite, this.playerbigbullets, this.pierceBoss, null, this); //trigger b/w playerbigbullets & boss
@@ -185,12 +196,18 @@ class Tutorial extends Phaser.Scene{
 
     //TODO: edit this into more specific stages
     this.stage1Text1 = this.add.text(350, 30, "Use ARROW KEYS to move", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage1Text2 = this.add.text(350, 45, "SPACEBAR to attack", { fontSize: '20px', fill: '#00FF00', align: "center" });
+    this.stage1Text2 = this.add.text(350, 45, "Press SPACEBAR to attack", { fontSize: '20px', fill: '#00FF00', align: "center" });
     this.stage1Text3 = this.add.text(350, 60, "Press A to recover health", { fontSize: '20px', fill: '#00FF00', align: "center" }).setAlpha(0);
     this.stage1Text4 = this.add.text(350, 75, "Press S to shield", { fontSize: '20px', fill: '#00FF00', align: "center" }).setAlpha(0);
-    this.stage1Text5 = this.add.text(350, 90, "Press D + ARROW KEY to dash", { fontSize: '20px', fill: '#00FF00', align: "center" }).setAlpha(0);
+    this.stage1Text5 = this.add.text(350, 90, "Hold ARROW KEY + D to dash", { fontSize: '20px', fill: '#00FF00', align: "center" }).setAlpha(0);
    
-
+    this.stage2Text1 = this.add.text(1750, 30, "Collect the powerup", { fontSize: '20px', fill: '#00FF00', align: "center" });
+    this.stage2Text2 = this.add.text(1750, 45, "Press Q to use MULITISHOT ability", { fontSize: '20px', fill: '#00FF00', align: "center" }).setAlpha(0);
+    this.stage2Text3 = this.add.text(1750, 60, "Press W to use PIERCE ability", { fontSize: '20px', fill: '#00FF00', align: "center" }).setAlpha(0);
+    this.stage2Text4 = this.add.text(1750, 75, "Press E to use TRAP ability", { fontSize: '20px', fill: '#00FF00', align: "center" }).setAlpha(0);
+    this.stage2Text5 = this.add.text(1750, 90, "The HASTE powerup reduces your ability cooldowns", { fontSize: '20px', fill: '#00FF00', align: "center" }).setAlpha(0);
+    this.stage2Text6 = this.add.text(1750, 105, "DEFEAT THE BLOC", { fontSize: '20px', fill: '#00FF00', align: "center" }).setAlpha(0);
+    this.stage2Text7 = this.add.text(1750, 120, "Congrats! Touch the TREASURE CHEST to start main game", { fontSize: '20px', fill: '#00FF00', align: "center" }).setAlpha(0);
 
     /*
     this.stage1Text = this.add.text(10, 30, "(Click to skip tutorial)", { fontSize: '20px', fill: '#00FF00', align: "center" });
@@ -252,15 +269,15 @@ class Tutorial extends Phaser.Scene{
     if(this.numEnemiesKilled >= 1){
         this.tweens.add({
           targets: this.stage1Text1,
-          alpha: 0,
+          alpha: 0.3,
           duration: 1000,
           ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
         });
         this.tweens.add({
           targets: this.stage1Text2,
-          alpha: 0,
+          alpha: 0.3,
           duration: 1000,
-          ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+          ease: 'Power2' 
         });
     }
     if(this.numEnemiesKilled >= 1){
@@ -268,46 +285,153 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage1Text3,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+          ease: 'Power2' 
         });
     }
     if(this.numEnemiesKilled >= 2){
         this.tweens.add({
           targets: this.stage1Text3,
-          alpha: 0,
+          alpha: 0.3,
           duration: 1000,
-          ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+          ease: 'Power2' 
         });
         this.tweens.add({
           targets: this.stage1Text4,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+          ease: 'Power2' 
         });
     }
     if(this.numEnemiesKilled >= 3){
         this.tweens.add({
           targets: this.stage1Text4,
-          alpha: 0,
+          alpha: 0.3,
           duration: 1000,
-          ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+          ease: 'Power2' 
         });
         this.tweens.add({
           targets: this.stage1Text5,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' //https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+          ease: 'Power2' 
         });
     }
-    if(this.numEnemiesKilled == 4 )
+    if(this.numEnemiesKilled >= 4 && this.numEnemiesKilled < 10){
+        this.cameras.main.setBounds(0, 0, 1400 * 2 - 10, 560);
+        this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
+    }
+    if(this.numEnemiesKilled == 4 && this.createdPowerup1 == false)
     {
-      this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
-      this.physics.world.setBounds(this.worldsX, 30, 1400 * 2 - 40, 560);
+        this.tweens.add({
+          targets: this.stage1Text5,
+          alpha: 0.3,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+
       this.enemyWave = 2;
       this.waveAttackTimer.paused = true;
+      this.tutorialpowerup1.create(1750, 100, 'multishotPU');
+      this.createdPowerup1 = true;
     }
     //able to move to stage 2
-    if(this.numEnemiesCreated >= 10)
+    if(player.multishot && this.createdPowerup2 == false)
+    {
+        this.tweens.add({
+          targets: this.stage2Text1,
+          alpha: 0.3,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text2,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tutorialpowerup2.create(1750, 200, 'piercePU');
+        this.createdPowerup2 = true;
+    }   
+    if(player.pierce && this.createdPowerup3 == false)
+    {
+        this.tweens.add({
+          targets: this.stage2Text2,
+          alpha: 0.3,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text3,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2'
+        });
+        this.tutorialpowerup3.create(1750, 300, 'trapPU');
+        this.createdPowerup3 = true;
+    }
+    if(player.trap && this.createdPowerup4 == false)
+    {
+        this.tweens.add({
+          targets: this.stage2Text3,
+          alpha: 0.3,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text4,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tutorialpowerup4.create(1750, 400, 'hastePU');
+        this.createdPowerup4 = true;
+    }
+    if(player.hasteCollected && this.createdPowerup5 == false)
+    {
+        this.tweens.add({
+          targets: this.stage2Text4,
+          alpha: 0.3,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text5,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.createdPowerup5 = true;
+    }
+    if(this.numEnemiesKilled >= 9)
+    {
+        this.tweens.add({
+          targets: this.stage2Text5,
+          alpha: 0.3,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text6,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+    }
+    if(tutorialboss.health <= 0){
+        this.tweens.add({
+          targets: this.stage2Text6,
+          alpha: 0.3,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text7,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+    }
+    if(this.numEnemiesCreated >= 5)
     {
       this.waveCreateTimer.paused = true;
     }
@@ -409,10 +533,10 @@ class Tutorial extends Phaser.Scene{
     // }
 
     // spawns boss when player crosses threshold
-    if (player.sprite.x + 17 > 5700) { //400 //6000
+    if (this.numEnemiesKilled == 9) { //400 //6000 player.sprite.x + 17 > 5700
       this.startBoss = true;
-      this.cameras.main.setBounds(5600, 0, 1300, 560);
-      this.physics.world.setBounds(5600, 30, 1350, 560);
+      //this.cameras.main.setBounds(5600, 0, 1300, 560);
+      //this.physics.world.setBounds(5600, 30, 1350, 560);
     }
     if (this.startBoss){
       player.healthBar.setVisible(true);
@@ -421,7 +545,7 @@ class Tutorial extends Phaser.Scene{
       tutorialboss.sprite.x -= tutorialboss.speed;
       this.timer.paused = false;
     }
-    if (tutorialboss.sprite.x < 7000 + 150 && tutorialboss.sprite.x > 7000 + 140){ //this.sys.game.config.width
+    if (tutorialboss.sprite.x < 2800 + 150 && tutorialboss.sprite.x > 2800 + 140){ //this.sys.game.config.width //7000 + 150 // 7000 + 140
       this.dinogrowl.play();
     }
     if (tutorialboss.sprite.x <= tutorialboss.minX) {
@@ -748,16 +872,16 @@ class Tutorial extends Phaser.Scene{
 
   pickAbility()
   {
-    var ability = Math.random(); //Math.floor(Math.random() * 3) + 1;
+    var ability = 1; //Math.floor(Math.random() * 3) + 1;
     this.useAbility(ability);
   }
 
   useAbility(ability){
-    if(ability >= 0 && ability < 0.5)
+    if(ability == 1)
     {
       this.abilityOne();
     }
-    else if (ability >= 0.5 && ability < 0.75)
+    else if (ability == 2)
     {
       this.abilityTwo();
     }
@@ -767,17 +891,17 @@ class Tutorial extends Phaser.Scene{
   }
 
   abilityOne() {
-    this.ability1.play();
+    //this.ability1.play();
+    this.blocyell.play();
     console.log("using ability one");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    for(let i = 0; i < 3; i++)
+    for(let i = 0; i < 1; i++)
     {
       let x = tutorialboss.sprite.x;
-      let y = Phaser.Math.Between(tutorialboss.sprite.y - 300, tutorialboss.sprite.y + 300); //can and should randomize this
-
+      let y = Phaser.Math.Between(tutorialboss.sprite.y - 100, tutorialboss.sprite.y + 100); //can and should randomize this
       let bullet = this.bullets.create(x, y, 'bullet');
-      bullet.setVelocityX(Phaser.Math.Between(-600,-700));
+      bullet.setVelocityX(-200);
     }
   }
 
@@ -786,7 +910,7 @@ class Tutorial extends Phaser.Scene{
     console.log("using ability two");
     this.timer2.paused = true;
     this.ability3.setMute(true);
-    let x = Phaser.Math.Between(5600, tutorialboss.sprite.x - 250);
+    let x = Phaser.Math.Between(1400, tutorialboss.sprite.x - 250); //5600
     let y = -200;
     let laser = this.laser.create(x, y, 'laser');
     laser.setVelocityY(250);
@@ -862,10 +986,11 @@ class Tutorial extends Phaser.Scene{
     powerup3.destroy();
     player.trap = true;
   }
-  //powerupFour(p, powerup4){
-   // powerup4.destroy();
+  powerupFour(p, powerup4){
+    powerup4.destroy();
     //player.kaboom = true;
-  //}
+    player.hasteCollected = true;
+  }
 
   pauseAbilityTimer1(){
     this.abilityTimer1.isPaused = true;
@@ -906,7 +1031,7 @@ class Tutorial extends Phaser.Scene{
 
   hitBoss(p, b)
   {
-    tutorialboss.healthPercent -= 33.33;
+    tutorialboss.healthPercent -= 1;
     this.setValue(tutorialboss.healthBar, tutorialboss.healthPercent);
     this.cameras.main.shake(400, 0.01); //duration, intensity
     tutorialboss.health -= 1;
