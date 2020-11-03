@@ -283,10 +283,12 @@ class BossScene extends Phaser.Scene{
     this.powerupText2 = this.add.text(529, 0, "W", { fontSize: 'bold 12px', fill: '#000000', align: "center" });
     this.powerupText3 = this.add.text(579, 0, "E", { fontSize: 'bold 12px', fill: '#000000', align: "center" });
     this.powerupText4 = this.add.text(620, 0, "N/A", { fontSize: 'bold 12px', fill: '#000000', align: "center" });
+    this.hasteStackText = this.add.text(644, 29, "1", { fontSize: 'bold 11px', fill: '#000000', align: "center" });
     this.powerupText.setVisible(player.multishot);
     this.powerupText2.setVisible(player.pierce);
     this.powerupText3.setVisible(player.trap);
     this.powerupText4.setVisible(player.haste > 0);
+    this.hasteStackText.setVisible(player.haste > 0);
     this.bossHPText = this.add.text(5610, 10, "Boss HP: " + boss.healthPercent, { fontSize: '20px', fill: '#000000', align: "center" });
     /*
     this.timer3Text = this.add.text(100, 100, "wave1 attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
@@ -321,12 +323,14 @@ class BossScene extends Phaser.Scene{
     this.powerupText2.setScrollFactor(0,0); 
     this.powerupText3.setScrollFactor(0,0); 
     this.powerupText4.setScrollFactor(0,0); 
+    this.hasteStackText.setScrollFactor(0,0); 
 
     this.levelText.setText("Level: " + difficulty + " Stage: " + this.stage);
     //this.levelText2.setText("Level: " + difficulty + " Stage: " + "2");
     //this.levelText3.setText("Level: " + difficulty + " Stage: " + "3");
     //this.levelText4.setText("Level: " + difficulty + " Stage: " + "4");
     this.numKillsText.setText("Enemies Killed: " + this.numEnemiesKilled);
+    this.hasteStackText.setText(player.haste / 150);
     //this.numKillsText2.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText3.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText4.setText("Enemies Killed: " + this.numEnemiesKilled);
@@ -452,6 +456,7 @@ class BossScene extends Phaser.Scene{
     this.powerupText2.setVisible(false);
     this.powerupText3.setVisible(false);
     this.powerupText4.setVisible(false);
+    this.hasteStackText.setVisible(false);
     }
     // make enemies respawn at wave start point if they leave camera view
     for (var i = 0; i < this.wave1.getChildren().length; i++) {
@@ -1411,6 +1416,7 @@ class BossScene extends Phaser.Scene{
     this.hastesound.play();
     this.powerupIcon4.setVisible(true);
     this.powerupText4.setVisible(true);
+    this.hasteStackText.setVisible(true);
     if (player.haste >= 900){
       if(player.health > 90)
       {
