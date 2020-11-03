@@ -41,6 +41,7 @@ class InfiniteScene extends Phaser.Scene{
     this.enemyx = 1400;
     this.enemyWave = 1;
     this.worldsX = 0;
+    this.stage = 1;
   }
 
 
@@ -142,6 +143,16 @@ class InfiniteScene extends Phaser.Scene{
     //this.puui3 = this.add.image(3400, 685, 'PUUI');
     //this.puui4 = this.add.image(4700, 685, 'PUUI');
     //this.puui5 = this.add.image(6100, 685, 'PUUI');
+
+    this.powerupBar = this.makePowerupBar(350, 0, 0xffffff);
+    this.powerupIcon1 = this.add.image(480, 24, "multishotPU");
+    this.powerupIcon2 = this.add.image(530, 24, "piercePU");
+    this.powerupIcon3 = this.add.image(580, 27, "trapPU");
+    this.powerupIcon4 = this.add.image(630, 25, "hastePU");
+    this.powerupIcon1.setVisible(player.multishot);
+    this.powerupIcon2.setVisible(player.pierce);
+    this.powerupIcon3.setVisible(player.trap);
+    this.powerupIcon4.setVisible(player.haste > 0);
 
     //barrier
     this.barrier0 = this.physics.add.sprite(0, 300, 'barrier');
@@ -252,14 +263,26 @@ class InfiniteScene extends Phaser.Scene{
     this.healTimer = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
     this.dashTimer = this.time.addEvent({delay : 1000 - player.haste, callback: this.pauseDashTimer, callbackScope: this, loop: true, paused: false });
     //debugging / things to remove later
-    this.levelText = this.add.text(100, 10, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.levelText2 = this.add.text(1500, 10, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.levelText3 = this.add.text(2900, 10, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.levelText4 = this.add.text(4300, 10, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.numKillsText = this.add.text(100, 25, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.numKillsText2 = this.add.text(1500, 25, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.numKillsText3 = this.add.text(2900, 25, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.numKillsText4 = this.add.text(4300, 25, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.levelText = this.add.text(100, 0, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    //this.levelText2 = this.add.text(1500, 0, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    //this.levelText3 = this.add.text(2900, 0, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    //this.levelText4 = this.add.text(4300, 0, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.numKillsText = this.add.text(100, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    //this.numKillsText2 = this.add.text(1500, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    //this.numKillsText3 = this.add.text(2900, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    //this.numKillsText4 = this.add.text(4300, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
+    this.powerupBarText = this.add.text(350, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
+    //this.powerupBarText2 = this.add.text(1750, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
+    //this.powerupBarText3 = this.add.text(3150, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
+    //this.powerupBarText4 = this.add.text(4550, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
+    this.powerupText = this.add.text(478, 0, "Q", { fontSize: 'bold 12px', fill: '#000000', align: "center" });
+    this.powerupText2 = this.add.text(529, 0, "W", { fontSize: 'bold 12px', fill: '#000000', align: "center" });
+    this.powerupText3 = this.add.text(579, 0, "E", { fontSize: 'bold 12px', fill: '#000000', align: "center" });
+    this.powerupText4 = this.add.text(620, 0, "N/A", { fontSize: 'bold 12px', fill: '#000000', align: "center" });
+    this.powerupText.setVisible(player.multishot);
+    this.powerupText2.setVisible(player.pierce);
+    this.powerupText3.setVisible(player.trap);
+    this.powerupText4.setVisible(player.haste > 0);
     this.bossHPText = this.add.text(5610, 10, "Boss HP: " + boss.healthPercent, { fontSize: '20px', fill: '#000000', align: "center" });
 
   }
@@ -267,14 +290,27 @@ class InfiniteScene extends Phaser.Scene{
   update()
   {
     this.setHealthBarPosition(player.healthBar, player.sprite.x - 25, player.sprite.y - 40);
-    this.levelText.setText("Level: " + difficulty + " Stage: " + "1");
-    this.levelText2.setText("Level: " + difficulty + " Stage: " + "2");
-    this.levelText3.setText("Level: " + difficulty + " Stage: " + "3");
-    this.levelText4.setText("Level: " + difficulty + " Stage: " + "4");
+    this.levelText.setScrollFactor(0,0);
+    this.numKillsText.setScrollFactor(0,0);
+    this.powerupBarText.setScrollFactor(0,0);
+    this.powerupBar.setScrollFactor(0,0); 
+    this.powerupIcon1.setScrollFactor(0,0); 
+    this.powerupIcon2.setScrollFactor(0,0); 
+    this.powerupIcon3.setScrollFactor(0,0); 
+    this.powerupIcon4.setScrollFactor(0,0); 
+    this.powerupText.setScrollFactor(0,0); 
+    this.powerupText2.setScrollFactor(0,0); 
+    this.powerupText3.setScrollFactor(0,0); 
+    this.powerupText4.setScrollFactor(0,0); 
+    //this.setHUDPosition(this.levelText, this.cameras.main.x, this.cameras.main.y);
+    this.levelText.setText("Level: " + difficulty + " Stage: " + this.stage);
+    //this.levelText2.setText("Level: " + difficulty + " Stage: " + "2");
+    //this.levelText3.setText("Level: " + difficulty + " Stage: " + "3");
+    //this.levelText4.setText("Level: " + difficulty + " Stage: " + "4");
     this.numKillsText.setText("Enemies Killed: " + this.numEnemiesKilled);
-    this.numKillsText2.setText("Enemies Killed: " + this.numEnemiesKilled);
-    this.numKillsText3.setText("Enemies Killed: " + this.numEnemiesKilled);
-    this.numKillsText4.setText("Enemies Killed: " + this.numEnemiesKilled);
+    //this.numKillsText2.setText("Enemies Killed: " + this.numEnemiesKilled);
+    //this.numKillsText3.setText("Enemies Killed: " + this.numEnemiesKilled);
+    //this.numKillsText4.setText("Enemies Killed: " + this.numEnemiesKilled);
     this.bossHPText.setText("Boss HP: " + boss.healthPercent.toString().substr(0,4));
     //check if player is alive
 
@@ -345,18 +381,21 @@ class InfiniteScene extends Phaser.Scene{
 
     // make waves attack only when player crosses line
     if (player.sprite.x >= 1400 && this.numEnemiesCreated < 20 * difficulty){
+        this.stage = 2;
       this.waveAttackTimer.paused = false;
       this.waveCreateTimer.paused = false;
       this.poweruptimer2.paused = false;
       this.worldsX = 1400;
     }
     if (player.sprite.x >= 2800 && this.numEnemiesCreated < 30 * difficulty){
+        this.stage = 3;
       this.waveAttackTimer.paused = false;
       this.waveCreateTimer.paused = false;
       this.poweruptimer3.paused = false;
       this.worldsX = 2800;
     }
     if (player.sprite.x >= 4200 && this.numEnemiesCreated < 40 * difficulty){
+        this.stage = 4;
       this.waveAttackTimer.paused = false;
       this.waveCreateTimer.paused = false;
       this.poweruptimer4.paused = false;
@@ -365,6 +404,18 @@ class InfiniteScene extends Phaser.Scene{
     if (player.sprite.x >= 5600){
       this.worldsX = 5600;
       this.poweruptimer5.paused = false;
+      this.levelText.setVisible(false);
+    this.numKillsText.setVisible(false);
+    this.powerupBarText.setVisible(false);
+    this.powerupBar.setVisible(false);
+    this.powerupIcon1.setVisible(false);
+    this.powerupIcon2.setVisible(false);
+    this.powerupIcon3.setVisible(false);
+    this.powerupIcon4.setVisible(false);
+    this.powerupText.setVisible(false);
+    this.powerupText2.setVisible(false);
+    this.powerupText3.setVisible(false);
+    this.powerupText4.setVisible(false);
     }
     // make enemies respawn at wave start point if they leave camera view
     for (var i = 0; i < this.wave1.getChildren().length; i++) {
@@ -562,6 +613,20 @@ class InfiniteScene extends Phaser.Scene{
     bar.fillStyle(color, 1);
     //fill the bar with a rectangle
     bar.fillRect(0, 0, 50, 10);
+    //position the bar
+    bar.x = x;
+    bar.y = y;
+    //return the bar
+    return bar;
+  }
+
+  makePowerupBar(x, y, color){
+    //draw the bar
+    let bar = this.add.graphics();
+    //color the bar
+    bar.fillStyle(color, 1);
+    //fill the bar with a rectangle
+    bar.fillRect(0, 0, 300, 40);
     //position the bar
     bar.x = x;
     bar.y = y;
@@ -1172,6 +1237,8 @@ class InfiniteScene extends Phaser.Scene{
   powerupOne(p, powerup1){
     powerup1.destroy();
     player.multishot = true;
+    this.powerupIcon1.setVisible(true);
+    this.powerupText.setVisible(true);
     if(player.health > 90)
     {
       player.health = 100;
@@ -1185,6 +1252,8 @@ class InfiniteScene extends Phaser.Scene{
   powerupTwo(p, powerup2){
     powerup2.destroy();
     player.pierce = true;
+    this.powerupIcon2.setVisible(true);
+    this.powerupText2.setVisible(true);
     if(player.health > 90)
     {
       player.health = 100;
@@ -1198,6 +1267,8 @@ class InfiniteScene extends Phaser.Scene{
   powerupThree(p, powerup3){
     powerup3.destroy();
     player.trap = true;
+    this.powerupIcon3.setVisible(true);
+    this.powerupText3.setVisible(true);
     if(player.health > 90)
     {
       player.health = 100;
@@ -1210,7 +1281,9 @@ class InfiniteScene extends Phaser.Scene{
   }
   powerupFour(p, powerup4){
     powerup4.destroy();
-    this.hastesound.play()
+    this.hastesound.play();
+    this.powerupIcon4.setVisible(true);
+    this.powerupText4.setVisible(true);
     if (player.haste >= 900){
       if(player.health > 90)
       {
