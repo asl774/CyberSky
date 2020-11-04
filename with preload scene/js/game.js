@@ -1,8 +1,12 @@
 
 var config = {
   type: Phaser.AUTO,
+  parent: 'phaser-example',
   width: window.innerWidth, //640 1400 window.innerWidth
   height: window.innerHeight, //360 600 window.innerHeight
+  dom: {
+    createContainer: true
+  },
   physics: { //needed for physics to work in game
     default: 'arcade',
     arcade: {
@@ -10,7 +14,8 @@ var config = {
         debug: false
       }
   },
-  scene: [PreloadScene, MainMenu, Tutorial, BossScene, InfiniteScene, PauseScene, WinScene, LoseScene, Credits]
+
+  scene: [PreloadScene, MainMenu, Tutorial, BossScene, CodeScene, InfiniteScene, PauseScene, WinScene, LoseScene, Credits]
 }
 var tutorialplayer = {
   speed: 10,
@@ -89,6 +94,7 @@ var infiniteMode = false;
 var firstLevel = false;
 var bossScenePaused = false;
 var infiniteScenePaused = false;
+var switchScene = false;
 var bossNumber = 0;
 
 var game = new Phaser.Game(config);

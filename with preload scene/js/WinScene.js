@@ -27,7 +27,7 @@ class WinScene extends Phaser.Scene{
 
         var r3 = add.rectangle(650, 555, 450, 50, 0x5C2C4F).setInteractive();
         r3.setStrokeStyle(4, 0x37092C);
-        add.text(530, 542, 'INFINITE MODE CODE', { fontFamily: 'Bitwise', fontSize: 25, fill: '#ffffff' });
+        this.infiniteCode = this.add.text(530, 542, 'INFINITE MODE CODE', { fontFamily: 'Bitwise', fontSize: 25, fill: '#ffffff' });
 
         r1.on('pointerover', () => this.enterHoverState(r1));
         r1.on('pointerout', () => this.enterRestState(r1));
@@ -77,7 +77,9 @@ class WinScene extends Phaser.Scene{
 
     showCode()
     {
-      console.log("there should be a code here");
+      this.infiniteCode.setText("OHYNTRFB");
+      this.infiniteCode.setPosition(585,542);
+      //console.log("there should be a code here");
     }
 
 }
