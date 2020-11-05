@@ -39,6 +39,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('barrier', 'assets/finishline.png');
       this.load.image('bottombarrier', 'assets/bottombarrier.png');
       this.load.image('PUUI', 'assets/powerUPUI.png')
+      this.load.image('hud', 'assets/hud4.png')
 
       //this.load.image('ninja', 'assets/blockninja2.png');
       this.load.image('ninja', 'assets/blockninja.png');
