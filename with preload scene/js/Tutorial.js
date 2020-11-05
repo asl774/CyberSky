@@ -185,7 +185,7 @@ class Tutorial extends Phaser.Scene{
     this.wkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.ekey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
     this.vkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
-    this.bkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
+    //this.bkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
     this.kkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
     this.lkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     //timer testing
