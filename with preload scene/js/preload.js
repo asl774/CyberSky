@@ -71,6 +71,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('star5', 'assets/star5.png');
       this.load.image('star6', 'assets/star6.png');
 
+      this.load.image('blocboss', 'assets/bloc3.png');
       this.load.image('boss', 'assets/boss.png');
       this.load.image('octoboss', 'assets/octoboss2.png');
       this.load.image('yakuzaboss', 'assets/yakuza4.png');
@@ -109,6 +110,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.audio('ability2', [ 'laser.mp3' ]);
       this.load.audio('ability3', [ 'stomp.mp3' ]);
       this.load.audio('dinogrowl', [ 'dinogrowl.mp3' ]);
+      this.load.audio('bloc', [ 'bloc.wav' ]);
       this.load.audio('throwstar', [ 'throwstar.mp3' ]);
       this.load.audio('teleport', [ 'teleport.mp3' ]);
       this.load.audio('hastesfx', [ 'hastesfx.mp3' ]);
