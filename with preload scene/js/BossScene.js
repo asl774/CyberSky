@@ -145,7 +145,7 @@ class BossScene extends Phaser.Scene{
     //this.puui3 = this.add.image(3400, 685, 'PUUI');
     //this.puui4 = this.add.image(4700, 685, 'PUUI');
     //this.puui5 = this.add.image(6100, 685, 'PUUI');
-    this.hud = this.add.image(700, 50, "hud").setAlpha(0.5);
+    this.hud = this.add.image(700, 50, "hud").setAlpha(0.80);
     //this.powerupBar = this.makePowerupBar(350, 0, 0xffffff);
     this.powerupIcon1 = this.add.image(480, 34, "multishotPU");
     this.powerupIcon2 = this.add.image(530, 34, "piercePU");

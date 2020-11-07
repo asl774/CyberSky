@@ -122,7 +122,7 @@ class Tutorial extends Phaser.Scene{
     this.tutorialpowerup3 = this.physics.add.group();
     this.tutorialpowerup4 = this.physics.add.group();
     //this.tutorialpowerup4 = this.physics.add.group();
-    this.hud = this.add.image(700, 50, "hud").setAlpha(0.5);
+    this.hud = this.add.image(700, 50, "hud").setAlpha(0.80);
     //this.powerupBar = this.makePowerupBar(350, 0, 0xffffff);
     this.powerupIcon1 = this.add.image(250, 34, "multishotPU"); //480
     this.powerupIcon2 = this.add.image(300, 34, "piercePU");    //530
