@@ -92,6 +92,7 @@ var boss = {
 var difficulty = 1;
 var infiniteMode = false;
 var firstLevel = false;
+var tutorialScenePaused = false;
 var bossScenePaused = false;
 var infiniteScenePaused = false;
 var switchScene = false;

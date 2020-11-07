@@ -53,11 +53,12 @@ class BossScene extends Phaser.Scene{
 
   create()
   {
+    /*
     this.input.once('pointerup', function (event) {
     this.sound.stopAll();
     this.scene.start('winScene');
     }, this);
-
+    */
     //audio
     this.theme = this.sound.add('theme', {volume: 0.3});
     this.theme.setLoop(true);

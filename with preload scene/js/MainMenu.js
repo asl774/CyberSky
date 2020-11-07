@@ -30,7 +30,7 @@ class MainMenu extends Phaser.Scene{
         r1.on('pointerover', () => this.enterHoverState(r1));
         r1.on('pointerout', () => this.enterRestState(r1));
         r1.on('pointerdown', () => this.enterDownState(r1));
-        r1.on('pointerup', () => this.changeScenes('tutorial', false, false));
+        r1.on('pointerup', () => this.changeScenes('tutorialScene', false, false));
 
         r2.on('pointerover', () => this.enterHoverState(r2));
         r2.on('pointerout', () => this.enterRestState(r2));

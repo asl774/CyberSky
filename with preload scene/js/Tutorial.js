@@ -1,6 +1,6 @@
 class Tutorial extends Phaser.Scene{
   constructor(){
-    super("tutorial");
+    super("tutorialScene");
   }
 
   init()
@@ -199,6 +199,7 @@ class Tutorial extends Phaser.Scene{
     //this.bkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
     this.kkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
     this.lkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
+    this.pkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
     //timer testing
     this.timer = this.time.addEvent({delay : 5000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 5000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
@@ -804,6 +805,20 @@ class Tutorial extends Phaser.Scene{
       else if (this.cursors.down.isDown){
         player.sprite.y += 100;
       }
+    }
+        else if(Phaser.Input.Keyboard.JustDown(this.pkey) && tutorialScenePaused == false)
+    {
+        this.cursors.right.reset();
+        this.cursors.left.reset();
+        this.cursors.up.reset();
+        this.cursors.down.reset();
+        tutorialScenePaused = true;
+        this.tutorialtheme.pause();
+        this.scene.pause("tutorialScene");
+        this.scene.launch("pauseScene");
+    }
+    if (tutorialScenePaused == false){
+        this.tutorialtheme.resume();
     }
   }
 
