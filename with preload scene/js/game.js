@@ -97,5 +97,6 @@ var bossScenePaused = false;
 var infiniteScenePaused = false;
 var switchScene = false;
 var bossNumber = 0;
+var theme;
 
 var game = new Phaser.Game(config);

@@ -60,8 +60,7 @@ class BossScene extends Phaser.Scene{
     }, this);
     */
     //audio
-    this.theme = this.sound.add('theme', {volume: 0.3});
-    this.theme.setLoop(true);
+
     this.ability1 = this.sound.add('ability1', {volume: 0.5});
     this.ability2 = this.sound.add('ability2', {volume: 0.5});
     this.ability3 = this.sound.add('ability3');
@@ -84,7 +83,9 @@ class BossScene extends Phaser.Scene{
 
 
     if (firstLevel) {
-        this.theme.play();
+        theme = this.sound.add('theme', {volume: 0.3});
+        theme.setLoop(true);
+        theme.play();
         player.shielded = false;
         player.multishot = false;
         player.pierce = false;
@@ -633,12 +634,12 @@ class BossScene extends Phaser.Scene{
         this.cursors.up.reset();
         this.cursors.down.reset();
         bossScenePaused = true;
-        this.theme.pause();
+        theme.pause();
         this.scene.pause("bossScene");
         this.scene.launch("pauseScene");
     }
     if (bossScenePaused == false){
-        this.theme.resume();
+        theme.resume();
     }
     /*
     else if(Phaser.Input.Keyboard.JustDown(this.pkey) && gamePaused == true)
@@ -1337,6 +1338,13 @@ class BossScene extends Phaser.Scene{
 
   getHitPierce(p, bullet)
   {
+    if(player.shielded)
+    {
+      player.shielded = false;
+      player.sprite.setTexture('ninja');
+      console.log("player had a shield");
+      return;
+    }
     player.health -= 2.5;
     player.healthPercent -= 2.5;
     this.setValue(player.healthBar, player.healthPercent);
@@ -1351,6 +1359,7 @@ class BossScene extends Phaser.Scene{
     if(player.shielded)
     {
       player.shielded = false;
+      player.sprite.setTexture('ninja');
       console.log("player had a shield");
       return;
     }
@@ -1475,6 +1484,7 @@ class BossScene extends Phaser.Scene{
     if(player.shielded)
     {
       player.shielded = false;
+      player.sprite.setTexture('ninja');
       console.log("player had a shield");
       return;
     }
