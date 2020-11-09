@@ -46,6 +46,14 @@ class PreloadScene extends Phaser.Scene{
       //this.load.image('ninja', 'assets/blockninja2.png');
       this.load.image('ninja', 'assets/blockninja.png');
       this.load.image('shield', 'assets/blockninjashielded2.png');
+      //this.load.spritesheet('ninjaIM', 'assets/IMnssO.png',{
+        //frameWidth: 74,
+        //frameHeight: 74
+      //});
+      this.load.spritesheet('ninjaIM', 'assets/IMnssO2.png',{
+        frameWidth: 76,
+        frameHeight: 72
+      });
       //this.load.image('ninja', 'assets/blockninjaold.png');
       //this.load.image('enemy1', 'assets/blockninjaold2.png');
       //this.load.image('enemy2', 'assets/blockninja3.png');
@@ -73,6 +81,10 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('star4', 'assets/star4.png');
       this.load.image('star5', 'assets/star5.png');
       this.load.image('star6', 'assets/star6.png');
+      this.load.image('goldStar','assets/stargold.png');
+      this.load.image('trapGold','assets/trapgold.png');
+      this.load.image('autoCyan','assets/autos.png');
+      this.load.image('smallGold','assets/smallGold.png');
 
       this.load.image('blocboss', 'assets/bloc3.png');
       this.load.image('boss', 'assets/boss.png');

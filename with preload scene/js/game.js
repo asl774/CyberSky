@@ -55,6 +55,10 @@ var player = {
   canTrapAgain: false,
   canHealAgain: false,
   canDashAgain: false,
+  canHasteAgain: false,
+  mCD: 0,
+  pCD: 0,
+  tCD: 0,
   check: function()
   {
     console.log("this is the function inside the player");
