@@ -200,6 +200,9 @@ class Tutorial extends Phaser.Scene{
     this.kkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
     this.lkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     this.pkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+    this.akey.enabled = false;
+    this.skey.enabled = false;
+    this.dkey.enabled = false;
     //timer testing
     this.timer = this.time.addEvent({delay : 5000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 5000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
@@ -337,6 +340,7 @@ class Tutorial extends Phaser.Scene{
 
     //stage 1 enemies
     if(this.firstSpacePressed){
+        this.akey.enabled = true;
         this.tweens.add({
           targets: this.stage1Text1,
           alpha: 0,
@@ -357,6 +361,7 @@ class Tutorial extends Phaser.Scene{
         });
     }
     if(this.firstAPressed){
+        this.skey.enabled = true;
         this.tweens.add({
           targets: this.stage1Text3,
           alpha: 0,
@@ -371,6 +376,7 @@ class Tutorial extends Phaser.Scene{
         });
     }
     if(this.firstSPressed){
+        this.dkey.enabled = true;
         this.tweens.add({
           targets: this.stage1Text4,
           alpha: 0,
