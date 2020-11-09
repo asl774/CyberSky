@@ -47,14 +47,14 @@ class InfiniteScene extends Phaser.Scene{
 
   create()
   {
-    /*
     this.input.once('pointerup', function (event) {
     this.sound.stopAll();
     this.scene.start('mainMenu');
     }, this);
-    */
-    //audio
 
+    //audio
+    this.theme = this.sound.add('theme', {volume: 0.3});
+    this.theme.setLoop(true);
     this.ability1 = this.sound.add('ability1', {volume: 0.5});
     this.ability2 = this.sound.add('ability2', {volume: 0.5});
     this.ability3 = this.sound.add('ability3');
@@ -77,9 +77,7 @@ class InfiniteScene extends Phaser.Scene{
 
 
     if (firstLevel) {
-        theme = this.sound.add('theme', {volume: 0.3});
-        theme.setLoop(true);
-        theme.play();
+        this.theme.play();
         player.shielded = false;
         player.multishot = false;
         player.pierce = false;
@@ -115,7 +113,7 @@ class InfiniteScene extends Phaser.Scene{
       this.add.image(5600, 0, 'background8').setOrigin(0);
     }
     // player
-    player.sprite = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninja');
+    player.sprite = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninjaIM');
     player.sprite.setScale(0.5);
     player.sprite.setCollideWorldBounds(true); //can't run off screen
     player.healthBar = this.makePlayerBar(0, 50, 0x2ecc71);
@@ -127,6 +125,13 @@ class InfiniteScene extends Phaser.Scene{
     this.playerbullets = this.physics.add.group(); //create stars
     this.playerbigbullets = this.physics.add.group(); //create stars
     this.playertrap = this.physics.add.group(); //create trap
+    this.anims.create({
+      key: 'ninjaIM_ani',
+      frames: this.anims.generateFrameNumbers("ninjaIM"),
+      frameRate: 7,
+      repeat: -1
+    });
+    player.sprite.play("ninjaIM_ani"); //HIYA
     //enemies
     this.wave1 = this.physics.add.group();
     //powerups
@@ -142,7 +147,7 @@ class InfiniteScene extends Phaser.Scene{
     //this.puui4 = this.add.image(4700, 685, 'PUUI');
     //this.puui5 = this.add.image(6100, 685, 'PUUI');
 
-    this.hud = this.add.image(700, 50, "hud").setAlpha(0.80);
+    this.hud = this.add.image(700, 50, "hud").setAlpha(0.5);
     //this.powerupBar = this.makePowerupBar(350, 0, 0xffffff);
     this.powerupIcon1 = this.add.image(480, 34, "multishotPU");
     this.powerupIcon2 = this.add.image(530, 34, "piercePU");
@@ -259,9 +264,10 @@ class InfiniteScene extends Phaser.Scene{
     this.poweruptimer3 = this.time.addEvent({delay : 5000, callback: this.createPowerup3, callbackScope: this, loop: true, paused: true });
     this.poweruptimer4 = this.time.addEvent({delay : 5000, callback: this.createPowerup4, callbackScope: this, loop: true, paused: true });
     this.poweruptimer5 = this.time.addEvent({delay : 5000, callback: this.createPowerup5, callbackScope: this, loop: true, paused: true });
-    this.abilityTimer1 = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseAbilityTimer1, callbackScope: this, loop: true, paused: false });
-    this.abilityTimer2 = this.time.addEvent({delay : 1000 - player.haste, callback: this.pauseAbilityTimer2, callbackScope: this, loop: true, paused: false });
-    this.abilityTimer3 = this.time.addEvent({delay : 3001 - player.haste, callback: this.pauseAbilityTimer3, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer1 = this.time.addEvent({delay : 2000 - player.mCD, callback: this.pauseAbilityTimer1, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer2 = this.time.addEvent({delay : 1000 - player.pCD, callback: this.pauseAbilityTimer2, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer3 = this.time.addEvent({delay : 3001 - player.tCD, callback: this.pauseAbilityTimer3, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer6 = this.time.addEvent({delay : 10000, callback: this.pauseAbilityTimer6, callbackScope: this, loop: true, paused: false });
     this.healTimer = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
     this.dashTimer = this.time.addEvent({delay : 1000 - player.haste, callback: this.pauseDashTimer, callbackScope: this, loop: true, paused: false });
     //debugging / things to remove later
@@ -509,20 +515,20 @@ class InfiniteScene extends Phaser.Scene{
       this.throwstar.play();
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
-      let pbullet = this.playerbullets.create(playerx, playery, 'star');
+      let pbullet = this.playerbullets.create(playerx, playery, 'autoCyan');
       pbullet.setVelocityX(800);
     }
     //press z key to throw 3 stars
-    else if (Phaser.Input.Keyboard.JustDown(this.qkey) && player.multishot == true && player.canMultishotAgain)
+    if (Phaser.Input.Keyboard.JustDown(this.qkey) && player.multishot == true && player.canMultishotAgain)
     {
       this.abilityTimer1.isPaused = false;
       player.canMultishotAgain = false;
       this.throwtriplestar.play();
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
-      let pbullet1 = this.playerbullets.create(playerx, playery - 25, 'star');
-      let pbullet2 = this.playerbullets.create(playerx, playery, 'star');
-      let pbullet3 = this.playerbullets.create(playerx, playery + 25, 'star');
+      let pbullet1 = this.playerbullets.create(playerx, playery - 25, 'smallGold');
+      let pbullet2 = this.playerbullets.create(playerx, playery, 'smallGold');
+      let pbullet3 = this.playerbullets.create(playerx, playery + 25, 'smallGold');
       pbullet1.setVelocityX(800);
       pbullet1.setVelocityY(-100);
       pbullet2.setVelocityX(800);
@@ -537,7 +543,7 @@ class InfiniteScene extends Phaser.Scene{
       this.throwbigstar.play();
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
-      let pbullet = this.playerbigbullets.create(playerx, playery, 'starbig');
+      let pbullet = this.playerbigbullets.create(playerx, playery, 'goldStar');
       pbullet.setVelocityX(800);
     }
     //t r a p c a r d
@@ -547,7 +553,7 @@ class InfiniteScene extends Phaser.Scene{
       player.canTrapAgain = false;
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
-      let ptrap = this.playertrap.create(playerx, playery, 'trap');
+      let ptrap = this.playertrap.create(playerx, playery, 'trapGold');
       }
     //press c key to teleport 100 pixels in direction of arrow key
     else if (Phaser.Input.Keyboard.JustDown(this.dkey) && player.canDashAgain == true)
@@ -601,13 +607,13 @@ class InfiniteScene extends Phaser.Scene{
         this.cursors.up.reset();
         this.cursors.down.reset();
         infiniteScenePaused = true;
-        theme.pause();
+        this.theme.pause();
         this.scene.pause("infiniteScene");
         this.scene.launch("pauseScene");
         console.log("got here?");
     }
     if (infiniteScenePaused == false){
-        theme.resume();
+        this.theme.resume();
     }
 
   }
@@ -1214,13 +1220,6 @@ class InfiniteScene extends Phaser.Scene{
 
   getHitPierce(p, bullet)
   {
-    if(player.shielded)
-    {
-      player.shielded = false;
-      player.sprite.setTexture('ninja');
-      console.log("player had a shield");
-      return;
-    }
     player.health -= 2.5;
     player.healthPercent -= 2.5;
     this.setValue(player.healthBar, player.healthPercent);
@@ -1235,7 +1234,6 @@ class InfiniteScene extends Phaser.Scene{
     if(player.shielded)
     {
       player.shielded = false;
-      player.sprite.setTexture('ninja');
       console.log("player had a shield");
       return;
     }
@@ -1265,8 +1263,14 @@ class InfiniteScene extends Phaser.Scene{
   powerupOne(p, powerup1){
     powerup1.destroy();
     player.multishot = true;
+    player.pierce = false;
+    player.trap = false;
     this.powerupIcon1.setVisible(true);
     this.powerupText.setVisible(true);
+    this.powerupIcon2.setVisible(false);
+    
+    this.powerupIcon3.setVisible(false);
+    
     if(player.health > 90)
     {
       player.health = 100;
@@ -1280,8 +1284,15 @@ class InfiniteScene extends Phaser.Scene{
   powerupTwo(p, powerup2){
     powerup2.destroy();
     player.pierce = true;
+    player.multishot = false;
+    player.trap = false;
     this.powerupIcon2.setVisible(true);
     this.powerupText2.setVisible(true);
+    
+    this.powerupIcon1.setVisible(false);
+    
+    this.powerupIcon3.setVisible(false);
+    
     if(player.health > 90)
     {
       player.health = 100;
@@ -1295,8 +1306,14 @@ class InfiniteScene extends Phaser.Scene{
   powerupThree(p, powerup3){
     powerup3.destroy();
     player.trap = true;
+    player.multishot = false;
+    player.pierce = false;
     this.powerupIcon3.setVisible(true);
     this.powerupText3.setVisible(true);
+    this.powerupIcon1.setVisible(false);
+    
+    this.powerupIcon2.setVisible(false);
+    
     if(player.health > 90)
     {
       player.health = 100;
@@ -1310,10 +1327,27 @@ class InfiniteScene extends Phaser.Scene{
   powerupFour(p, powerup4){
     powerup4.destroy();
     this.hastesound.play();
+    player.canHasteAgain = false;
     this.powerupIcon4.setVisible(true);
     this.powerupText4.setVisible(true);
-    this.hasteStackText.setVisible(true);
-    if (player.haste >= 900){
+    if (player.multishot == true){
+      player.mCD = 1999;
+      player.tCD = 0;
+      player.pCD = 0;
+    }
+    else if (player.pierce == true){
+      player.pCD = 999;
+      player.tCD = 0;
+      player.mCD = 0;
+    }
+    else if (player.trap == true){
+      player.tcd = 2999;
+      player.mCD = 0;
+      player.pCD = 0;
+    }else{
+      player.haste = player.haste + 10;
+    }
+    /*if (player.haste >= 900){
       if(player.health > 90)
       {
         player.health = 100;
@@ -1327,7 +1361,7 @@ class InfiniteScene extends Phaser.Scene{
     }else{
       player.haste += 150;
       console.log("player.haste is: ", player.haste)
-      }
+      }*/
   }
 
   pauseAbilityTimer1(){
@@ -1343,6 +1377,15 @@ class InfiniteScene extends Phaser.Scene{
   pauseAbilityTimer3(){
     this.abilityTimer3.isPaused = true;
     player.canTrapAgain = true;
+  }
+  pauseAbilityTimer6(){
+    this.abilityTimer6.isPaused = true;
+    this.powerupIcon4.setVisible(false);
+    this.powerupText4.setVisible(false);
+    player.pCD = 0;
+    player.tCD = 0;
+    player.mCD = 0;
+    player.canHasteAgain = true;
   }
 
   pauseDashTimer(){
@@ -1360,7 +1403,6 @@ class InfiniteScene extends Phaser.Scene{
     if(player.shielded)
     {
       player.shielded = false;
-      player.sprite.setTexture('ninja');
       console.log("player had a shield");
       return;
     }

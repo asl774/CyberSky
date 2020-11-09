@@ -55,6 +55,10 @@ var player = {
   canTrapAgain: false,
   canHealAgain: false,
   canDashAgain: false,
+  canHasteAgain: false,
+  mCD: 0,
+  pCD: 0,
+  tCD: 0,
   check: function()
   {
     console.log("this is the function inside the player");
@@ -92,11 +96,9 @@ var boss = {
 var difficulty = 1;
 var infiniteMode = false;
 var firstLevel = false;
-var tutorialScenePaused = false;
 var bossScenePaused = false;
 var infiniteScenePaused = false;
 var switchScene = false;
 var bossNumber = 0;
-var theme;
 
 var game = new Phaser.Game(config);
