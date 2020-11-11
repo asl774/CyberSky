@@ -235,10 +235,18 @@ class Tutorial extends Phaser.Scene{
     this.stage2Text1 = this.add.text(550, 30, "Collect the powerup", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
     this.stage2Text1a = this.add.text(550, 30, "Collect next powerup", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
     this.stage2Text2 = this.add.text(550, 45, "Press Q to use MULITISHOT ability", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text2a = this.add.text(1650, 150, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text2b = this.add.text(1800, 150, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
     this.stage2Text3 = this.add.text(550, 45, "Press W to use PIERCE ability", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text3a = this.add.text(1650, 250, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text3b = this.add.text(1800, 250, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
     this.stage2Text4 = this.add.text(550, 45, "Press E to use TRAP ability", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text4a = this.add.text(1650, 350, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text4b = this.add.text(1800, 350, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
     this.stage2Text5 = this.add.text(550, 45, "The HASTE powerup reduces your ability cooldowns", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text5a = this.add.text(550, 30, "Take out the remaining enemies", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text5a = this.add.text(1650, 450, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text5b = this.add.text(1800, 450, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text5c = this.add.text(550, 30, "Take out the remaining enemies", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
     this.stage2Text6 = this.add.text(550, 30, "DEFEAT THE BLOC", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
     this.stage2Text7 = this.add.text(550, 30, "Congrats! Touch the TREASURE CHEST to start main game", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
     
@@ -318,7 +326,7 @@ class Tutorial extends Phaser.Scene{
     this.stage2Text3.setScrollFactor(0,0); 
     this.stage2Text4.setScrollFactor(0,0); 
     this.stage2Text5.setScrollFactor(0,0); 
-    this.stage2Text5a.setScrollFactor(0,0); 
+    this.stage2Text5c.setScrollFactor(0,0); 
     this.stage2Text6.setScrollFactor(0,0); 
     this.stage2Text7.setScrollFactor(0,0); 
     tutorialboss.healthBar.setScrollFactor(0,0); 
@@ -430,8 +438,20 @@ class Tutorial extends Phaser.Scene{
       if(this.createdPowerup1 == false){
           this.enemyWave = 2;
           this.waveAttackTimer.paused = true;
-          this.tutorialpowerup1.create(1750, 100, 'multishotPU');
+          this.tutorialpowerup1.create(1750, 150, 'multishotPU');
           this.createdPowerup1 = true;
+        this.tweens.add({
+          targets: this.stage2Text2a,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text2b,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
         }
     }
 
@@ -450,10 +470,22 @@ class Tutorial extends Phaser.Scene{
           duration: 1000,
           ease: 'Power2' 
         });
+        this.tweens.add({
+          targets: this.stage2Text2a,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text2b,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' 
+        });
 
         this.createdPowerup2 = true;
     }   
-    if(this.firstQPressed  && this.createdPowerup3 == false)
+    if(this.firstQPressed && this.createdPowerup3 == false)
     {
         this.tweens.add({
           targets: this.stage2Text1a,
@@ -467,8 +499,19 @@ class Tutorial extends Phaser.Scene{
           duration: 1000,
           ease: 'Power2' 
         });
-
-        this.tutorialpowerup2.create(1750, 200, 'piercePU');
+        this.tweens.add({
+          targets: this.stage2Text3a,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text3b,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tutorialpowerup2.create(1750, 250, 'piercePU');
         this.createdPowerup3 = true;
     }
     if (player.pierce && this.createdPowerup4 == false){
@@ -478,8 +521,20 @@ class Tutorial extends Phaser.Scene{
           duration: 1000,
           ease: 'Power2'
         });
+        this.tweens.add({
+          targets: this.stage2Text3a,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text3b,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' 
+        });
     }
-    if(this.firstWPressed  && this.createdPowerup4 == false)
+    if(this.firstWPressed && this.createdPowerup4 == false)
     {
         this.tweens.add({
           targets: this.stage2Text3,
@@ -487,7 +542,19 @@ class Tutorial extends Phaser.Scene{
           duration: 1000,
           ease: 'Power2' 
         });
-        this.tutorialpowerup3.create(1750, 300, 'trapPU');
+        this.tweens.add({
+          targets: this.stage2Text4a,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text4b,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tutorialpowerup3.create(1750, 350, 'trapPU');
         this.createdPowerup4 = true;
     }
     if (player.trap && this.createdPowerup5 == false){
@@ -496,6 +563,18 @@ class Tutorial extends Phaser.Scene{
           alpha: 1,
           duration: 1000,
           ease: 'Power2'
+        });
+        this.tweens.add({
+          targets: this.stage2Text4a,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text4b,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' 
         });
     }
     if(this.firstEPressed && this.createdPowerup5 == false) //player.hasteCollected
@@ -512,7 +591,19 @@ class Tutorial extends Phaser.Scene{
           duration: 1000,
           ease: 'Power2' 
         });
-        this.tutorialpowerup4.create(1750, 400, 'hastePU');
+        this.tweens.add({
+          targets: this.stage2Text5a,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text5b,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tutorialpowerup4.create(1750, 450, 'hastePU');
         this.createdPowerup5 = true;
     }
     if(player.hasteCollected && this.createdPowerup6 == false){
@@ -530,6 +621,18 @@ class Tutorial extends Phaser.Scene{
         });
         this.tweens.add({
           targets: this.stage2Text5a,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text5b,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.stage2Text5c,
           alpha: 1,
           duration: 1000,
           ease: 'Power2' 
@@ -539,7 +642,7 @@ class Tutorial extends Phaser.Scene{
     if(this.numEnemiesKilled >= 9 && player.hasteCollected)
     {
         this.tweens.add({
-          targets: this.stage2Text5a,
+          targets: this.stage2Text5c,
           alpha: 0,
           duration: 1000,
           ease: 'Power2' 
