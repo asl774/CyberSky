@@ -27,11 +27,11 @@ class Tutorial extends Phaser.Scene{
     this.playertrap;
 
       player.speed = 10;
-      player.health = 100;
+      player.health = 80;
       player.isAlive = true;
       player.healthPercent = 100;
       player.healthBar = 0;
-      player.sheilded = false;
+      player.shielded = false;
       player.multishot = false;
       player.pierce = false;
       //player.kaboom = false;
@@ -108,7 +108,7 @@ class Tutorial extends Phaser.Scene{
     player.sprite = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninja');
     player.sprite.setScale(0.5);
     player.sprite.setCollideWorldBounds(true); //can't run off screen
-    player.healthBar = this.makeBar(50, 10, 0, 50, 0x2ecc71);
+    player.healthBar = this.makeBar(40, 10, 0, 50, 0x2ecc71);
     this.setValue(player.healthBar,player.healthPercent);
     player.healthBar.setVisible(true);
     player.healthPercent = 100;
@@ -395,7 +395,7 @@ class Tutorial extends Phaser.Scene{
           ease: 'Power2' 
         });
     }
-    if(this.numEnemiesKilled >= 4 && this.numEnemiesKilled < 10){
+    if(this.numEnemiesKilled >= 4 && this.numEnemiesKilled < 10  && this.firstDPressed){
         this.cameras.main.setBounds(0, 0, 1400 * 2 - 10, 560);
         this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
     }
@@ -414,7 +414,7 @@ class Tutorial extends Phaser.Scene{
           ease: 'Power2' 
         });
     }
-    if(this.numEnemiesKilled == 4){
+    if(this.numEnemiesKilled == 4 && this.firstDPressed){
         this.tweens.add({
           targets: this.stage1Text6,
           alpha: 0,
