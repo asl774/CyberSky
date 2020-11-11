@@ -257,7 +257,7 @@ class InfiniteScene extends Phaser.Scene{
     this.pkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
     //timer testing
     this.timer = this.time.addEvent({delay : 2000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
-    this.yakuzaTimer = this.time.addEvent({delay : 1000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
+    this.yakuzaTimer = this.time.addEvent({delay : 500, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 2000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
     this.waveAttackTimer = this.time.addEvent({delay : 3000, callback: this.waveAttack, callbackScope: this, loop: true, paused: false }); //2500
     this.waveCreateTimer = this.time.addEvent({delay : 1500, callback: this.createWave, callbackScope: this, loop: true, paused: false }); //1500
