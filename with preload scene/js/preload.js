@@ -86,7 +86,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('autoCyan','assets/autos.png');
       this.load.image('smallGold','assets/smallGold.png');
 
-      this.load.image('blocboss', 'assets/bloc3.png');
+      this.load.image('blocboss', 'assets/bloc5.png');
       this.load.image('boss', 'assets/boss.png');
       this.load.image('octoboss', 'assets/octoboss2.png');
       this.load.image('yakuzaboss', 'assets/yakuza4.png');

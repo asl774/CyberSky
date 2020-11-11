@@ -65,6 +65,8 @@ class Tutorial extends Phaser.Scene{
     this.firstQPressed = false;
     this.firstWPressed = false;
     this.firstEPressed = false;
+
+    this.canGrabTreasure = false;
   }
 
 
@@ -72,15 +74,18 @@ class Tutorial extends Phaser.Scene{
   {
 /*
     this.input.once('pointerup', function (event) {
-      this.tutorialtheme.stop();
+      tutorialtheme.stop();
       firstLevel = true;
       this.scene.start('bossScene');
     }, this);
 */
 
     //audio
-    this.tutorialtheme = this.sound.add('tutorialtheme', {volume: 0.5});
-    this.tutorialtheme.setLoop(true);
+    if (!tutorialthemeplaying) {
+        tutorialtheme = this.sound.add('tutorialtheme', {volume: 0.5});
+        tutorialtheme.setLoop(true);
+        tutorialtheme.play();
+    }
     this.ability1 = this.sound.add('ability1', {volume: 0.5});
     this.ability2 = this.sound.add('ability2', {volume: 0.5});
     this.ability3 = this.sound.add('ability3');
@@ -94,7 +99,6 @@ class Tutorial extends Phaser.Scene{
     this.shieldUp = this.sound.add('shield');
     this.dinodie = this.sound.add('dinodie');
     this.trapsfx = this.sound.add('trapsfx')
-    this.tutorialtheme.play();
     //background
     this.cameras.main.setBounds(0, 0, 1400 - 40, 560);
     this.physics.world.setBounds(0, 30, 1400 - 40, 560);
@@ -145,6 +149,7 @@ class Tutorial extends Phaser.Scene{
     // goal / end of level
     this.tutorialtreasure = this.physics.add.sprite(2800 - 70, this.sys.game.config.height / 2, 'treasure'); //7000
     this.tutorialtreasure.setScale(0.6);
+    this.tutorialtreasure.setVisible(false);
     //boss
     tutorialboss.sprite = this.physics.add.sprite(2800 + 200,300, 'blocboss'); //7150
     tutorialboss.sprite.setVisible(false);
@@ -706,6 +711,8 @@ class Tutorial extends Phaser.Scene{
       tutorialboss.sprite.setActive(false);
       tutorialboss.sprite.setVisible(false);
       this.timer.paused = true;
+      this.tutorialtreasure.setVisible(true);
+      this.canGrabTreasure = true;
     }
     //ability three
     if (this.timer.getProgress().toString().substr(0,4) < 0.4){
@@ -797,18 +804,24 @@ class Tutorial extends Phaser.Scene{
     //press d key to teleport 100 pixels in direction of arrow key
     else if (Phaser.Input.Keyboard.JustDown(this.dkey))
     {
-      this.firstDPressed = true;
-      this.teleport.play();
       if (this.cursors.right.isDown){
+        this.teleport.play();
+        this.firstDPressed = true;
         player.sprite.x += 100;
       }
       else if (this.cursors.left.isDown){
+        this.teleport.play();
+        this.firstDPressed = true;
         player.sprite.x -= 100;
       }
       else if (this.cursors.up.isDown){
+        this.teleport.play();
+        this.firstDPressed = true;
         player.sprite.y -= 100;
       }
       else if (this.cursors.down.isDown){
+        this.teleport.play();
+        this.firstDPressed = true;
         player.sprite.y += 100;
       }
     }
@@ -819,12 +832,12 @@ class Tutorial extends Phaser.Scene{
         this.cursors.up.reset();
         this.cursors.down.reset();
         tutorialScenePaused = true;
-        this.tutorialtheme.pause();
+        tutorialtheme.pause();
         this.scene.pause("tutorialScene");
         this.scene.launch("pauseScene");
     }
     if (tutorialScenePaused == false){
-        this.tutorialtheme.resume();
+        tutorialtheme.resume();
     }
   }
 
@@ -1266,7 +1279,7 @@ class Tutorial extends Phaser.Scene{
 
   gameOver()
   {
-    this.tutorialtheme.stop();
+    tutorialtheme.stop();
     // flag to set player is dead
     player.isAlive = false;
     // shake the camera
@@ -1282,10 +1295,12 @@ class Tutorial extends Phaser.Scene{
   }
 
   moveToGame()
-  {
-    this.tutorialtheme.stop();
-    firstLevel = true;
-    this.scene.start('bossScene');
+  { 
+    if(this.canGrabTreasure){
+        tutorialtheme.stop();
+        firstLevel = true;
+        this.scene.start('bossScene');
+    }
   }
 
 }
