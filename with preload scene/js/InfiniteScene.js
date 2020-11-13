@@ -384,87 +384,84 @@ class InfiniteScene extends Phaser.Scene{
       this.waveCreateTimer.paused = true;
     }
 
-
     if (this.numEnemiesKilled >= 10 * difficulty && this.numEnemiesKilled < 20 * difficulty){
       this.poweruptimer1.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
-      this.physics.world.setBounds(this.worldsX, 30, 1400 * 2 - 40, 560);
+      this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
       this.enemyWave = 2;
     }
     // can move to wave 3
     if (this.numEnemiesKilled >= 20 * difficulty && this.numEnemiesKilled < 30 * difficulty){
       this.poweruptimer2.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 3 - 40, 560);
-      this.physics.world.setBounds(this.worldsX, 30, 1400 * 3 - 40, 560);
+      this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
       this.enemyWave = 3;
     }
     // can move to wave 4
     if (this.numEnemiesKilled >= 30 * difficulty && this.numEnemiesKilled < 40 * difficulty){
       this.poweruptimer3.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 4 - 40, 560);
-      this.physics.world.setBounds(this.worldsX, 30, 1400 * 4 - 40, 560);
+      this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
       this.enemyWave = 4;
     }
     // can move to boss
     if (this.numEnemiesKilled >= 39 * difficulty && this.numEnemiesKilled < 40 * difficulty){
       this.poweruptimer4.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
-      this.physics.world.setBounds(this.worldsX, 30, 1400 * 4 + 1000, 560);
+      this.physics.world.setBounds(this.worldsX, 30, 1440, 560);
       this.enemyWave = 5;
     }
 
     // make waves attack only when player crosses line
-    if (player.sprite.x >= 1400 && this.numEnemiesCreated < 20 * difficulty){
-        this.stage = 2;
+    if (player.sprite.x >= 1400 - 40 && this.numEnemiesCreated < 20 * difficulty){
+      this.stage = 2;
       this.waveAttackTimer.paused = false;
       this.waveCreateTimer.paused = false;
       this.poweruptimer2.paused = false;
-      this.worldsX = 1400;
+      this.worldsX = 1400 - 40;
     }
-    if (player.sprite.x >= 2800 && this.numEnemiesCreated < 30 * difficulty){
-        this.stage = 3;
+    if (this.numEnemiesKilled >= 20 * difficulty && player.sprite.x >= 2800 - 40 && this.numEnemiesCreated < 30 * difficulty){
+      this.stage = 3;
       this.waveAttackTimer.paused = false;
       this.waveCreateTimer.paused = false;
       this.poweruptimer3.paused = false;
-      this.worldsX = 2800;
+      this.worldsX = 2800 - 40;
     }
-    if (player.sprite.x >= 4200 && this.numEnemiesCreated < 40 * difficulty){
-        this.stage = 4;
+    if (this.numEnemiesKilled >= 30 * difficulty && player.sprite.x >= 4200 - 40 && this.numEnemiesCreated < 40 * difficulty){
+      this.stage = 4;
       this.waveAttackTimer.paused = false;
       this.waveCreateTimer.paused = false;
       this.poweruptimer4.paused = false;
-      this.worldsX = 4200;
+      this.worldsX = 4200 - 40;
     }
-    if (player.sprite.x >= 5600){
+    if (this.numEnemiesKilled >= 40 * difficulty && player.sprite.x >= 5600){
       this.stage = 5;
       this.worldsX = 5600;
       this.poweruptimer5.paused = false;
       this.bossHPText.setVisible(true);
-      /*
-      this.levelText.setVisible(false);
-    this.numKillsText.setVisible(false);
-    this.powerupBarText.setVisible(false);
-    this.powerupBar.setVisible(false);
-    this.powerupIcon1.setVisible(false);
-    this.powerupIcon2.setVisible(false);
-    this.powerupIcon3.setVisible(false);
-    this.powerupIcon4.setVisible(false);
-    this.powerupText.setVisible(false);
-    this.powerupText2.setVisible(false);
-    this.powerupText3.setVisible(false);
-    this.powerupText4.setVisible(false);
-    this.hasteStackText.setVisible(false);
-    */
+      //this.levelText.setVisible(false);
+    //this.numKillsText.setVisible(false);
+    //this.powerupBarText.setVisible(false);
+    //this.powerupBar.setVisible(false);
+    //this.powerupIcon1.setVisible(false);
+    //this.powerupIcon2.setVisible(false);
+    //this.powerupIcon3.setVisible(false);
+    //this.powerupIcon4.setVisible(false);
+    //this.powerupText.setVisible(false);
+    //this.powerupText2.setVisible(false);
+    //this.powerupText3.setVisible(false);
+    //this.powerupText4.setVisible(false);
+    //this.hasteStackText.setVisible(false);
     }
     // make enemies respawn at wave start point if they leave camera view
     for (var i = 0; i < this.wave1.getChildren().length; i++) {
       var enemy = this.wave1.getChildren()[i];
       enemy.update();
-      if (enemy.x <= this.worldsX){
+      if (enemy.x <= this.physics.world.bounds.x){
         enemy.x = this.enemyx; // - 1400
       }
       if (enemy.y < this.enemyMinY || enemy.y > this.enemyMaxY){
-        enemy.x = this.enemyx; // - 1400
+        enemy.x = this.enemyx;
         enemy.y = Phaser.Math.Between(100, 500);
       }
     }
@@ -472,13 +469,13 @@ class InfiniteScene extends Phaser.Scene{
 
 
     // make player stay in boss area
-    if (player.sprite.x > 5600){
+    if (this.numEnemiesKilled >= 40 * difficulty && player.sprite.x > 5600){
       this.cameras.main.setBounds(5600, 0, 1300, 560);
       this.physics.world.setBounds(5600, 30, 1350, 560);
     }
 
     // spawns boss when player crosses threshold
-    if (player.sprite.x + 17 > 5700) { //400 //6000
+    if (this.numEnemiesKilled >= 40 * difficulty && player.sprite.x + 17 > 5700) { //400 //6000
       this.startBoss = true;
       this.cameras.main.setBounds(5600, 0, 1300, 560);
       this.physics.world.setBounds(5600, 30, 1350, 560);

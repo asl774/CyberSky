@@ -410,59 +410,57 @@ class BossScene extends Phaser.Scene{
     if (this.numEnemiesCreated >= 40 * difficulty && this.numEnemiesCreated < 50 * difficulty){
       this.waveCreateTimer.paused = true;
     }
-
-
     if (this.numEnemiesKilled >= 10 * difficulty && this.numEnemiesKilled < 20 * difficulty){
       this.poweruptimer1.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
-      this.physics.world.setBounds(this.worldsX, 30, 1400 * 2 - 40, 560);
+      this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
       this.enemyWave = 2;
     }
     // can move to wave 3
     if (this.numEnemiesKilled >= 20 * difficulty && this.numEnemiesKilled < 30 * difficulty){
       this.poweruptimer2.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 3 - 40, 560);
-      this.physics.world.setBounds(this.worldsX, 30, 1400 * 3 - 40, 560);
+      this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
       this.enemyWave = 3;
     }
     // can move to wave 4
     if (this.numEnemiesKilled >= 30 * difficulty && this.numEnemiesKilled < 40 * difficulty){
       this.poweruptimer3.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 4 - 40, 560);
-      this.physics.world.setBounds(this.worldsX, 30, 1400 * 4 - 40, 560);
+      this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
       this.enemyWave = 4;
     }
     // can move to boss
     if (this.numEnemiesKilled >= 39 * difficulty && this.numEnemiesKilled < 40 * difficulty){
       this.poweruptimer4.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
-      this.physics.world.setBounds(this.worldsX, 30, 1400 * 4 + 1000, 560);
+      this.physics.world.setBounds(this.worldsX, 30, 1440, 560);
       this.enemyWave = 5;
     }
 
     // make waves attack only when player crosses line
-    if (player.sprite.x >= 1400 && this.numEnemiesCreated < 20 * difficulty){
+    if (player.sprite.x >= 1400 - 40 && this.numEnemiesCreated < 20 * difficulty){
       this.stage = 2;
       this.waveAttackTimer.paused = false;
       this.waveCreateTimer.paused = false;
       this.poweruptimer2.paused = false;
-      this.worldsX = 1400;
+      this.worldsX = 1400 - 40;
     }
-    if (player.sprite.x >= 2800 && this.numEnemiesCreated < 30 * difficulty){
+    if (this.numEnemiesKilled >= 20 * difficulty && player.sprite.x >= 2800 - 40 && this.numEnemiesCreated < 30 * difficulty){
       this.stage = 3;
       this.waveAttackTimer.paused = false;
       this.waveCreateTimer.paused = false;
       this.poweruptimer3.paused = false;
-      this.worldsX = 2800;
+      this.worldsX = 2800 - 40;
     }
-    if (player.sprite.x >= 4200 && this.numEnemiesCreated < 40 * difficulty){
+    if (this.numEnemiesKilled >= 30 * difficulty && player.sprite.x >= 4200 - 40 && this.numEnemiesCreated < 40 * difficulty){
       this.stage = 4;
       this.waveAttackTimer.paused = false;
       this.waveCreateTimer.paused = false;
       this.poweruptimer4.paused = false;
-      this.worldsX = 4200;
+      this.worldsX = 4200 - 40;
     }
-    if (player.sprite.x >= 5600){
+    if (this.numEnemiesKilled >= 40 * difficulty && player.sprite.x >= 5600){
       this.stage = 5;
       this.worldsX = 5600;
       this.poweruptimer5.paused = false;
@@ -497,13 +495,13 @@ class BossScene extends Phaser.Scene{
 
 
     // make player stay in boss area
-    if (player.sprite.x > 5600){
+    if (this.numEnemiesKilled >= 40 * difficulty && player.sprite.x > 5600){
       this.cameras.main.setBounds(5600, 0, 1300, 560);
       this.physics.world.setBounds(5600, 30, 1350, 560);
     }
 
     // spawns boss when player crosses threshold
-    if (player.sprite.x + 17 > 5700) { //400 //6000
+    if (this.numEnemiesKilled >= 40 * difficulty && player.sprite.x + 17 > 5700) { //400 //6000
       this.startBoss = true;
       this.cameras.main.setBounds(5600, 0, 1300, 560);
       this.physics.world.setBounds(5600, 30, 1350, 560);
