@@ -26,7 +26,7 @@ class MainMenu extends Phaser.Scene{
         r3.setStrokeStyle(4, 0x37092C);
         add.text(535, 542, 'PLAY INFINITE MODE', { fontFamily: 'Bitwise', fontSize: 25, fill: '#ffffff' });
 
-
+        tutorialthemeplaying = false;
         r1.on('pointerover', () => this.enterHoverState(r1));
         r1.on('pointerout', () => this.enterRestState(r1));
         r1.on('pointerdown', () => this.enterDownState(r1));

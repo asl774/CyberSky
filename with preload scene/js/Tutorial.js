@@ -85,6 +85,7 @@ class Tutorial extends Phaser.Scene{
         tutorialtheme = this.sound.add('tutorialtheme', {volume: 0.5});
         tutorialtheme.setLoop(true);
         tutorialtheme.play();
+        tutorialthemeplaying = true;
     }
     this.ability1 = this.sound.add('ability1', {volume: 0.5});
     this.ability2 = this.sound.add('ability2', {volume: 0.5});
@@ -350,6 +351,7 @@ class Tutorial extends Phaser.Scene{
     //this.numKillsText4.setText("Enemies Killed: " + this.numEnemiesKilled);
     this.bossHPText.setText("Boss HP: " + Math.ceil(tutorialboss.healthPercent));
     if (!player.isAlive) {
+      tutorialthemeplaying = false;
       this.gameOver();
     }
     // check for active input
@@ -1293,6 +1295,7 @@ class Tutorial extends Phaser.Scene{
     this.setValue(player.healthBar, player.healthPercent);
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
+      tutorialthemeplaying = false;
       this.gameOver();
     }
     console.log("player health is : " + player.health);
@@ -1324,6 +1327,7 @@ class Tutorial extends Phaser.Scene{
       console.log("player health is : " + player.health);
     }
     if (player.health<= 0){
+      tutorialthemeplaying = false;
       this.gameOver();
     }
   }
@@ -1387,6 +1391,7 @@ class Tutorial extends Phaser.Scene{
     this.cameras.main.shake(400, 0.01); //duration, intensity
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
+      tutorialthemeplaying = false;
       this.gameOver();
     }
     console.log("player health is : " + player.health);
@@ -1455,6 +1460,7 @@ class Tutorial extends Phaser.Scene{
   gameOver()
   {
     tutorialtheme.stop();
+    tutorialthemeplaying = false;
     // flag to set player is dead
     player.isAlive = false;
     // shake the camera
