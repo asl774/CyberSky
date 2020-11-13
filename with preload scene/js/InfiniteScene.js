@@ -367,7 +367,7 @@ class InfiniteScene extends Phaser.Scene{
       player.sprite.y += player.speed;
     }
     // locked camera conditions
-    // can move to wave 2
+   // can move to wave 2
     if (this.numEnemiesCreated >= 10 * difficulty && this.numEnemiesCreated < 20 * difficulty){
       this.waveCreateTimer.paused = true;
     }
@@ -383,7 +383,12 @@ class InfiniteScene extends Phaser.Scene{
     if (this.numEnemiesCreated >= 40 * difficulty && this.numEnemiesCreated < 50 * difficulty){
       this.waveCreateTimer.paused = true;
     }
-
+    if (this.numEnemiesKilled >= 0 * difficulty && this.numEnemiesKilled < 10 * difficulty){
+      this.poweruptimer1.paused = true;
+      this.cameras.main.setBounds(0, 0, 1400 - 40, 560);
+      this.physics.world.setBounds(this.worldsX, 30, 1400 - 40, 560);
+      this.enemyWave = 1;
+    }
     if (this.numEnemiesKilled >= 10 * difficulty && this.numEnemiesKilled < 20 * difficulty){
       this.poweruptimer1.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
@@ -413,7 +418,14 @@ class InfiniteScene extends Phaser.Scene{
     }
 
     // make waves attack only when player crosses line
-    if (player.sprite.x >= 1400 - 40 && this.numEnemiesCreated < 20 * difficulty){
+    if (player.sprite.x >= 0 && this.numEnemiesCreated < 10 * difficulty){
+      this.stage = 1;
+      this.waveAttackTimer.paused = false;
+      this.waveCreateTimer.paused = false;
+      this.poweruptimer2.paused = false;
+      this.worldsX = 0;
+    }
+    if (this.numEnemiesKilled >= 10 * difficulty && player.sprite.x >= 1400 - 40 && this.numEnemiesCreated < 20 * difficulty){
       this.stage = 2;
       this.waveAttackTimer.paused = false;
       this.waveCreateTimer.paused = false;
