@@ -262,9 +262,9 @@ class BossScene extends Phaser.Scene{
     this.poweruptimer3 = this.time.addEvent({delay : 5000, callback: this.createPowerup3, callbackScope: this, loop: true, paused: true });
     this.poweruptimer4 = this.time.addEvent({delay : 5000, callback: this.createPowerup4, callbackScope: this, loop: true, paused: true });
     this.poweruptimer5 = this.time.addEvent({delay : 5000, callback: this.createPowerup5, callbackScope: this, loop: true, paused: true });
-    this.abilityTimer1 = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseAbilityTimer1, callbackScope: this, loop: true, paused: false });
-    this.abilityTimer2 = this.time.addEvent({delay : 1000 - player.haste, callback: this.pauseAbilityTimer2, callbackScope: this, loop: true, paused: false });
-    this.abilityTimer3 = this.time.addEvent({delay : 3001 - player.haste, callback: this.pauseAbilityTimer3, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer1 = this.time.addEvent({delay : 1350 - player.haste, callback: this.pauseAbilityTimer1, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer2 = this.time.addEvent({delay : 3000 - player.haste, callback: this.pauseAbilityTimer2, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer3 = this.time.addEvent({delay : 1100 - player.haste, callback: this.pauseAbilityTimer3, callbackScope: this, loop: true, paused: false });
     this.healTimer = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
     this.dashTimer = this.time.addEvent({delay : 1000 - player.haste, callback: this.pauseDashTimer, callbackScope: this, loop: true, paused: false });
     //debugging / things to remove later
@@ -371,6 +371,8 @@ class BossScene extends Phaser.Scene{
     if (!player.isAlive) {
       this.deathSound.play();
       this.sound.stopAll();
+      player.speed = 10;
+      player.haste = 0;
       this.deathSound.play();
       this.scene.start("loseScene");
     }
@@ -578,11 +580,11 @@ class BossScene extends Phaser.Scene{
       let pbullet1 = this.playerbullets.create(playerx, playery - 25, 'star');
       let pbullet2 = this.playerbullets.create(playerx, playery, 'star');
       let pbullet3 = this.playerbullets.create(playerx, playery + 25, 'star');
-      pbullet1.setVelocityX(800);
-      pbullet1.setVelocityY(-100);
-      pbullet2.setVelocityX(800);
-      pbullet3.setVelocityX(800);
-      pbullet3.setVelocityY(100);
+      pbullet1.setVelocityX(850);
+      pbullet1.setVelocityY(-150);
+      pbullet2.setVelocityX(850);
+      pbullet3.setVelocityX(850);
+      pbullet3.setVelocityY(150);
     }
     //press x key to throw big piercing star
     else if (Phaser.Input.Keyboard.JustDown(this.wkey) && player.pierce == true && player.canPierceAgain)
@@ -689,7 +691,6 @@ class BossScene extends Phaser.Scene{
       let pbullet = this.playerbullets.create(playerx, playery, 'star1');
       pbullet.setVelocityX(200);
     }
-
     //press s to throw extra star2
     else if (Phaser.Input.Keyboard.JustDown(this.skey))
     {
@@ -1468,7 +1469,7 @@ class BossScene extends Phaser.Scene{
     this.powerupIcon4.setVisible(true);
     this.powerupText4.setVisible(true);
     this.hasteStackText.setVisible(true);
-    if (player.haste >= 900){
+    if (player.haste >= 1000){
       if(player.health > 90)
       {
         player.health = 100;
@@ -1480,7 +1481,7 @@ class BossScene extends Phaser.Scene{
       }
       this.setValue(player.healthBar, player.healthPercent);
     }else{
-      player.haste += 150;
+      player.haste += 100;
       console.log("player.haste is: ", player.haste)
       }
   }
@@ -1565,7 +1566,9 @@ class BossScene extends Phaser.Scene{
     this.trapsfx.play();
     enemy.destroy();
     this.numEnemiesKilled += 1;
-    player.speed += 0.1;
+    if (player.speed <= 19.95){
+      player.speed += 0.05;
+    }
   }
 
   pierceEnemy (enemy, pbullet)
@@ -1583,6 +1586,7 @@ class BossScene extends Phaser.Scene{
     {
         this.setValue(boss.healthBar, 0);
         boss.health = 0;
+        player.sprite.tint = 0xFFC79D;
     }
     else
         this.setValue(boss.healthBar, boss.healthPercent);
@@ -1591,12 +1595,13 @@ class BossScene extends Phaser.Scene{
 
   pierceBoss (b, pbullet)
   {
-    boss.healthPercent -= 0.1;
-    boss.health -= 0.1;
+    boss.healthPercent -= 0.05;
+    boss.health -= 0.05;
     if (boss.health <= 0)
     {
         this.setValue(boss.healthBar, 0);
         boss.health = 0;
+        player.sprite.tint = 0xFFC79D;
     }
     else
         this.setValue(boss.healthBar, boss.healthPercent);
@@ -1604,8 +1609,9 @@ class BossScene extends Phaser.Scene{
 
   gameOver()
   {
+    player.sprite.tint = 0xFFC79D;
     this.deathSound.play();
-    this.sound.stopAll();
+    this.sound.stopAll(); 
     this.deathSound.play();
     this.scene.start("loseScene");
     // flag to set player is dead
