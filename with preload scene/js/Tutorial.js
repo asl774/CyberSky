@@ -128,6 +128,12 @@ class Tutorial extends Phaser.Scene{
     //this.tutorialpowerup4 = this.physics.add.group();
     this.hud = this.add.image(700, 50, "hud").setAlpha(0.80);
     //this.powerupBar = this.makePowerupBar(350, 0, 0xffffff);
+    this.abilityIcon1 = this.add.image(250, 34, "healAbility");
+    this.abilityIcon2 = this.add.image(300, 34, "shieldAbility");
+    this.abilityIcon3 = this.add.image(350, 34, "dashAbility");
+    this.abilityIcon1.setVisible(false);
+    this.abilityIcon2.setVisible(false);
+    this.abilityIcon3.setVisible(false);
     this.powerupIcon1 = this.add.image(250, 34, "multishotPU"); //480
     this.powerupIcon2 = this.add.image(300, 34, "piercePU");    //530
     this.powerupIcon3 = this.add.image(350, 37, "trapPU");      //580
@@ -224,13 +230,13 @@ class Tutorial extends Phaser.Scene{
     this.healTimer = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
 
     //TODO: edit this into more specific stages
-    this.stage1Text1 = this.add.text(350, 30, "Use ARROW KEYS to move", { fontSize: '20px', fill: '#00FFFF', align: "center" });
-    this.stage1Text2 = this.add.text(350, 45, "Press SPACEBAR to attack", { fontSize: '20px', fill: '#00FFFF', align: "center" });
-    this.stage1Text3 = this.add.text(350, 30, "Press A to recover health after taking damage", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage1Text4 = this.add.text(350, 30, "Press S to shield", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage1Text5 = this.add.text(350, 30, "Hold ARROW KEY + D to dash", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage1Text6 = this.add.text(350, 30, "Take out the remaining enemies", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage1Text7 = this.add.text(350, 30, "Move right to the next stage -->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text1 = this.add.text(550, 30, "Use ARROW KEYS to move", { fontSize: '20px', fill: '#00FFFF', align: "center" });
+    this.stage1Text2 = this.add.text(550, 45, "Press SPACEBAR to attack", { fontSize: '20px', fill: '#00FFFF', align: "center" });
+    this.stage1Text3 = this.add.text(550, 30, "Press A to recover health after taking damage", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text4 = this.add.text(550, 30, "Press S to shield", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text5 = this.add.text(550, 30, "Hold ARROW KEY + D to dash", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text6 = this.add.text(550, 30, "Take out the remaining enemies", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text7 = this.add.text(550, 30, "Move right to the next stage -->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
    
     this.stage2Text1 = this.add.text(550, 30, "Collect the powerup", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
     this.stage2Text1a = this.add.text(550, 30, "Collect next powerup", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
@@ -250,16 +256,20 @@ class Tutorial extends Phaser.Scene{
     this.stage2Text6 = this.add.text(550, 30, "DEFEAT THE BLOC", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
     this.stage2Text7 = this.add.text(550, 30, "Congrats! Touch the TREASURE CHEST to start main game", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
     
-    this.powerupBarText = this.add.text(100, 10, "Powerups: ", { fontSize: '20px', fill: '#00FFFF', align: "center" });
+    this.abilityBarText = this.add.text(100, 10, "Abilities: ", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.abilityText1 = this.add.text(247, 10, "A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.abilityText2 = this.add.text(297, 10, "S", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.abilityText3 = this.add.text(348, 10, "D", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.powerupBarText = this.add.text(100, 10, "Powerups: ", { fontSize: '20px', fill: '#00FFFF', align: "center" }); //100
     this.powerupBarText.setVisible(false);
     //this.powerupBarText2 = this.add.text(1750, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
     //this.powerupBarText3 = this.add.text(3150, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
     //this.powerupBarText4 = this.add.text(4550, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
-    this.powerupText = this.add.text(248, 10, "Q", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });    //480   //478
-    this.powerupText2 = this.add.text(299, 10, "W", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });   //530   //529
-    this.powerupText3 = this.add.text(349, 10, "E", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });   //580   //579
-    this.powerupText4 = this.add.text(390, 10, "N/A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }); //630   //620
-    this.hasteStackText = this.add.text(414, 39, "1", { fontSize: 'bold 11px', fill: '#00FFFF', align: "center" }); //630   //644
+    this.powerupText = this.add.text(248, 10, "Q", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });    //248
+    this.powerupText2 = this.add.text(299, 10, "W", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });   //299
+    this.powerupText3 = this.add.text(349, 10, "E", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });   //349
+    this.powerupText4 = this.add.text(390, 10, "N/A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }); //390
+    this.hasteStackText = this.add.text(414, 39, "1", { fontSize: 'bold 11px', fill: '#00FFFF', align: "center" }); //414
     this.powerupText.setVisible(player.multishot);
     this.powerupText2.setVisible(player.pierce);
     this.powerupText3.setVisible(player.trap);
@@ -319,6 +329,10 @@ class Tutorial extends Phaser.Scene{
     this.powerupText4.setScrollFactor(0,0); 
     this.hasteStackText.setScrollFactor(0,0); 
     this.bossHPText.setScrollFactor(0,0); 
+    this.abilityBarText.setScrollFactor(0,0);
+    this.abilityText1.setScrollFactor(0,0);
+    this.abilityText2.setScrollFactor(0,0);
+    this.abilityText3.setScrollFactor(0,0);
     this.stage1Text7.setScrollFactor(0,0); 
     this.stage2Text1.setScrollFactor(0,0); 
     this.stage2Text1a.setScrollFactor(0,0); 
@@ -354,6 +368,7 @@ class Tutorial extends Phaser.Scene{
     //stage 1 enemies
     if(this.firstSpacePressed){
         this.akey.enabled = true;
+        this.abilityIcon1.setVisible(true);
         this.tweens.add({
           targets: this.stage1Text1,
           alpha: 0,
@@ -372,9 +387,22 @@ class Tutorial extends Phaser.Scene{
           duration: 1000,
           ease: 'Power2' 
         });
+        this.tweens.add({
+          targets: this.abilityText1,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.abilityBarText,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
     }
     if(this.firstAPressed){
         this.skey.enabled = true;
+        this.abilityIcon2.setVisible(true);
         this.tweens.add({
           targets: this.stage1Text3,
           alpha: 0,
@@ -387,9 +415,16 @@ class Tutorial extends Phaser.Scene{
           duration: 1000,
           ease: 'Power2' 
         });
+        this.tweens.add({
+          targets: this.abilityText2,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
     }
     if(this.firstSPressed){
         this.dkey.enabled = true;
+        this.abilityIcon3.setVisible(true);
         this.tweens.add({
           targets: this.stage1Text4,
           alpha: 0,
@@ -398,6 +433,12 @@ class Tutorial extends Phaser.Scene{
         });
         this.tweens.add({
           targets: this.stage1Text5,
+          alpha: 1,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.abilityText3,
           alpha: 1,
           duration: 1000,
           ease: 'Power2' 
@@ -422,7 +463,37 @@ class Tutorial extends Phaser.Scene{
           ease: 'Power2' 
         });
     }
+    if(this.numEnemiesKilled >= 4){
+        this.abilityIcon1.setVisible(false);
+        this.abilityIcon2.setVisible(false);
+        this.abilityIcon3.setVisible(false);
+         this.tweens.add({
+          targets: this.abilityText1,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.abilityText2,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.abilityText3,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+        this.tweens.add({
+          targets: this.abilityBarText,
+          alpha: 0,
+          duration: 1000,
+          ease: 'Power2' 
+        });
+    }
     if(this.numEnemiesKilled == 4 && this.firstDPressed){
+
         this.tweens.add({
           targets: this.stage1Text6,
           alpha: 0,
@@ -435,7 +506,8 @@ class Tutorial extends Phaser.Scene{
           duration: 1000,
           ease: 'Power2' 
         });
-      if(this.createdPowerup1 == false){
+       
+    if(this.createdPowerup1 == false){
           this.enemyWave = 2;
           this.waveAttackTimer.paused = true;
           this.tutorialpowerup1.create(1750, 150, 'multishotPU');

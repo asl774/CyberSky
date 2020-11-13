@@ -111,6 +111,9 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('trapPU', 'assets/trappu.png');
       this.load.image('multishotPU', 'assets/multishot.png');
       this.load.image('hastePU', 'assets/haste powerup.png');
+      this.load.image('healAbility', 'assets/healAbility.png');
+      this.load.image('shieldAbility', 'assets/shieldAbility.png');
+      this.load.image('dashAbility', 'assets/dashAbility.png');
 
       //player sabre colors
       this.load.image("redsword", "assets/redsword.png")

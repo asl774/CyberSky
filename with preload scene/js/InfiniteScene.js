@@ -151,10 +151,13 @@ class InfiniteScene extends Phaser.Scene{
 
     this.hud = this.add.image(700, 50, "hud").setAlpha(0.80);
     //this.powerupBar = this.makePowerupBar(350, 0, 0xffffff);
-    this.powerupIcon1 = this.add.image(480, 34, "multishotPU");
-    this.powerupIcon2 = this.add.image(530, 34, "piercePU");
-    this.powerupIcon3 = this.add.image(580, 37, "trapPU");
-    this.powerupIcon4 = this.add.image(630, 35, "hastePU");
+    this.abilityIcon1 = this.add.image(500, 34, "healAbility");
+    this.abilityIcon2 = this.add.image(550, 34, "shieldAbility");
+    this.abilityIcon3 = this.add.image(600, 34, "dashAbility");
+    this.powerupIcon1 = this.add.image(780, 34, "multishotPU"); //480
+    this.powerupIcon2 = this.add.image(830, 34, "piercePU");    //530
+    this.powerupIcon3 = this.add.image(880, 37, "trapPU");      //580
+    this.powerupIcon4 = this.add.image(930, 35, "hastePU");     //630
     this.powerupIcon1.setVisible(player.multishot);
     this.powerupIcon2.setVisible(player.pierce);
     this.powerupIcon3.setVisible(player.trap);
@@ -281,15 +284,16 @@ class InfiniteScene extends Phaser.Scene{
     //this.numKillsText2 = this.add.text(1500, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     //this.numKillsText3 = this.add.text(2900, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     //this.numKillsText4 = this.add.text(4300, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.powerupBarText = this.add.text(350, 10, "Powerups: ", { fontSize: '20px', fill: '#00FFFF', align: "center" });
-    //this.powerupBarText2 = this.add.text(1750, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
-    //this.powerupBarText3 = this.add.text(3150, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
-    //this.powerupBarText4 = this.add.text(4550, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
-    this.powerupText = this.add.text(478, 10, "Q", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });
-    this.powerupText2 = this.add.text(529, 10, "W", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });
-    this.powerupText3 = this.add.text(579, 10, "E", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });
-    this.powerupText4 = this.add.text(620, 10, "N/A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });
-    this.hasteStackText = this.add.text(644, 39, "1", { fontSize: 'bold 11px', fill: '#00FFFF', align: "center" });
+    this.abilityBarText = this.add.text(350, 10, "Abilities: ", { fontSize: '20px', fill: '#00FFFF', align: "center" });
+    this.abilityText1 = this.add.text(496, 10, "A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });
+    this.abilityText2 = this.add.text(547, 10, "S", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });
+    this.abilityText3 = this.add.text(598, 10, "D", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });
+    this.powerupBarText = this.add.text(650, 10, "Powerups: ", { fontSize: '20px', fill: '#00FFFF', align: "center" }); //350
+    this.powerupText = this.add.text(778, 10, "Q", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });        //478
+    this.powerupText2 = this.add.text(829, 10, "W", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });       //529
+    this.powerupText3 = this.add.text(879, 10, "E", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });       //579
+    this.powerupText4 = this.add.text(920, 10, "N/A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });     //620
+    this.hasteStackText = this.add.text(944, 39, "1", { fontSize: 'bold 11px', fill: '#00FFFF', align: "center" });     //644
     this.powerupText.setVisible(player.multishot);
     this.powerupText2.setVisible(player.pierce);
     this.powerupText3.setVisible(player.trap);
@@ -306,6 +310,13 @@ class InfiniteScene extends Phaser.Scene{
     this.numKillsText.setScrollFactor(0,0);
     this.powerupBarText.setScrollFactor(0,0);
     this.hud.setScrollFactor(0,0);
+    this.abilityBarText.setScrollFactor(0,0);
+    this.abilityText1.setScrollFactor(0,0);
+    this.abilityText2.setScrollFactor(0,0);
+    this.abilityText3.setScrollFactor(0,0);
+    this.abilityIcon1.setScrollFactor(0,0);
+    this.abilityIcon2.setScrollFactor(0,0);
+    this.abilityIcon3.setScrollFactor(0,0);
     //this.powerupBar.setScrollFactor(0,0); 
     this.powerupIcon1.setScrollFactor(0,0); 
     this.powerupIcon2.setScrollFactor(0,0); 
@@ -560,20 +571,29 @@ class InfiniteScene extends Phaser.Scene{
     //press c key to teleport 100 pixels in direction of arrow key
     else if (Phaser.Input.Keyboard.JustDown(this.dkey) && player.canDashAgain == true)
     {
-      this.dashTimer.isPaused = false;
-      player.canDashAgain = false;
-      this.teleport.play();
       if (this.cursors.right.isDown){
-        player.sprite.x += 100;
+          player.sprite.x += 100;
+          this.dashTimer.isPaused = false;
+          player.canDashAgain = false;
+          this.teleport.play();
       }
       else if (this.cursors.left.isDown){
-        player.sprite.x -= 100;
+          player.sprite.x -= 100;
+          this.dashTimer.isPaused = false;
+          player.canDashAgain = false;
+          this.teleport.play();
       }
       else if (this.cursors.up.isDown){
-        player.sprite.y -= 100;
+          player.sprite.y -= 100;
+          this.dashTimer.isPaused = false;
+          player.canDashAgain = false;
+          this.teleport.play();
       }
       else if (this.cursors.down.isDown){
-        player.sprite.y += 100;
+          player.sprite.y += 100;
+          this.dashTimer.isPaused = false;
+          player.canDashAgain = false;
+          this.teleport.play();
       }
     }
     //press v to heal - this should go somewhere else
