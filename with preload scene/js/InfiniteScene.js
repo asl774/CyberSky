@@ -260,7 +260,7 @@ class InfiniteScene extends Phaser.Scene{
     this.pkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
     //timer testing
     this.timer = this.time.addEvent({delay : 2000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
-    this.yakuzaTimer = this.time.addEvent({delay : 500, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
+    this.yakuzaTimer = this.time.addEvent({delay : 250, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 2000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
     this.waveAttackTimer = this.time.addEvent({delay : 3000, callback: this.waveAttack, callbackScope: this, loop: true, paused: false }); //2500
     this.waveCreateTimer = this.time.addEvent({delay : 1500, callback: this.createWave, callbackScope: this, loop: true, paused: false }); //1500
@@ -269,9 +269,9 @@ class InfiniteScene extends Phaser.Scene{
     this.poweruptimer3 = this.time.addEvent({delay : 5000, callback: this.createPowerup3, callbackScope: this, loop: true, paused: true });
     this.poweruptimer4 = this.time.addEvent({delay : 5000, callback: this.createPowerup4, callbackScope: this, loop: true, paused: true });
     this.poweruptimer5 = this.time.addEvent({delay : 5000, callback: this.createPowerup5, callbackScope: this, loop: true, paused: true });
-    this.abilityTimer1 = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseAbilityTimer1, callbackScope: this, loop: true, paused: false });
-    this.abilityTimer2 = this.time.addEvent({delay : 1000 - player.haste, callback: this.pauseAbilityTimer2, callbackScope: this, loop: true, paused: false });
-    this.abilityTimer3 = this.time.addEvent({delay : 3001 - player.haste, callback: this.pauseAbilityTimer3, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer1 = this.time.addEvent({delay : 1350 - player.haste, callback: this.pauseAbilityTimer1, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer2 = this.time.addEvent({delay : 3000 - player.haste, callback: this.pauseAbilityTimer2, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer3 = this.time.addEvent({delay : 1100 - player.haste, callback: this.pauseAbilityTimer3, callbackScope: this, loop: true, paused: false });
     this.abilityTimer6 = this.time.addEvent({delay : 10000, callback: this.pauseAbilityTimer6, callbackScope: this, loop: true, paused: false });
     this.healTimer = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
     this.dashTimer = this.time.addEvent({delay : 1000 - player.haste, callback: this.pauseDashTimer, callbackScope: this, loop: true, paused: false });
@@ -344,6 +344,8 @@ class InfiniteScene extends Phaser.Scene{
     if (!player.isAlive) {
       this.deathSound.play();
       this.sound.stopAll();
+      player.speed = 10;
+      player.haste = 0;
       this.deathSound.play();
       this.scene.start("loseScene");
     }
@@ -551,11 +553,11 @@ class InfiniteScene extends Phaser.Scene{
       let pbullet1 = this.playerbullets.create(playerx, playery - 25, 'smallGold');
       let pbullet2 = this.playerbullets.create(playerx, playery, 'smallGold');
       let pbullet3 = this.playerbullets.create(playerx, playery + 25, 'smallGold');
-      pbullet1.setVelocityX(800);
-      pbullet1.setVelocityY(-100);
-      pbullet2.setVelocityX(800);
-      pbullet3.setVelocityX(800);
-      pbullet3.setVelocityY(100);
+      pbullet1.setVelocityX(850);
+      pbullet1.setVelocityY(-150);
+      pbullet2.setVelocityX(850);
+      pbullet3.setVelocityX(850);
+      pbullet3.setVelocityY(150);
     }
     //press x key to throw big piercing star
     else if (Phaser.Input.Keyboard.JustDown(this.wkey) && player.pierce == true && player.canPierceAgain)
@@ -1369,7 +1371,7 @@ class InfiniteScene extends Phaser.Scene{
     this.powerupIcon4.setVisible(true);
     this.powerupText4.setVisible(true);
     this.hasteStackText.setVisible(true);
-    if (player.haste >= 900){
+    if (player.haste >= 1000){
       if(player.health > 90)
       {
         player.health = 100;
@@ -1381,7 +1383,7 @@ class InfiniteScene extends Phaser.Scene{
       }
       this.setValue(player.healthBar, player.healthPercent);
     }else{
-      player.haste += 150;
+      player.haste += 100;
       console.log("player.haste is: ", player.haste)
       }
   }
@@ -1475,7 +1477,9 @@ class InfiniteScene extends Phaser.Scene{
     this.trapsfx.play();
     enemy.destroy();
     this.numEnemiesKilled += 1;
-    player.speed += 0.1;
+    if (player.speed <= 19.95){
+      player.speed += 0.05;
+    }
   }
 
   pierceEnemy (enemy, pbullet)
@@ -1501,8 +1505,8 @@ class InfiniteScene extends Phaser.Scene{
 
   pierceBoss (b, pbullet)
   {
-    boss.healthPercent -= 0.1;
-    boss.health -= 0.1;
+    boss.healthPercent -= 0.05;
+    boss.health -= 0.05;
     if (boss.health <= 0)
     {
         this.setValue(boss.healthBar, 0);
