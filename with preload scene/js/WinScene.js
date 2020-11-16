@@ -8,7 +8,7 @@ class WinScene extends Phaser.Scene{
   create(){
         var add = this.add;
 
-        add.image(0,0, 'background2').setOrigin(0,0);
+        add.image(0,0, currentBackground).setOrigin(0,0);
         this.sound.stopAll();
         this.win = this.sound.add('win');
         this.win.play();

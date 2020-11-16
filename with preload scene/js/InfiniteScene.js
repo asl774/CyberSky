@@ -98,21 +98,25 @@ class InfiniteScene extends Phaser.Scene{
     {
       this.add.image(0, 0, 'background1').setOrigin(0);
       this.add.image(5600, 0, 'background2').setOrigin(0);
+      currentBackground = 'background2';
     }
     else if (randNum > 0.25 && randNum <= 0.5) //0,0.33
     {
       this.add.image(0, 0, 'background3').setOrigin(0);
       this.add.image(5600, 0, 'background4').setOrigin(0);
+      currentBackground = 'background4';
     }
     else if (randNum > 0.5 && randNum <= 0.75) //0,0.33
     {
       this.add.image(0, 0, 'background5').setOrigin(0);
       this.add.image(5600, 0, 'background6').setOrigin(0);
+      currentBackground = 'background6';
     }
     else if (randNum > 0.75 && randNum <= 1)
     {
       this.add.image(0, 0, 'background7').setOrigin(0);
       this.add.image(5600, 0, 'background8').setOrigin(0);
+      currentBackground = 'background8';
     }
     // player
     player.sprite = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninjaIM');
@@ -317,17 +321,17 @@ class InfiniteScene extends Phaser.Scene{
     this.abilityIcon1.setScrollFactor(0,0);
     this.abilityIcon2.setScrollFactor(0,0);
     this.abilityIcon3.setScrollFactor(0,0);
-    //this.powerupBar.setScrollFactor(0,0); 
-    this.powerupIcon1.setScrollFactor(0,0); 
-    this.powerupIcon2.setScrollFactor(0,0); 
-    this.powerupIcon3.setScrollFactor(0,0); 
-    this.powerupIcon4.setScrollFactor(0,0); 
-    this.powerupText.setScrollFactor(0,0); 
-    this.powerupText2.setScrollFactor(0,0); 
-    this.powerupText3.setScrollFactor(0,0); 
-    this.powerupText4.setScrollFactor(0,0); 
-    this.hasteStackText.setScrollFactor(0,0); 
-    this.bossHPText.setScrollFactor(0,0); 
+    //this.powerupBar.setScrollFactor(0,0);
+    this.powerupIcon1.setScrollFactor(0,0);
+    this.powerupIcon2.setScrollFactor(0,0);
+    this.powerupIcon3.setScrollFactor(0,0);
+    this.powerupIcon4.setScrollFactor(0,0);
+    this.powerupText.setScrollFactor(0,0);
+    this.powerupText2.setScrollFactor(0,0);
+    this.powerupText3.setScrollFactor(0,0);
+    this.powerupText4.setScrollFactor(0,0);
+    this.hasteStackText.setScrollFactor(0,0);
+    this.bossHPText.setScrollFactor(0,0);
     //this.setHUDPosition(this.levelText, this.cameras.main.x, this.cameras.main.y);
     this.levelText.setText("Level: " + difficulty + " Stage: " + this.stage);
     //this.levelText2.setText("Level: " + difficulty + " Stage: " + "2");

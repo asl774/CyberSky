@@ -104,5 +104,6 @@ var bossNumber = 0;
 var theme;
 var tutorialtheme;
 var tutorialthemeplaying = false;
+var currentBackground;
 
 var game = new Phaser.Game(config);

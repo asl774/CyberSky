@@ -104,21 +104,25 @@ class BossScene extends Phaser.Scene{
     {
       this.add.image(0, 0, 'background12').setOrigin(0);     //background1
       this.add.image(5600, 0, 'background13').setOrigin(0);   //background2
+      currentBackground = 'background13';
     }
     else if (randNum > 0.25 && randNum <= 0.5) //0,0.33
     {
       this.add.image(0, 0, 'background14').setOrigin(0);      //background3
       this.add.image(5600, 0, 'background15').setOrigin(0);   //background4
+      currentBackground = 'background15';
     }
     else if (randNum > 0.5 && randNum <= 0.75) //0,0.33
     {
       this.add.image(0, 0, 'background16').setOrigin(0);      //background5
       this.add.image(5600, 0, 'background17').setOrigin(0);   //background6
+      currentBackground = 'background17';
     }
     else if (randNum > 0.75 && randNum <= 1)
     {
-      this.add.image(0, 0, 'background7').setOrigin(0);     
-      this.add.image(5600, 0, 'background8').setOrigin(0);     
+      this.add.image(0, 0, 'background7').setOrigin(0);
+      this.add.image(5600, 0, 'background8').setOrigin(0);
+      currentBackground = 'background8'; 
     }
     // player
     player.sprite = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninja');
@@ -328,17 +332,17 @@ class BossScene extends Phaser.Scene{
     this.abilityIcon1.setScrollFactor(0,0);
     this.abilityIcon2.setScrollFactor(0,0);
     this.abilityIcon3.setScrollFactor(0,0);
-    //this.powerupBar.setScrollFactor(0,0); 
-    this.powerupIcon1.setScrollFactor(0,0); 
-    this.powerupIcon2.setScrollFactor(0,0); 
-    this.powerupIcon3.setScrollFactor(0,0); 
-    this.powerupIcon4.setScrollFactor(0,0); 
-    this.powerupText.setScrollFactor(0,0); 
-    this.powerupText2.setScrollFactor(0,0); 
-    this.powerupText3.setScrollFactor(0,0); 
-    this.powerupText4.setScrollFactor(0,0); 
-    this.hasteStackText.setScrollFactor(0,0); 
-    this.bossHPText.setScrollFactor(0,0); 
+    //this.powerupBar.setScrollFactor(0,0);
+    this.powerupIcon1.setScrollFactor(0,0);
+    this.powerupIcon2.setScrollFactor(0,0);
+    this.powerupIcon3.setScrollFactor(0,0);
+    this.powerupIcon4.setScrollFactor(0,0);
+    this.powerupText.setScrollFactor(0,0);
+    this.powerupText2.setScrollFactor(0,0);
+    this.powerupText3.setScrollFactor(0,0);
+    this.powerupText4.setScrollFactor(0,0);
+    this.hasteStackText.setScrollFactor(0,0);
+    this.bossHPText.setScrollFactor(0,0);
     this.levelText.setText("Level: " + difficulty + " Stage: " + this.stage);
     //this.levelText2.setText("Level: " + difficulty + " Stage: " + "2");
     //this.levelText3.setText("Level: " + difficulty + " Stage: " + "3");
@@ -1611,7 +1615,7 @@ class BossScene extends Phaser.Scene{
   {
     player.sprite.tint = 0xFFC79D;
     this.deathSound.play();
-    this.sound.stopAll(); 
+    this.sound.stopAll();
     this.deathSound.play();
     this.scene.start("loseScene");
     // flag to set player is dead
