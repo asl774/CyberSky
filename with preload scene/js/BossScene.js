@@ -26,16 +26,10 @@ class BossScene extends Phaser.Scene{
     this.playerbullets;
     this.playertrap;
 
-      //player.speed = 10;
-      player.health = 100;
-      player.isAlive = true;
-      player.healthPercent = 100;
-      player.healthBar = 0;
-      //player.sheilded = false;
-      //player.multishot = false;
-      //player.pierce = false;
-      //player.kaboom = false;
-      //player.saber = false;
+    player.health = 100;
+    player.isAlive = true;
+    player.healthPercent = 100;
+    player.healthBar = 0;
 
     boss.speed = 2;
     boss.health = 100;
@@ -53,6 +47,9 @@ class BossScene extends Phaser.Scene{
 
   create()
   {
+
+    var add = this.add;
+    var sound = this.sound;
     /*
     this.input.once('pointerup', function (event) {
     this.sound.stopAll();
@@ -83,17 +80,7 @@ class BossScene extends Phaser.Scene{
 
 
     if (firstLevel) {
-        theme = this.sound.add('theme', {volume: 0.3});
-        theme.setLoop(true);
-        theme.play();
-        player.shielded = false;
-        player.multishot = false;
-        player.pierce = false;
-        player.trap = false;
-        player.haste = 0;
-        player.canMultishotAgain = false;
-        player.canPierceAgain = false;
-        player.canTrapAgain = false;
+        this.resetScene();
     }
 
     // background
@@ -797,6 +784,20 @@ class BossScene extends Phaser.Scene{
     bar.x = x;
     bar.y = y;
   }
+
+  resetScene(){
+    theme = this.sound.add('theme', {volume: 0.3});
+    theme.setLoop(true);
+    theme.play();
+    player.shielded = false;
+    player.multishot = false;
+    player.pierce = false;
+    player.trap = false;
+    player.haste = 0;
+    player.canMultishotAgain = false;
+    player.canPierceAgain = false;
+    player.canTrapAgain = false;
+}
 
   //this can be one function
   createPowerup1() {

@@ -2,9 +2,6 @@ class LoseScene extends Phaser.Scene{
   constructor(){
     super("loseScene");
   }
-  preload(){
-        this.load.image('endBG', 'assets/dead.png');
-    }
 
   create(){
         var add = this.add;
@@ -19,7 +16,7 @@ class LoseScene extends Phaser.Scene{
         r1.on('pointerover', () => this.enterHoverState(r1));
         r1.on('pointerout', () => this.enterRestState(r1));
         r1.on('pointerdown', () => this.enterDownState(r1));
-        r1.on('pointerup', () => this.changeScenes('credits', false, false));
+        r1.on('pointerup', () => this.changeScenes('credits'));
     }
 
     enterRestState(button)
@@ -39,16 +36,8 @@ class LoseScene extends Phaser.Scene{
       button.fillColor = 0x0E000B;
     }
 
-    changeScenes(sceneName, infinite, first)
+    changeScenes(sceneName)
     {
-      infiniteMode = infinite;
-      firstLevel = first;
-      if(!infinite) {
-        difficulty = 1;
-      }
-      else {
-        difficulty = 5;
-      }
       this.scene.start(sceneName);
     }
 
