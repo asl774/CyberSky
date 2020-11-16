@@ -41,6 +41,11 @@ class MainMenu extends Phaser.Scene{
         r3.on('pointerout', () => this.enterRestState(r3));
         r3.on('pointerdown', () => this.enterDownState(r3));
         r3.on('pointerup', () => this.changeScenes('codeScene', true, true));
+
+        //for testing purposes :)
+        // this.input.once('pointerup', function (event) {
+        // this.scene.start('winScene');
+        // }, this);
     }
 
     enterRestState(button)
@@ -64,8 +69,8 @@ class MainMenu extends Phaser.Scene{
     {
       infiniteMode = infinite;
       firstLevel = first;
-      if(!infinite) { 
-        difficulty = 1; 
+      if(!infinite) {
+        difficulty = 1;
       }
       else {
         difficulty = 5;
