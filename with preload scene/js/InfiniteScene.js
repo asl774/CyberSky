@@ -338,7 +338,7 @@ class InfiniteScene extends Phaser.Scene{
     //this.levelText3.setText("Level: " + difficulty + " Stage: " + "3");
     //this.levelText4.setText("Level: " + difficulty + " Stage: " + "4");
     this.numKillsText.setText("Enemies Killed: " + this.numEnemiesKilled);
-    this.hasteStackText.setText(player.haste / 150);
+    this.hasteStackText.setText(Math.ceil(player.haste / 150));
     //this.numKillsText2.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText3.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText4.setText("Enemies Killed: " + this.numEnemiesKilled);
@@ -390,7 +390,7 @@ class InfiniteScene extends Phaser.Scene{
       this.waveCreateTimer.paused = true;
     }
     if (this.numEnemiesKilled >= 0 * difficulty && this.numEnemiesKilled < 10 * difficulty){
-      this.poweruptimer1.paused = true;
+      this.poweruptimer1.paused = false;
       this.cameras.main.setBounds(0, 0, 1400 - 40, 560);
       this.physics.world.setBounds(this.worldsX, 30, 1400 - 40, 560);
       this.enemyWave = 1;
@@ -428,7 +428,7 @@ class InfiniteScene extends Phaser.Scene{
       this.stage = 1;
       this.waveAttackTimer.paused = false;
       this.waveCreateTimer.paused = false;
-      this.poweruptimer2.paused = false;
+      this.poweruptimer1.paused = false;
       this.worldsX = 0;
     }
     if (this.numEnemiesKilled >= 10 * difficulty && player.sprite.x >= 1400 - 40 && this.numEnemiesCreated < 20 * difficulty){

@@ -286,7 +286,7 @@ class Tutorial extends Phaser.Scene{
     this.stage2Text6.setScrollFactor(0,0);
     this.stage2Text7.setScrollFactor(0,0);
     tutorialboss.healthBar.setScrollFactor(0,0);
-    this.hasteStackText.setText(player.haste / 150);
+    this.hasteStackText.setText(Math.ceil(player.haste / 150));
     //this.numKillsText2.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText3.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText4.setText("Enemies Killed: " + this.numEnemiesKilled);
@@ -1214,6 +1214,7 @@ class Tutorial extends Phaser.Scene{
     this.powerupIcon4.setVisible(true);
     this.powerupText4.setVisible(true);
     this.hasteStackText.setVisible(true);
+    player.haste += 100;
   }
 
   pauseAbilityTimer1(){
