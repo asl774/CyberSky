@@ -15,7 +15,7 @@ var config = {
       }
   },
 
-  scene: [PreloadScene, MainMenu, Tutorial, BossScene, CodeScene, InfiniteScene, PauseScene, WinScene, LoseScene, Credits]
+  scene: [PreloadScene, MainMenu, Tutorial, BossScene, CodeScene, InfiniteScene, PauseScene, WinScene, LoseScene, Credits, IMintroScene, IMintro2Scene]
 }
 var tutorialplayer = {
   speed: 10,
@@ -103,7 +103,7 @@ var switchScene = false;
 var bossNumber = 0;
 var theme;
 var tutorialtheme;
-var tutorialthemeplaying = false;
+//var tutorialthemeplaying = false;
 var currentBackground;
 
 var game = new Phaser.Game(config);

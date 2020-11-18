@@ -20,10 +20,6 @@ class WinScene extends Phaser.Scene{
         r1.setStrokeStyle(4, 0x5C2C4F);
         add.text(590, 412, 'CONTINUE', { fontFamily: 'Bitwise', fontSize: 25, fill: '#ffffff' });
 
-        // var r2 = add.rectangle(650, 490, 450, 50, 0x37092C).setInteractive();
-        // r2.setStrokeStyle(4, 0x5C2C4F);
-        // add.text(580, 478, 'MAIN MENU', { fontFamily: 'Bitwise', fontSize: 25, fill: '#ffffff' });
-
         var r3 = add.rectangle(650, 490, 450, 50, 0x37092C).setInteractive();
         r3.setStrokeStyle(4, 0x5C2C4F);
         this.infiniteCode = this.add.text(530, 478, 'INFINITE MODE CODE', { fontFamily: 'Bitwise', fontSize: 25, fill: '#ffffff' });

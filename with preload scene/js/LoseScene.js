@@ -5,8 +5,8 @@ class LoseScene extends Phaser.Scene{
 
   create(){
         var add = this.add;
-        
-        add.image(500, 0, 'endBG').setOrigin(0,0).setScale(0.7);
+
+        add.image(500, 100, 'endBG').setOrigin(0,0).setScale(0.8);
 
         var r1 = add.rectangle(650, 450, 450, 150, 0x37092C).setInteractive();
         r1.setStrokeStyle(4, 0x5C2C4F);

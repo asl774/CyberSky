@@ -26,7 +26,7 @@ class Tutorial extends Phaser.Scene{
     this.playerbullets;
     this.playertrap;
 
-      player.speed = 10;
+       player.speed = 10;
       player.health = 80;
       player.isAlive = true;
       player.healthPercent = 100;
@@ -79,94 +79,87 @@ class Tutorial extends Phaser.Scene{
       this.scene.start('bossScene');
     }, this);
 */
+    //local vars
+    var sound = this.sound;
+    var physics = this.physics;
+    var addPhysics = this.physics.add;
+    var mainCamera = this.cameras.main;
+    var add = this.add;
+    var keyboard = this.input.keyboard;
+    var time = this.time;
 
-    //audio
-    if (!tutorialthemeplaying) {
-        tutorialtheme = this.sound.add('tutorialtheme', {volume: 0.5});
-        tutorialtheme.setLoop(true);
-        tutorialtheme.play();
-        tutorialthemeplaying = true;
-    }
-    this.ability1 = this.sound.add('ability1', {volume: 0.5});
-    this.ability2 = this.sound.add('ability2', {volume: 0.5});
-    this.ability3 = this.sound.add('ability3');
-    this.dinogrowl = this.sound.add('dinogrowl');
-    this.blocyell = this.sound.add('bloc');
-    this.throwstar = this.sound.add('throwstar');
-    this.teleport = this.sound.add('teleport');
-    this.throwtriplestar = this.sound.add('throwtriplestar');
-    this.throwbigstar = this.sound.add('throwbigstar');
-    this.healthUp = this.sound.add('heal');
-    this.shieldUp = this.sound.add('shield');
-    this.dinodie = this.sound.add('dinodie');
-    this.trapsfx = this.sound.add('trapsfx')
+    tutorialtheme = sound.add('tutorialtheme', {volume: 0.5});
+    tutorialtheme.setLoop(true);
+    tutorialtheme.play();
+    this.ability1 = sound.add('ability1', {volume: 0.5});
+    this.ability2 = sound.add('ability2', {volume: 0.5});
+    this.ability3 = sound.add('ability3');
+    this.dinogrowl = sound.add('dinogrowl');
+    this.blocyell = sound.add('bloc');
+    this.throwstar = sound.add('throwstar');
+    this.teleport = sound.add('teleport');
+    this.throwtriplestar = sound.add('throwtriplestar');
+    this.throwbigstar = sound.add('throwbigstar');
+    this.healthUp = sound.add('heal');
+    this.shieldUp = sound.add('shield');
+    this.dinodie = sound.add('dinodie');
+    this.trapsfx = sound.add('trapsfx')
     //background
-    this.cameras.main.setBounds(0, 0, 1400 - 40, 560);
-    this.physics.world.setBounds(0, 30, 1400 - 40, 560);
-    this.add.image(0, 0, 'background1').setOrigin(0);
-    this.add.image(5600, 0, 'background2').setOrigin(0);
+    mainCamera.setBounds(0, 0, 1400 - 40, 560);
+    physics.world.setBounds(0, 30, 1400 - 40, 560);
+    add.image(0, 0, 'background1').setOrigin(0);
+    add.image(5600, 0, 'background2').setOrigin(0);
     // player
-    player.sprite = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninja');
+    player.sprite = addPhysics.sprite(20, this.sys.game.config.height / 2, 'ninja');
     player.sprite.setScale(0.5);
     player.sprite.setCollideWorldBounds(true); //can't run off screen
-    player.healthBar = this.makeBar(40, 10, 0, 50, 0x2ecc71);
+    player.healthBar = this.makeBar(40, 10, 0, 50, 0x2ecc71); //make player health bar
     this.setValue(player.healthBar,player.healthPercent);
     player.healthBar.setVisible(true);
     player.healthPercent = 100;
-    this.cameras.main.startFollow(player.sprite, true, 0.1, 0.1);
-    this.cameras.main.followOffset.set(-500, 0);
-    this.playerbullets = this.physics.add.group(); //create stars
-    this.playerbigbullets = this.physics.add.group(); //create stars
-    this.playertrap = this.physics.add.group(); //create melee
+    mainCamera.startFollow(player.sprite, true, 0.1, 0.1); //start following player
+    mainCamera.followOffset.set(-500, 0);
+    this.playerbullets = addPhysics.group(); //create stars
+    this.playerbigbullets = addPhysics.group(); //create stars
+    this.playertrap = addPhysics.group(); //create melee
     //enemies
-    this.stage1Enemies = this.physics.add.group();
-    this.tutorialWave = this.physics.add.group();
+    this.stage1Enemies = addPhysics.group();
+    this.tutorialWave = addPhysics.group();
     //powerups
-    this.tutorialpowerup1 = this.physics.add.group();
-    this.tutorialpowerup2 = this.physics.add.group();
-    this.tutorialpowerup3 = this.physics.add.group();
-    this.tutorialpowerup4 = this.physics.add.group();
-    //this.tutorialpowerup4 = this.physics.add.group();
-    this.hud = this.add.image(700, 50, "hud").setAlpha(0.80);
+    this.tutorialpowerup1 = addPhysics.group()
+    this.tutorialpowerup2 = addPhysics.group();
+    this.tutorialpowerup3 = addPhysics.group();
+    this.tutorialpowerup4 = addPhysics.group();
+    //hud
+    this.hud = add.image(700, 50, "hud").setAlpha(0.80);
     //this.powerupBar = this.makePowerupBar(350, 0, 0xffffff);
-    this.abilityIcon1 = this.add.image(250, 34, "healAbility");
-    this.abilityIcon2 = this.add.image(300, 34, "shieldAbility");
-    this.abilityIcon3 = this.add.image(350, 34, "dashAbility");
-    this.abilityIcon1.setVisible(false);
-    this.abilityIcon2.setVisible(false);
-    this.abilityIcon3.setVisible(false);
-    this.powerupIcon1 = this.add.image(250, 34, "multishotPU"); //480
-    this.powerupIcon2 = this.add.image(300, 34, "piercePU");    //530
-    this.powerupIcon3 = this.add.image(350, 37, "trapPU");      //580
-    this.powerupIcon4 = this.add.image(400, 35, "hastePU");     //630
-    this.powerupIcon1.setVisible(player.multishot);
-    this.powerupIcon2.setVisible(player.pierce);
-    this.powerupIcon3.setVisible(player.trap);
-    this.powerupIcon4.setVisible(player.haste > 0);
+    this.abilityIcon1 = add.image(250, 34, "healAbility").setVisible(false);
+    this.abilityIcon2 = add.image(300, 34, "shieldAbility").setVisible(false);
+    this.abilityIcon3 = add.image(350, 34, "dashAbility").setVisible(false);
+    this.powerupIcon1 = add.image(250, 34, "multishotPU").setVisible(player.multishot); //480
+    this.powerupIcon2 = add.image(300, 34, "piercePU").setVisible(player.pierce);    //530
+    this.powerupIcon3 = add.image(350, 37, "trapPU").setVisible(player.trap);      //580
+    this.powerupIcon4 = add.image(400, 35, "hastePU").setVisible(player.haste > 0);     //630
     //boss health bar
     tutorialboss.healthBar = this.makeBar(this.sys.game.config.width - 300, 20, 250,50,0xe74c3c); //5600
     this.setValue(tutorialboss.healthBar, 100);
     tutorialboss.healthBar.setVisible(false);
     //barrier
-    this.barrier = this.physics.add.sprite(1400, 300, 'barrier');
-    this.barrier2 = this.physics.add.sprite(1400 * 2 - 40, 300, 'barrier');
-    this.barrier3 = this.physics.add.sprite(1400 * 3, 300, 'barrier');
-    this.barrier4 = this.physics.add.sprite(1400 * 4, 300, 'barrier');
-    this.barrier5 = this.physics.add.sprite(6470, 300, 'barrier'); //6470
+    this.barrier = addPhysics.sprite(1400, 300, 'barrier');
+    this.barrier2 = addPhysics.sprite(1400 * 2 - 40, 300, 'barrier');
+    this.barrier3 = addPhysics.sprite(1400 * 3, 300, 'barrier');
+    this.barrier4 = addPhysics.sprite(1400 * 4, 300, 'barrier');
+    this.barrier5 = addPhysics.sprite(6470, 300, 'barrier'); //6470
     // goal / end of level
-    this.tutorialtreasure = this.physics.add.sprite(2800 - 70, this.sys.game.config.height / 2, 'treasure'); //7000
-    this.tutorialtreasure.setScale(0.6);
-    this.tutorialtreasure.setVisible(false);
+    this.tutorialtreasure = addPhysics.sprite(2800 - 70, this.sys.game.config.height / 2, 'treasure'); //7000
+    this.tutorialtreasure.setScale(0.6).setVisible(false);
     //boss
-    tutorialboss.sprite = this.physics.add.sprite(2800 + 200,300, 'blocboss'); //7150
-    tutorialboss.sprite.setVisible(false);
-    this.bullets = this.physics.add.group(); //create attack 1
-    this.laser = this.physics.add.group(); // create attack 2
+    tutorialboss.sprite = addPhysics.sprite(2800 + 200,300, 'blocboss').setVisible(false); //7150
+    this.bullets = addPhysics.group(); //create attack 1
+    this.laser = addPhysics.group(); // create attack 2
     //colliders / triggers
-    var addPhysics = this.physics.add;
     //player triggers
     addPhysics.overlap(player.sprite, this.bullets, this.getHit, null, this); //trigger b/w player & bullets
-    addPhysics.overlap(player.sprite, this.laser, this.dot, null, this); //trigger b/w player & laser
     addPhysics.overlap(player.sprite, this.tutorialtreasure, this.moveToGame, null, this); //trigger b/w player & treasure
     addPhysics.overlap(player.sprite, tutorialboss.sprite, this.hitPlayer, null, this); //trigger b/w player & boss
     addPhysics.overlap(player.sprite, this.tutorialpowerup1, this.powerupOne, null, this);
@@ -196,119 +189,66 @@ class Tutorial extends Phaser.Scene{
     this.cameras.main.resetFX(); //reset cameras
     //keyboard input
     //create keyboard keys
-    this.cursors = this.input.keyboard.createCursorKeys();
-    this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    this.zkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
-    this.xkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
-    this.ckey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
-    this.akey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    this.skey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    this.dkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-    this.qkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
-    this.wkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-    this.ekey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
-    this.vkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
-    //this.bkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
-    this.kkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
-    this.lkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
-    this.pkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
-    this.akey.enabled = false;
+    this.cursors = keyboard.createCursorKeys();
+    this.spacebar = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.aKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    this.skey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    this.dkey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    this.qkey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+    this.wkey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    this.ekey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    this.pkey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+    this.aKey.enabled = false;
     this.skey.enabled = false;
     this.dkey.enabled = false;
     //timer testing
-    this.timer = this.time.addEvent({delay : 5000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
-    this.timer2 = this.time.addEvent({delay : 5000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
-    this.waveAttackTimer = this.time.addEvent({delay : 5000, callback: this.waveAttack, callbackScope: this, loop: true, paused: false });
-    this.waveCreateTimer = this.time.addEvent({delay : 2500, callback: this.createWave, callbackScope: this, loop: true, paused: false });
-    this.poweruptimer1 = this.time.addEvent({delay : 5000, callback: this.createPowerup1, callbackScope: this, loop: true, paused: false });
-    this.poweruptimer2 = this.time.addEvent({delay : 5000, callback: this.createPowerup2, callbackScope: this, loop: true, paused: true });
-    this.poweruptimer3 = this.time.addEvent({delay : 5000, callback: this.createPowerup3, callbackScope: this, loop: true, paused: true });
-    this.poweruptimer4 = this.time.addEvent({delay : 5000, callback: this.createPowerup4, callbackScope: this, loop: true, paused: true });
-    this.poweruptimer5 = this.time.addEvent({delay : 5000, callback: this.createPowerup5, callbackScope: this, loop: true, paused: true });
-    this.abilityTimer1 = this.time.addEvent({delay : 1000, callback: this.pauseAbilityTimer1, callbackScope: this, loop: true, paused: false });
-    this.abilityTimer2 = this.time.addEvent({delay : 1000, callback: this.pauseAbilityTimer2, callbackScope: this, loop: true, paused: false });
-    this.abilityTimer3 = this.time.addEvent({delay : 2000, callback: this.pauseAbilityTimer3, callbackScope: this, loop: true, paused: false });
-    this.healTimer = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
+    this.timer = time.addEvent({delay : 5000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
+    this.timer2 = time.addEvent({delay : 5000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
+    this.waveAttackTimer = time.addEvent({delay : 5000, callback: this.waveAttack, callbackScope: this, loop: true, paused: false });
+    this.waveCreateTimer = time.addEvent({delay : 2500, callback: this.createWave, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer1 = time.addEvent({delay : 1000, callback: this.pauseAbilityTimer1, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer2 = time.addEvent({delay : 1000, callback: this.pauseAbilityTimer2, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer3 = time.addEvent({delay : 2000, callback: this.pauseAbilityTimer3, callbackScope: this, loop: true, paused: false });
+    this.healTimer = time.addEvent({delay : 2000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
 
-    //TODO: edit this into more specific stages
-    this.stage1Text1 = this.add.text(550, 30, "Use ARROW KEYS to move", { fontSize: '20px', fill: '#00FFFF', align: "center" });
-    this.stage1Text2 = this.add.text(550, 45, "Press SPACEBAR to attack", { fontSize: '20px', fill: '#00FFFF', align: "center" });
-    this.stage1Text3 = this.add.text(550, 30, "Press A to recover health after taking damage", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage1Text4 = this.add.text(550, 30, "Press S to shield", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage1Text5 = this.add.text(550, 30, "Hold ARROW KEY + D to dash", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage1Text6 = this.add.text(550, 30, "Take out the remaining enemies", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage1Text7 = this.add.text(550, 30, "Move right to the next stage -->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-   
-    this.stage2Text1 = this.add.text(550, 30, "Collect the powerup", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text1a = this.add.text(550, 30, "Collect next powerup", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text2 = this.add.text(550, 45, "Press Q to use MULITISHOT ability", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text2a = this.add.text(1650, 150, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text2b = this.add.text(1800, 150, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text3 = this.add.text(550, 45, "Press W to use PIERCE ability", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text3a = this.add.text(1650, 250, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text3b = this.add.text(1800, 250, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text4 = this.add.text(550, 45, "Press E to use TRAP ability", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text4a = this.add.text(1650, 350, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text4b = this.add.text(1800, 350, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text5 = this.add.text(550, 45, "The HASTE powerup reduces your ability cooldowns", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text5a = this.add.text(1650, 450, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text5b = this.add.text(1800, 450, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text5c = this.add.text(550, 30, "Take out the remaining enemies", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text6 = this.add.text(550, 30, "DEFEAT THE BLOC", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text7 = this.add.text(550, 30, "Congrats! Touch the TREASURE CHEST to start main game", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    
-    this.abilityBarText = this.add.text(100, 10, "Abilities: ", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.abilityText1 = this.add.text(247, 10, "A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.abilityText2 = this.add.text(297, 10, "S", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.abilityText3 = this.add.text(348, 10, "D", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.powerupBarText = this.add.text(100, 10, "Powerups: ", { fontSize: '20px', fill: '#00FFFF', align: "center" }); //100
-    this.powerupBarText.setVisible(false);
-    //this.powerupBarText2 = this.add.text(1750, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
-    //this.powerupBarText3 = this.add.text(3150, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
-    //this.powerupBarText4 = this.add.text(4550, 0, "Powerups: ", { fontSize: '20px', fill: '#000000', align: "center" });
-    this.powerupText = this.add.text(248, 10, "Q", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });    //248
-    this.powerupText2 = this.add.text(299, 10, "W", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });   //299
-    this.powerupText3 = this.add.text(349, 10, "E", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });   //349
-    this.powerupText4 = this.add.text(390, 10, "N/A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }); //390
-    this.hasteStackText = this.add.text(414, 39, "1", { fontSize: 'bold 11px', fill: '#00FFFF', align: "center" }); //414
-    this.powerupText.setVisible(player.multishot);
-    this.powerupText2.setVisible(player.pierce);
-    this.powerupText3.setVisible(player.trap);
-    this.powerupText4.setVisible(player.haste > 0);
-    this.hasteStackText.setVisible(player.haste > 0);
-    this.bossHPText = this.add.text(100, 50, "Boss HP: " + tutorialboss.healthPercent, { fontSize: '20px', fill: '#00FFFF', align: "center" });
-    this.bossHPText.setVisible(false);
-    /*
-    this.stage1Text = this.add.text(10, 30, "(Click to skip tutorial)", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage1Text = this.add.text(10, 50, "Hello and welcome to CyberSky. I will be your instructor.", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage1Text = this.add.text(10, 70, "First, let's take out 10 enemies to work on your aim.", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage1Text = this.add.text(10, 90, "Press spacebar to throw a ninja star, use the arrow keys to move.", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage1Text = this.add.text(10, 110, "Don't worry, enemies won't attack you during this stage.", { fontSize: '20px', fill: '#00FF00', align: "center" });
+    //TODO: edit this into more specific stages, maybe just change the text instead
+    this.stage1Text1 = add.text(550, 30, "Use ARROW KEYS to move", { fontSize: '20px', fill: '#00FFFF', align: "center" });
+    this.stage1Text2 = add.text(550, 45, "Press SPACEBAR to attack", { fontSize: '20px', fill: '#00FFFF', align: "center" });
+    this.stage1Text3 = add.text(550, 30, "Press A to recover health after taking damage", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text4 = add.text(550, 30, "Press S to shield", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text5 = add.text(550, 30, "Hold ARROW KEY + D to dash", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text6 = add.text(550, 30, "Take out the remaining enemies", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text7 = add.text(550, 30, "Move right to the next stage -->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
 
-    this.stage2Text = this.add.text(1500, 50, "Next, let's try out some defensive abilities.", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage2Text = this.add.text(1500, 70, "Press the S key to gain a shield which will negate the first attack that would hit you.", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage2Text = this.add.text(1500, 90, "Then, press the A key to recover some health (Note: this won't work if you're at full hp).", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage2Text = this.add.text(1500, 110, "Finally, press the D key and hold an arrow key to teleport a short distance in that direction.", { fontSize: '20px', fill: '#00FF00', align: "center" });
+    this.stage2Text1 = add.text(550, 30, "Collect the powerup", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text1a = add.text(550, 30, "Collect next powerup", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text2 = add.text(550, 45, "Press Q to use MULITISHOT ability", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text2a = add.text(1650, 150, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text2b = add.text(1800, 150, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text3 = add.text(550, 45, "Press W to use PIERCE ability", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text3a = add.text(1650, 250, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text3b = add.text(1800, 250, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text4 = add.text(550, 45, "Press E to use TRAP ability", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text4a = add.text(1650, 350, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text4b = add.text(1800, 350, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text5 = add.text(550, 45, "The HASTE powerup reduces your ability cooldowns", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text5a = add.text(1650, 450, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text5b = add.text(1800, 450, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text5c = add.text(550, 30, "Take out the remaining enemies", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text6 = add.text(550, 30, "DEFEAT THE BLOC", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text7 = add.text(550, 30, "Congrats! Touch the TREASURE CHEST to start main game", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
 
-    this.stage3Text = this.add.text(2900, 70, "Now, let's learn about powerups.", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage3Text = this.add.text(2900, 90, "Powerups will occasionally fall from the top of the screen.", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage3Text = this.add.text(2900, 110, "Collecting them will grant you extra abilities, or if collected previously, it will heal you.", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage3Text = this.add.text(2900, 130, "Try pressing the Q, W, or E key once you have collected a powerup.", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage3Text = this.add.text(2900, 150, "The Haste powerup is not to be underestimated!", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage3Text = this.add.text(2900, 169, "It won't be noticeable the first time you pick it up but surely will the more you stack it!", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage3UI = this.add.image(3300, 685, 'PUUI');
-
-    this.stage4Text = this.add.text(4300, 50, "Now let's put everything you've learned together.", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage4Text = this.add.text(4300, 70, "Here are some tougher enemies to deal with.", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage4Text = this.add.text(4300, 90, "Remember to occasionally shield yourself, heal yourself, and collect powerups.", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage4Text = this.add.text(4300, 110, "The boss is after this stage!", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.stage4UI = this.add.image(4700, 685, 'PUUI');
-
-    this.bossHPText = this.add.text(5610, 10, "Boss HP: " + tutorialboss.healthPercent, { fontSize: '20px', fill: '#000000', align: "center" });
-    this.bossStageText = this.add.text(5700, 50, "Give it all you've got and take out the big, bad dino!!!", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.bossStageText = this.add.text(5700, 70, "Touch the treasure chest to start the main game!", { fontSize: '20px', fill: '#00FF00', align: "center" });
-    this.bossStageUI = this.add.image(6100, 685, 'PUUI');
-    */
+    this.abilityBarText = add.text(100, 10, "Abilities: ", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.abilityText1 = add.text(247, 10, "A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.abilityText2 = add.text(297, 10, "S", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.abilityText3 = add.text(348, 10, "D", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.powerupBarText = add.text(100, 10, "Powerups: ", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setVisible(false); //100
+    this.powerupText = add.text(248, 10, "Q", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setVisible(player.multishot);    //248
+    this.powerupText2 = add.text(299, 10, "W", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setVisible(player.pierce);   //299
+    this.powerupText3 = add.text(349, 10, "E", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setVisible(player.trap);   //349
+    this.powerupText4 = add.text(390, 10, "N/A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setVisible(player.haste > 0); //390
+    this.hasteStackText = add.text(414, 39, "1", { fontSize: 'bold 11px', fill: '#00FFFF', align: "center" }).setVisible(player.haste > 0); //414
+    this.bossHPText = add.text(100, 50, "Boss HP: " + tutorialboss.healthPercent, { fontSize: '20px', fill: '#00FFFF', align: "center" }).setVisible(false);
 
     this.createStage1();
   }
@@ -317,41 +257,42 @@ class Tutorial extends Phaser.Scene{
   {
     this.setHealthBarPosition(player.healthBar, player.sprite.x - 25, player.sprite.y - 40);
     //this.bossHPText.setText("Boss HP: " + tutorialboss.healthPercent.toString().substr(0,4));
+    //TODO: make this a function
     this.powerupBarText.setScrollFactor(0,0);
     this.hud.setScrollFactor(0,0);
-    //this.powerupBar.setScrollFactor(0,0); 
-    this.powerupIcon1.setScrollFactor(0,0); 
-    this.powerupIcon2.setScrollFactor(0,0); 
-    this.powerupIcon3.setScrollFactor(0,0); 
-    this.powerupIcon4.setScrollFactor(0,0); 
-    this.powerupText.setScrollFactor(0,0); 
-    this.powerupText2.setScrollFactor(0,0); 
-    this.powerupText3.setScrollFactor(0,0); 
-    this.powerupText4.setScrollFactor(0,0); 
-    this.hasteStackText.setScrollFactor(0,0); 
-    this.bossHPText.setScrollFactor(0,0); 
+    //this.powerupBar.setScrollFactor(0,0);
+    this.powerupIcon1.setScrollFactor(0,0);
+    this.powerupIcon2.setScrollFactor(0,0);
+    this.powerupIcon3.setScrollFactor(0,0);
+    this.powerupIcon4.setScrollFactor(0,0);
+    this.powerupText.setScrollFactor(0,0);
+    this.powerupText2.setScrollFactor(0,0);
+    this.powerupText3.setScrollFactor(0,0);
+    this.powerupText4.setScrollFactor(0,0);
+    this.hasteStackText.setScrollFactor(0,0);
+    this.bossHPText.setScrollFactor(0,0);
     this.abilityBarText.setScrollFactor(0,0);
     this.abilityText1.setScrollFactor(0,0);
     this.abilityText2.setScrollFactor(0,0);
     this.abilityText3.setScrollFactor(0,0);
-    this.stage1Text7.setScrollFactor(0,0); 
-    this.stage2Text1.setScrollFactor(0,0); 
-    this.stage2Text1a.setScrollFactor(0,0); 
-    this.stage2Text2.setScrollFactor(0,0); 
-    this.stage2Text3.setScrollFactor(0,0); 
-    this.stage2Text4.setScrollFactor(0,0); 
-    this.stage2Text5.setScrollFactor(0,0); 
-    this.stage2Text5c.setScrollFactor(0,0); 
-    this.stage2Text6.setScrollFactor(0,0); 
-    this.stage2Text7.setScrollFactor(0,0); 
-    tutorialboss.healthBar.setScrollFactor(0,0); 
+    this.stage1Text7.setScrollFactor(0,0);
+    this.stage2Text1.setScrollFactor(0,0);
+    this.stage2Text1a.setScrollFactor(0,0);
+    this.stage2Text2.setScrollFactor(0,0);
+    this.stage2Text3.setScrollFactor(0,0);
+    this.stage2Text4.setScrollFactor(0,0);
+    this.stage2Text5.setScrollFactor(0,0);
+    this.stage2Text5c.setScrollFactor(0,0);
+    this.stage2Text6.setScrollFactor(0,0);
+    this.stage2Text7.setScrollFactor(0,0);
+    tutorialboss.healthBar.setScrollFactor(0,0);
     this.hasteStackText.setText(player.haste / 150);
     //this.numKillsText2.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText3.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText4.setText("Enemies Killed: " + this.numEnemiesKilled);
     this.bossHPText.setText("Boss HP: " + Math.ceil(tutorialboss.healthPercent));
     if (!player.isAlive) {
-      tutorialthemeplaying = false;
+      //tutorialthemeplaying = false;
       this.gameOver();
     }
     // check for active input
@@ -369,7 +310,7 @@ class Tutorial extends Phaser.Scene{
 
     //stage 1 enemies
     if(this.firstSpacePressed){
-        this.akey.enabled = true;
+        this.aKey.enabled = true;
         this.abilityIcon1.setVisible(true);
         this.tweens.add({
           targets: this.stage1Text1,
@@ -381,25 +322,25 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage1Text2,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage1Text3,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.abilityText1,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.abilityBarText,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
     }
     if(this.firstAPressed){
@@ -409,19 +350,19 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage1Text3,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage1Text4,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.abilityText2,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
     }
     if(this.firstSPressed){
@@ -431,19 +372,19 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage1Text4,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage1Text5,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.abilityText3,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
     }
     if(this.numEnemiesKilled >= 4 && this.numEnemiesKilled < 10  && this.firstDPressed){
@@ -456,13 +397,13 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage1Text5,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage1Text6,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
     }
     if(this.numEnemiesKilled >= 4){
@@ -473,25 +414,25 @@ class Tutorial extends Phaser.Scene{
           targets: this.abilityText1,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.abilityText2,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.abilityText3,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.abilityBarText,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
     }
     if(this.numEnemiesKilled == 4 && this.firstDPressed){
@@ -500,15 +441,15 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage1Text6,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage1Text7,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
-       
+
     if(this.createdPowerup1 == false){
           this.enemyWave = 2;
           this.waveAttackTimer.paused = true;
@@ -518,13 +459,13 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage2Text2a,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text2b,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         }
     }
@@ -536,54 +477,54 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage2Text1,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text2,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text2a,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text2b,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
 
         this.createdPowerup2 = true;
-    }   
+    }
     if(this.firstQPressed && this.createdPowerup3 == false)
     {
         this.tweens.add({
           targets: this.stage2Text1a,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text2,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text3a,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text3b,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tutorialpowerup2.create(1750, 250, 'piercePU');
         this.createdPowerup3 = true;
@@ -599,13 +540,13 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage2Text3a,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text3b,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
     }
     if(this.firstWPressed && this.createdPowerup4 == false)
@@ -614,19 +555,19 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage2Text3,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text4a,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text4b,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tutorialpowerup3.create(1750, 350, 'trapPU');
         this.createdPowerup4 = true;
@@ -642,13 +583,13 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage2Text4a,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text4b,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
     }
     if(this.firstEPressed && this.createdPowerup5 == false) //player.hasteCollected
@@ -657,25 +598,25 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage2Text4,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text5,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text5a,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text5b,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tutorialpowerup4.create(1750, 450, 'hastePU');
         this.createdPowerup5 = true;
@@ -685,31 +626,31 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage2Text1a,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text5,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text5a,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text5b,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text5c,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.createdPowerup6 = true;
     }
@@ -719,13 +660,13 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage2Text5c,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text6,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
     }
     if(tutorialboss.health <= 0){
@@ -733,13 +674,13 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage2Text6,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
         this.tweens.add({
           targets: this.stage2Text7,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
     }
     if(this.numEnemiesCreated >= 5)
@@ -751,7 +692,7 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage2Text1,
           alpha: 1,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
     }
     if (player.sprite.x >= 1400 && this.numEnemiesKilled >= 4){
@@ -759,7 +700,7 @@ class Tutorial extends Phaser.Scene{
           targets: this.stage1Text7,
           alpha: 0,
           duration: 1000,
-          ease: 'Power2' 
+          ease: 'Power2'
         });
       this.powerupBarText.setVisible(true);
       this.waveAttackTimer.paused = false;
@@ -771,73 +712,6 @@ class Tutorial extends Phaser.Scene{
       this.worldsX = 1400;
     }
     //able to move to stage 3
-    
-
-
-
-
-
-    // locked camera conditions
-    // can move to wave 2
-    // if (this.numEnemiesCreated >= 10 * difficulty && this.numEnemiesCreated < 20 * difficulty){
-    //   //this.waveCreateTimer.paused = true;
-    // }
-    // // can move to boss
-    // if (this.numEnemiesCreated >= 40 * difficulty && this.numEnemiesCreated < 50 * difficulty){
-    //   //this.waveCreateTimer.paused = true;
-    // }
-    //
-    //
-    // if (this.numEnemiesKilled >= 10 * difficulty && this.numEnemiesKilled < 20 * difficulty){
-    //   this.poweruptimer1.paused = true;
-    //   this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
-    //   this.physics.world.setBounds(this.worldsX, 30, 1400 * 2 - 40, 560);
-    //   this.enemyWave = 2;
-    // }
-    // // can move to wave 3
-    // if (this.numEnemiesKilled >= 20 * difficulty && this.numEnemiesKilled < 30 * difficulty){
-    //   this.poweruptimer2.paused = true;
-    //   this.cameras.main.setBounds(0, 0, 1400 * 3 - 40, 560);
-    //   this.physics.world.setBounds(this.worldsX, 30, 1400 * 3 - 40, 560);
-    //   this.enemyWave = 3;
-    // }
-    // // can move to wave 4
-    // if (this.numEnemiesKilled >= 30 * difficulty && this.numEnemiesKilled < 40 * difficulty){
-    //   this.poweruptimer3.paused = true;
-    //   this.cameras.main.setBounds(0, 0, 1400 * 4 - 40, 560);
-    //   this.physics.world.setBounds(this.worldsX, 30, 1400 * 4 - 40, 560);
-    //   this.enemyWave = 4;
-    // }
-    // // can move to boss
-    // if (this.numEnemiesKilled >= 39 * difficulty && this.numEnemiesKilled < 40 * difficulty){
-    //   this.poweruptimer4.paused = true;
-    //   this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
-    //   this.physics.world.setBounds(this.worldsX, 30, 1400 * 4 + 1000, 560);
-    //   this.enemyWave = 5;
-    // }
-    // // make waves attack only when player crosses line
-    // if (player.sprite.x >= 1400 && this.numEnemiesCreated < 20 * difficulty){
-    //   this.waveAttackTimer.paused = false;
-    //   this.waveCreateTimer.paused = false;
-    //   this.poweruptimer2.paused = false;
-    //   this.worldsX = 1400;
-    // }
-    // if (player.sprite.x >= 2800 && this.numEnemiesCreated < 30 * difficulty){
-    //   this.waveAttackTimer.paused = false;
-    //   this.waveCreateTimer.paused = false;
-    //   this.poweruptimer3.paused = false;
-    //   this.worldsX = 2800;
-    // }
-    // if (player.sprite.x >= 4200 && this.numEnemiesCreated < 40 * difficulty){
-    //   this.waveAttackTimer.paused = false;
-    //   this.waveCreateTimer.paused = false;
-    //   this.poweruptimer4.paused = false;
-    //   this.worldsX = 4200;
-    // }
-    // if (player.sprite.x >= 5600){
-    //   this.worldsX = 5600;
-    //   this.poweruptimer5.paused = false;
-    // }
 
     // make enemies respawn at wave start point if they leave camera view
     for (var i = 0; i < this.tutorialWave.getChildren().length; i++) {
@@ -851,18 +725,10 @@ class Tutorial extends Phaser.Scene{
         enemy.y = Phaser.Math.Between(100, 500);
       }
     }
-    //
-    // // make player stay in boss area
-    // if (player.sprite.x > 5600){
-    //   this.cameras.main.setBounds(5600, 0, 1300, 560);
-    //   this.physics.world.setBounds(5600, 30, 1350, 560);
-    // }
 
     // spawns boss when player crosses threshold
     if (this.numEnemiesKilled == 9 && player.hasteCollected) { //400 //6000 player.sprite.x + 17 > 5700
       this.startBoss = true;
-      //this.cameras.main.setBounds(5600, 0, 1300, 560);
-      //this.physics.world.setBounds(5600, 30, 1350, 560);
     }
     if (this.startBoss){
       player.healthBar.setVisible(true);
@@ -881,7 +747,6 @@ class Tutorial extends Phaser.Scene{
       this.barrier5.disableBody(true,true);
     }
     if (tutorialboss.health <= 0) {
-      //this.dinodie.play();
       this.ability3.setMute(true);
       tutorialboss.isAlive = false;
       tutorialboss.sprite.disableBody(true, true);
@@ -951,7 +816,7 @@ class Tutorial extends Phaser.Scene{
       let ptrap = this.playertrap.create(playerx, playery, 'trap');
       }
     //press v to heal - this should go somewhere else
-    else if(Phaser.Input.Keyboard.JustDown(this.akey) && player.health < 100 && player.canHealAgain)
+    else if(Phaser.Input.Keyboard.JustDown(this.aKey) && player.health < 100 && player.canHealAgain)
     {
       this.firstAPressed = true;
       this.healTimer.isPaused = false;
@@ -1013,9 +878,6 @@ class Tutorial extends Phaser.Scene{
         this.scene.pause("tutorialScene");
         this.scene.launch("pauseScene");
     }
-    if (tutorialScenePaused == false){
-        tutorialtheme.resume();
-    }
   }
 
   makeBar(w, h, x, y, color){
@@ -1042,10 +904,7 @@ class Tutorial extends Phaser.Scene{
     bar.y = y;
   }
 
-  createPowerup1() {
-  }
-  createPowerup2() {
-    }
+
   createPowerup3() {
     let x = Phaser.Math.Between(2800 + 50, 4200 - 50);
     let y = -100;
@@ -1295,7 +1154,7 @@ class Tutorial extends Phaser.Scene{
     this.setValue(player.healthBar, player.healthPercent);
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
-      tutorialthemeplaying = false;
+      //tutorialthemeplaying = false;
       this.gameOver();
     }
     console.log("player health is : " + player.health);
@@ -1327,16 +1186,15 @@ class Tutorial extends Phaser.Scene{
       console.log("player health is : " + player.health);
     }
     if (player.health<= 0){
-      tutorialthemeplaying = false;
       this.gameOver();
     }
   }
 
   powerupOne(p, powerup1){
-    powerup1.destroy();
-    player.multishot = true;
-    this.powerupIcon1.setVisible(true);
-    this.powerupText.setVisible(true);
+      powerup1.destroy();
+      player.multishot = true;
+      this.powerupIcon1.setVisible(true);
+      this.powerupText.setVisible(true);
   }
   powerupTwo(p, powerup2){
     powerup2.destroy();
@@ -1352,7 +1210,6 @@ class Tutorial extends Phaser.Scene{
   }
   powerupFour(p, powerup4){
     powerup4.destroy();
-    //player.kaboom = true;
     player.hasteCollected = true;
     this.powerupIcon4.setVisible(true);
     this.powerupText4.setVisible(true);
@@ -1391,7 +1248,7 @@ class Tutorial extends Phaser.Scene{
     this.cameras.main.shake(400, 0.01); //duration, intensity
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
-      tutorialthemeplaying = false;
+      //tutorialthemeplaying = false;
       this.gameOver();
     }
     console.log("player health is : " + player.health);
@@ -1405,11 +1262,6 @@ class Tutorial extends Phaser.Scene{
     tutorialboss.health -= 1;
     tutorialboss.sprite.x = 7150; //1550
     tutorialboss.speed = 2;
-  }
-
-  collide (barrier, pbullet)
-  {
-    pbullet.disableBody(true,true);
   }
 
   collide (barrier, bullet)
@@ -1460,7 +1312,8 @@ class Tutorial extends Phaser.Scene{
   gameOver()
   {
     tutorialtheme.stop();
-    tutorialthemeplaying = false;
+    this.sound.stopAll();
+    //tutorialthemeplaying = false;
     // flag to set player is dead
     player.isAlive = false;
     // shake the camera
@@ -1476,7 +1329,7 @@ class Tutorial extends Phaser.Scene{
   }
 
   moveToGame()
-  { 
+  {
     if(this.canGrabTreasure){
         tutorialtheme.stop();
         firstLevel = true;

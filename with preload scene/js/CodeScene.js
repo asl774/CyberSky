@@ -11,7 +11,7 @@ class CodeScene extends Phaser.Scene{
     create ()
     {
         var add = this.add;
-        //var text = add.text(300, 10, 'Enter Code', { color: 'white', fontSize: '20px '});
+        var text = add.text(300, 10, ' ', { color: 'white', fontSize: '20px '});
         var element = add.dom(650, 0).createFromCache('nameform');
 
         var r1 = add.rectangle(650, 400, 450, 70, 0x37092C).setInteractive();
@@ -55,7 +55,7 @@ class CodeScene extends Phaser.Scene{
                 }
             }
         });
-        
+
         this.tweens.add({
             targets: element,
             y: 300,
@@ -67,7 +67,7 @@ class CodeScene extends Phaser.Scene{
 
     update(){
         if (switchScene)
-            this.scene.start('infiniteScene');
+            this.scene.start('IMintroScene');
     }
 
     enterRestState(button)
