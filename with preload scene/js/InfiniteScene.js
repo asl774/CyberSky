@@ -338,7 +338,7 @@ class InfiniteScene extends Phaser.Scene{
     //this.levelText3.setText("Level: " + difficulty + " Stage: " + "3");
     //this.levelText4.setText("Level: " + difficulty + " Stage: " + "4");
     this.numKillsText.setText("Enemies Killed: " + this.numEnemiesKilled);
-    this.hasteStackText.setText(Math.ceil(player.haste / 150));
+    this.hasteStackText.setText(Math.ceil(player.haste / 100));
     //this.numKillsText2.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText3.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText4.setText("Enemies Killed: " + this.numEnemiesKilled);
@@ -416,7 +416,7 @@ class InfiniteScene extends Phaser.Scene{
       this.enemyWave = 4;
     }
     // can move to boss
-    if (this.numEnemiesKilled >= 39 * difficulty && this.numEnemiesKilled < 40 * difficulty){
+    if (this.numEnemiesKilled >= 39 * difficulty + difficulty - 1 && this.numEnemiesKilled < 40 * difficulty){
       this.poweruptimer4.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
       this.physics.world.setBounds(this.worldsX, 30, 1440, 560);
