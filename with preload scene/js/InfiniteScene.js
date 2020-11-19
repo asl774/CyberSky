@@ -264,7 +264,7 @@ class InfiniteScene extends Phaser.Scene{
     this.pkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
     //timer testing
     this.timer = this.time.addEvent({delay : 2000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
-    this.yakuzaTimer = this.time.addEvent({delay : 250, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
+    this.yakuzaTimer = this.time.addEvent({delay : 300, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = this.time.addEvent({delay : 2000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
     this.waveAttackTimer = this.time.addEvent({delay : 3000, callback: this.waveAttack, callbackScope: this, loop: true, paused: false }); //2500
     this.waveCreateTimer = this.time.addEvent({delay : 1500, callback: this.createWave, callbackScope: this, loop: true, paused: false }); //1500
@@ -372,7 +372,11 @@ class InfiniteScene extends Phaser.Scene{
     } else if (this.cursors.down.isDown){
       player.sprite.y += player.speed;
     }
-    // locked camera conditions
+    // locked camera conditions 
+    if(this.numEnemiesKilled >= (10 * difficulty) * this.enemyWave)
+    {
+      this.enemyx += 1400;
+    }
    // can move to wave 2
     if (this.numEnemiesCreated >= 10 * difficulty && this.numEnemiesCreated < 20 * difficulty){
       this.waveCreateTimer.paused = true;
@@ -833,10 +837,10 @@ class InfiniteScene extends Phaser.Scene{
     }
     this.numEnemiesCreated += 5;
 
-    if(this.numEnemiesCreated >= (10 * difficulty) * this.enemyWave)
-    {
-      this.enemyx += 1400;
-    }
+    // if(this.numEnemiesCreated >= (10 * difficulty) * this.enemyWave)
+    // {
+    //   this.enemyx += 1400;
+    // }
   }
 
   waveAttack()

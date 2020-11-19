@@ -386,7 +386,11 @@ class BossScene extends Phaser.Scene{
     } else if (this.cursors.down.isDown){
       player.sprite.y += player.speed;
     }
-    // locked camera conditions
+    // locked camera conditions 
+    if(this.numEnemiesKilled >= (10 * difficulty) * this.enemyWave)
+    {
+      this.enemyx += 1400;
+    }
     // can move to wave 2
     if (this.numEnemiesCreated >= 10 * difficulty && this.numEnemiesCreated < 20 * difficulty){
       this.waveCreateTimer.paused = true;
@@ -924,10 +928,7 @@ class BossScene extends Phaser.Scene{
     }
     this.numEnemiesCreated += 5;
 
-    if(this.numEnemiesCreated >= (10 * difficulty) * this.enemyWave)
-    {
-      this.enemyx += 1400;
-    }
+
   }
 
   waveAttack()
