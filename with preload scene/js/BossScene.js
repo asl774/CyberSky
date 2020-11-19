@@ -1586,8 +1586,17 @@ class BossScene extends Phaser.Scene{
   collideBoss (b, pbullet)
   {
     pbullet.destroy();
-    boss.healthPercent -= 0.5 + (difficulty/2);
-    boss.health -= 0.5 + (difficulty/2);
+    if (!(difficulty == 4 || difficulty == 5))
+    {
+        boss.healthPercent -= 0.5 + (difficulty/2);
+        boss.health -= 0.5 + (difficulty/2);
+    }
+    else
+    {
+        boss.healthPercent -= (0.5 + (difficulty/2)) / 5;
+        boss.health -= (0.5 + (difficulty/2)) / 5;
+    }
+
     if (boss.health <= 0)
     {
         this.setValue(boss.healthBar, 0);
@@ -1601,8 +1610,17 @@ class BossScene extends Phaser.Scene{
 
   pierceBoss (b, pbullet)
   {
-    boss.healthPercent -= 0.05;
-    boss.health -= 0.05;
+
+    if (!(difficulty == 4 || difficulty == 5))
+    {
+        boss.healthPercent -= 0.05;
+        boss.health -= 0.05;
+    }
+    else
+    {
+        boss.healthPercent -= 0.05 / 5;
+        boss.health -= 0.05 / 5;
+    }
     if (boss.health <= 0)
     {
         this.setValue(boss.healthBar, 0);
