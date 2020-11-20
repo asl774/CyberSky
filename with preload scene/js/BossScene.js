@@ -26,6 +26,7 @@ class BossScene extends Phaser.Scene{
     this.playerbullets;
     this.playertrap;
 
+    player.speed = 10;
     player.health = 100;
     player.isAlive = true;
     player.healthPercent = 100;
@@ -191,10 +192,16 @@ class BossScene extends Phaser.Scene{
     boss.sprite.setVisible(false);
     this.bullets = this.physics.add.group(); //create attack 1
     this.pierceBullets = this.physics.add.group();
+    this.dinofire = this.physics.add.group();
+    this.dinobeam = this.physics.add.group();
+    this.octobeam = this.physics.add.group();
     this.laser = this.physics.add.group(); // create attack 2
     //colliders / triggers
     this.physics.add.overlap(player.sprite, this.bullets, this.getHit, null, this); //trigger b/w player & bullets
     this.physics.add.overlap(player.sprite, this.pierceBullets, this.getHitPierce, null, this); //trigger b/w player & bullets
+    this.physics.add.overlap(player.sprite, this.dinofire, this.getHitDinoFire, null, this); //trigger b/w player & beam
+    this.physics.add.overlap(player.sprite, this.dinobeam, this.getHitDinoBeam, null, this); //trigger b/w player & beam
+    this.physics.add.overlap(player.sprite, this.octobeam, this.getHitOctoBeam, null, this); //trigger b/w player & beam
     this.physics.add.overlap(player.sprite, this.laser, this.dot, null, this); //trigger b/w player & laser
     this.physics.add.overlap(player.sprite, this.treasure, this.endLevel, null, this); //trigger b/w player & treasure
     this.physics.add.overlap(player.sprite, boss.sprite, this.hitPlayer, null, this); //trigger b/w player & boss
@@ -216,12 +223,21 @@ class BossScene extends Phaser.Scene{
     this.physics.add.overlap(this.barrier3, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     this.physics.add.overlap(this.barrier3, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
     this.physics.add.overlap(this.barrier4, this.bullets, this.collide, null, this); //trigger b/w boss bullets & barrier
+    this.physics.add.overlap(this.barrier4, this.dinofire, this.collide, null, this); //trigger b/w boss bullets & barrier
+    this.physics.add.overlap(this.barrier4, this.dinobeam, this.collide, null, this); //trigger b/w boss bullets & barrier
+    this.physics.add.overlap(this.barrier4, this.octobeam, this.collide, null, this); //trigger b/w boss bullets & barrier
     this.physics.add.overlap(this.barrier4, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     this.physics.add.overlap(this.barrier4, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
     this.physics.add.overlap(this.barrier5, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     this.physics.add.overlap(this.barrier5, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
     this.physics.add.overlap(this.barrier6, this.bullets, this.collide, null, this); //trigger b/w boss bullets & bottombarrier
+    this.physics.add.overlap(this.barrier6, this.dinofire, this.collide, null, this); //trigger b/w boss bullets & barrier
+    this.physics.add.overlap(this.barrier6, this.dinobeam, this.collide, null, this); //trigger b/w boss bullets & barrier
+    this.physics.add.overlap(this.barrier6, this.octobeam, this.collide, null, this); //trigger b/w boss bullets & barrier
     this.physics.add.overlap(this.barrier7, this.bullets, this.collide, null, this); //trigger b/w boss bullets & bottombarrier
+    this.physics.add.overlap(this.barrier7, this.dinofire, this.collide, null, this); //trigger b/w boss bullets & barrier
+    this.physics.add.overlap(this.barrier7, this.dinobeam, this.collide, null, this); //trigger b/w boss bullets & barrier
+    this.physics.add.overlap(this.barrier7, this.octobeam, this.collide, null, this); //trigger b/w boss bullets & barrier
     //camera
     this.cameras.main.resetFX(); //reset cameras
     //keyboard input
@@ -1161,7 +1177,7 @@ class BossScene extends Phaser.Scene{
         }
         for(let i = 0; i < 500; i++)
         {
-          let bullet = this.bullets.create(x, y, 'octobeam');
+          let bullet = this.octobeam.create(x, y, 'octobeam');
           bullet.setVelocityX(Phaser.Math.Between(-400,-2000));
         }
     }
@@ -1202,6 +1218,18 @@ class BossScene extends Phaser.Scene{
             let bullet = this.wave1.create(x, y, 'skeleton');
             y += 60;
           }
+          x = boss.sprite.x - 420;
+          y = boss.sprite.y - 180;
+          for (var i = 0; i < 7; i++){
+            let bullet = this.wave1.create(x, y, 'skeleton');
+            y += 60;
+          }
+          x = boss.sprite.x - 490;
+          y = boss.sprite.y - 180;
+          for (var i = 0; i < 7; i++){
+            let bullet = this.wave1.create(x, y, 'skeleton');
+            y += 60;
+          }
         }
     }
 
@@ -1233,7 +1261,7 @@ class BossScene extends Phaser.Scene{
         {
           let x = boss.sprite.x - 150;
           let y = boss.sprite.y - 150;
-          let bullet = this.bullets.create(x, y, 'fireball');
+          let bullet = this.dinofire.create(x, y, 'fireball');
           bullet.setVelocityX(Phaser.Math.Between(-1000,-200));
           bullet.setVelocityY(Phaser.Math.Between(200,1000));
         }
@@ -1288,7 +1316,7 @@ class BossScene extends Phaser.Scene{
         var y = boss.sprite.y - 120;
         for(let i = 0; i < 500; i++)
         {
-          let bullet = this.bullets.create(x, y, 'beam');
+          let bullet = this.dinobeam.create(x, y, 'beam');
           bullet.setVelocityX(Phaser.Math.Between(-400,-2000));
         }
     }
@@ -1298,30 +1326,30 @@ class BossScene extends Phaser.Scene{
         var y = boss.sprite.y - 50;
         for(let i = 0; i < 100; i++)
         {
-          let bullet = this.bullets.create(x, y, 'octobeam3');
+          let bullet = this.octobeam.create(x, y, 'octobeam3');
           bullet.setVelocityX(Phaser.Math.Between(-500,-2000));
-          let bullet2 = this.bullets.create(x, y, 'octobeam3');
+          let bullet2 = this.octobeam.create(x, y, 'octobeam3');
           bullet2.setVelocityX(Phaser.Math.Between(-500,-2000));
           bullet2.setVelocityY(40);
-          let bullet3 = this.bullets.create(x, y, 'octobeam3');
+          let bullet3 = this.octobeam.create(x, y, 'octobeam3');
           bullet3.setVelocityX(Phaser.Math.Between(-500,-2000));
           bullet3.setVelocityY(-40);
-          let bullet4 = this.bullets.create(x, y, 'octobeam3');
+          let bullet4 = this.octobeam.create(x, y, 'octobeam3');
           bullet4.setVelocityX(Phaser.Math.Between(-500,-2000));
           bullet4.setVelocityY(20);
-          let bullet5 = this.bullets.create(x, y, 'octobeam3');
+          let bullet5 = this.octobeam.create(x, y, 'octobeam3');
           bullet5.setVelocityX(Phaser.Math.Between(-500,-2000));
           bullet5.setVelocityY(-20);
-          let bullet6 = this.bullets.create(x, y, 'octobeam3');
+          let bullet6 = this.octobeam.create(x, y, 'octobeam3');
           bullet6.setVelocityX(Phaser.Math.Between(-500,-2000));
           bullet6.setVelocityY(60);
-          let bullet7 = this.bullets.create(x, y, 'octobeam3');
+          let bullet7 = this.octobeam.create(x, y, 'octobeam3');
           bullet7.setVelocityX(Phaser.Math.Between(-500,-2000));
           bullet7.setVelocityY(-60);
-          let bullet8 = this.bullets.create(x, y, 'octobeambottom');
+          let bullet8 = this.octobeam.create(x, y, 'octobeambottom');
           bullet8.setVelocityX(Phaser.Math.Between(-500,-2000));
           bullet8.setVelocityY(80);
-          let bullet9 = this.bullets.create(x, y, 'octobeamtop');
+          let bullet9 = this.octobeam.create(x, y, 'octobeamtop');
           bullet9.setVelocityX(Phaser.Math.Between(-500,-2000));
           bullet9.setVelocityY(-80);
         }
@@ -1343,6 +1371,34 @@ class BossScene extends Phaser.Scene{
       var x = boss.sprite.x - 180;
       var y = boss.sprite.y - 120;
       var vel = -300;
+      for (var i = 0; i < 5; i++){
+        let bullet = this.bullets.create(x, y, 'bat');
+        bullet.setVelocityX(vel);
+        x -= 70;
+      }
+      x = boss.sprite.x - 180;
+      y = boss.sprite.y - 20;
+      for (var i = 0; i < 5; i++){
+        let bullet = this.bullets.create(x, y, 'bat');
+        bullet.setVelocityX(vel);
+        x -= 70;
+      }
+      x = boss.sprite.x - 180;
+      y = boss.sprite.y + 80;
+      for (var i = 0; i < 5; i++){
+        let bullet = this.bullets.create(x, y, 'bat');
+        bullet.setVelocityX(vel);
+        x -= 70;
+      }
+      x = boss.sprite.x - 180;
+      y = boss.sprite.y + 180;
+      for (var i = 0; i < 5; i++){
+        let bullet = this.bullets.create(x, y, 'bat');
+        bullet.setVelocityX(vel);
+        x -= 70;
+      }
+      x = boss.sprite.x - 180;
+      y = boss.sprite.y - 220;
       for (var i = 0; i < 5; i++){
         let bullet = this.bullets.create(x, y, 'bat');
         bullet.setVelocityX(vel);
@@ -1383,8 +1439,8 @@ class BossScene extends Phaser.Scene{
       console.log("player had a shield");
       return;
     }
-    player.health -= 2.5;
-    player.healthPercent -= 2.5;
+    player.health -= 2.0;
+    player.healthPercent -= 2.0;
     this.setValue(player.healthBar, player.healthPercent);
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
@@ -1393,6 +1449,63 @@ class BossScene extends Phaser.Scene{
     console.log("player health is : " + player.health);
   }
 
+  getHitOctoBeam(p, beam)
+  {
+    beam.destroy();
+    if(player.shielded)
+    {
+      player.shielded = false;
+      player.sprite.setTexture('ninja');
+      console.log("player had a shield");
+      return;
+    }
+    player.health -= 0.15;
+    player.healthPercent -= 0.15;
+    this.setValue(player.healthBar, player.healthPercent);
+    if(player.health <= 0) //things can happen, be safe and less than 0
+    {
+      this.gameOver();
+    }
+    console.log("player health is : " + player.health);
+  }
+    getHitDinoFire(p, fire)
+  {
+    fire.destroy();
+    if(player.shielded)
+    {
+      player.shielded = false;
+      player.sprite.setTexture('ninja');
+      console.log("player had a shield");
+      return;
+    }
+    player.health -= 1;
+    player.healthPercent -= 1;
+    this.setValue(player.healthBar, player.healthPercent);
+    if(player.health <= 0) //things can happen, be safe and less than 0
+    {
+      this.gameOver();
+    }
+    console.log("player health is : " + player.health);
+  }
+  getHitDinoBeam(p, beam)
+  {
+    beam.destroy();
+    if(player.shielded)
+    {
+      player.shielded = false;
+      player.sprite.setTexture('ninja');
+      console.log("player had a shield");
+      return;
+    }
+    player.health -= 0.18;
+    player.healthPercent -= 0.18;
+    this.setValue(player.healthBar, player.healthPercent);
+    if(player.health <= 0) //things can happen, be safe and less than 0
+    {
+      this.gameOver();
+    }
+    console.log("player health is : " + player.health);
+  }
   dot(p, laser) {
     if(player.shielded)
     {

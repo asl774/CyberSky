@@ -26,6 +26,7 @@ class InfiniteScene extends Phaser.Scene{
     this.playerbullets;
     this.playertrap;
 
+    player.speed = 10;
     player.health = 100;
     player.isAlive = true;
     player.healthPercent = 100;
@@ -1087,6 +1088,18 @@ class InfiniteScene extends Phaser.Scene{
             let bullet = this.wave1.create(x, y, 'skeleton');
             y += 60;
           }
+          x = boss.sprite.x - 420;
+          y = boss.sprite.y - 180;
+          for (var i = 0; i < 7; i++){
+            let bullet = this.wave1.create(x, y, 'skeleton');
+            y += 60;
+          }
+          x = boss.sprite.x - 490;
+          y = boss.sprite.y - 180;
+          for (var i = 0; i < 7; i++){
+            let bullet = this.wave1.create(x, y, 'skeleton');
+            y += 60;
+          }
         }
     }
 
@@ -1228,6 +1241,34 @@ class InfiniteScene extends Phaser.Scene{
       var x = boss.sprite.x - 180;
       var y = boss.sprite.y - 120;
       var vel = -300;
+      for (var i = 0; i < 5; i++){
+        let bullet = this.bullets.create(x, y, 'bat');
+        bullet.setVelocityX(vel);
+        x -= 70;
+      }
+      x = boss.sprite.x - 180;
+      y = boss.sprite.y - 20;
+      for (var i = 0; i < 5; i++){
+        let bullet = this.bullets.create(x, y, 'bat');
+        bullet.setVelocityX(vel);
+        x -= 70;
+      }
+      x = boss.sprite.x - 180;
+      y = boss.sprite.y + 80;
+      for (var i = 0; i < 5; i++){
+        let bullet = this.bullets.create(x, y, 'bat');
+        bullet.setVelocityX(vel);
+        x -= 70;
+      }
+      x = boss.sprite.x - 180;
+      y = boss.sprite.y + 180;
+      for (var i = 0; i < 5; i++){
+        let bullet = this.bullets.create(x, y, 'bat');
+        bullet.setVelocityX(vel);
+        x -= 70;
+      }
+      x = boss.sprite.x - 180;
+      y = boss.sprite.y - 220;
       for (var i = 0; i < 5; i++){
         let bullet = this.bullets.create(x, y, 'bat');
         bullet.setVelocityX(vel);
