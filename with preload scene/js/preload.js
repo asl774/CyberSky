@@ -128,7 +128,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.audio('ability2', [ 'laser.mp3' ]);
       this.load.audio('ability3', [ 'stomp.mp3' ]);
       this.load.audio('dinogrowl', [ 'dinogrowl.mp3' ]);
-      this.load.audio('bloc', [ 'bloc.wav' ]);
+      this.load.audio('blocA', [ 'bloc.wav' ]);
       this.load.audio('blocC', [ 'blocC.mp3' ]);
       this.load.audio('blocK', [ 'blocK.mp3' ]);
       this.load.audio('bbbloc', [ 'bbbloc.mp3' ]);

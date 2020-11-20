@@ -5,9 +5,6 @@ class Tutorial extends Phaser.Scene{
 
   init()
   {
-    this.enemiesWave1;
-    this.enemiesWave2;
-    this.enemiesWave3;
     this.numEnemiesCreated = 0;
     this.numEnemiesKilled = 0;
     this.enemySpeed = 2;
@@ -21,12 +18,10 @@ class Tutorial extends Phaser.Scene{
     this.text = "";
     this.timer;
     this.ability1;
-    this.ability2;
-    this.ability3;
     this.playerbullets;
     this.playertrap;
 
-       player.speed = 10;
+      player.speed = 10;
       player.health = 80;
       player.isAlive = true;
       player.healthPercent = 100;
@@ -34,7 +29,6 @@ class Tutorial extends Phaser.Scene{
       player.shielded = false;
       player.multishot = false;
       player.pierce = false;
-      //player.kaboom = false;
       player.trap = false;
       player.hasteCollected = false;
       this.haste = false;
@@ -43,7 +37,6 @@ class Tutorial extends Phaser.Scene{
     tutorialboss.speed = 2;
     tutorialboss.health = 100;
     tutorialboss.minX = 2500; //6700
-    tutorialboss.isAlive = true;
     tutorialboss.healthPercent = 100;
     tutorialboss.healthBar = 0;
 
@@ -92,17 +85,15 @@ class Tutorial extends Phaser.Scene{
     tutorialtheme.setLoop(true);
     tutorialtheme.play();
     this.ability1 = sound.add('ability1', {volume: 0.5});
-    this.ability2 = sound.add('ability2', {volume: 0.5});
-    this.ability3 = sound.add('ability3');
-    this.dinogrowl = sound.add('dinogrowl');
-    this.blocyell = sound.add('bloc');
+    this.blocA = sound.add('blocA');
+    this.blocC = sound.add('blocC');
+    this.blocK = sound.add('blocK');
     this.throwstar = sound.add('throwstar');
     this.teleport = sound.add('teleport');
     this.throwtriplestar = sound.add('throwtriplestar');
     this.throwbigstar = sound.add('throwbigstar');
     this.healthUp = sound.add('heal');
     this.shieldUp = sound.add('shield');
-    this.dinodie = sound.add('dinodie');
     this.trapsfx = sound.add('trapsfx')
     //background
     mainCamera.setBounds(0, 0, 1400 - 40, 560);
@@ -132,7 +123,6 @@ class Tutorial extends Phaser.Scene{
     this.tutorialpowerup4 = addPhysics.group();
     //hud
     this.hud = add.image(700, 50, "hud").setAlpha(0.80);
-    //this.powerupBar = this.makePowerupBar(350, 0, 0xffffff);
     this.abilityIcon1 = add.image(250, 34, "healAbility").setVisible(false);
     this.abilityIcon2 = add.image(300, 34, "shieldAbility").setVisible(false);
     this.abilityIcon3 = add.image(350, 34, "dashAbility").setVisible(false);
@@ -212,43 +202,43 @@ class Tutorial extends Phaser.Scene{
     this.healTimer = time.addEvent({delay : 2000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
 
     //TODO: edit this into more specific stages, maybe just change the text instead
-    this.stage1Text1 = add.text(550, 30, "Use ARROW KEYS to move", { fontSize: '20px', fill: '#00FFFF', align: "center" });
-    this.stage1Text2 = add.text(550, 45, "Press SPACEBAR to attack", { fontSize: '20px', fill: '#00FFFF', align: "center" });
-    this.stage1Text3 = add.text(550, 30, "Press A to recover health after taking damage", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage1Text4 = add.text(550, 30, "Press S to shield", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage1Text5 = add.text(550, 30, "Hold ARROW KEY + D to dash", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage1Text6 = add.text(550, 30, "Take out the remaining enemies", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage1Text7 = add.text(550, 30, "Move right to the next stage -->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text1 = add.text(550, 30, "Use ARROW KEYS to move", { fontFamily: 'Bitwise', fontSize: '20px', fill: '#00FFFF', align: "center" });
+    this.stage1Text2 = add.text(550, 50, "Press SPACEBAR to Attack", { fontFamily: 'Bitwise', fontSize: '20px', fill: '#00FFFF', align: "center" });
+    this.stage1Text3 = add.text(550, 30, "Press A to Heal after taking damage", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text4 = add.text(550, 30, "Press S to Shield", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text5 = add.text(550, 30, "Hold ARROW KEY + D to Dash", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text6 = add.text(550, 30, "Take out the remaining enemies", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage1Text7 = add.text(550, 30, "Move right to the next stage -->", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
 
-    this.stage2Text1 = add.text(550, 30, "Collect the powerup", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text1a = add.text(550, 30, "Collect next powerup", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text2 = add.text(550, 45, "Press Q to use MULITISHOT ability", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text2a = add.text(1650, 150, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text2b = add.text(1800, 150, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text3 = add.text(550, 45, "Press W to use PIERCE ability", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text3a = add.text(1650, 250, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text3b = add.text(1800, 250, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text4 = add.text(550, 45, "Press E to use TRAP ability", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text4a = add.text(1650, 350, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text4b = add.text(1800, 350, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text5 = add.text(550, 45, "The HASTE powerup reduces your ability cooldowns", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text5a = add.text(1650, 450, "---->", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text5b = add.text(1800, 450, "<----", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text5c = add.text(550, 30, "Take out the remaining enemies", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text6 = add.text(550, 30, "DEFEAT THE BLOC", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.stage2Text7 = add.text(550, 30, "Congrats! Touch the TREASURE CHEST to start main game", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text1 = add.text(550, 30, "Collect the powerup", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text1a = add.text(550, 30, "Collect next powerup", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text2 = add.text(550, 50, "Press Q to use MULITISHOT ability", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text2a = add.text(1650, 150, "---->", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text2b = add.text(1800, 150, "<----", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text3 = add.text(550, 50, "Press W to use PIERCE ability", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text3a = add.text(1650, 250, "---->", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text3b = add.text(1800, 250, "<----", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text4 = add.text(550, 50, "Press E to use TRAP ability", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text4a = add.text(1650, 350, "---->", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text4b = add.text(1800, 350, "<----", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text5 = add.text(550, 50, "The HASTE powerup reduces your ability cooldowns", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text5a = add.text(1650, 450, "---->", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text5b = add.text(1800, 450, "<----", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text5c = add.text(550, 30, "Take out the remaining enemies", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text6 = add.text(550, 30, "DEFEAT THE BLOC", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.stage2Text7 = add.text(550, 30, "Congrats! Touch the TREASURE CHEST to start main game", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
 
-    this.abilityBarText = add.text(100, 10, "Abilities: ", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.abilityText1 = add.text(247, 10, "A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.abilityText2 = add.text(297, 10, "S", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.abilityText3 = add.text(348, 10, "D", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setAlpha(0);
-    this.powerupBarText = add.text(100, 10, "Powerups: ", { fontSize: '20px', fill: '#00FFFF', align: "center" }).setVisible(false); //100
-    this.powerupText = add.text(248, 10, "Q", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setVisible(player.multishot);    //248
-    this.powerupText2 = add.text(299, 10, "W", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setVisible(player.pierce);   //299
-    this.powerupText3 = add.text(349, 10, "E", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setVisible(player.trap);   //349
-    this.powerupText4 = add.text(390, 10, "N/A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" }).setVisible(player.haste > 0); //390
-    this.hasteStackText = add.text(414, 39, "1", { fontSize: 'bold 11px', fill: '#00FFFF', align: "center" }).setVisible(player.haste > 0); //414
-    this.bossHPText = add.text(100, 50, "Boss HP: " + tutorialboss.healthPercent, { fontSize: '20px', fill: '#00FFFF', align: "center" }).setVisible(false);
+    this.abilityBarText = add.text(100, 10, "Abilities: ", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.abilityText1 = add.text(247, 10, "A", { fontFamily: 'Bitwise', fontSize: '12px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.abilityText2 = add.text(297, 10, "S", { fontFamily: 'Bitwise', fontSize: '12px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.abilityText3 = add.text(348, 10, "D", { fontFamily: 'Bitwise', fontSize: '12px',fill: '#00FFFF', align: "center" }).setAlpha(0);
+    this.powerupBarText = add.text(100, 10, "Powerups: ", { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setVisible(false); //100
+    this.powerupText = add.text(248, 10, "Q", { fontFamily: 'Bitwise', fontSize: '12px',fill: '#00FFFF', align: "center" }).setVisible(player.multishot);    //248
+    this.powerupText2 = add.text(299, 10, "W", { fontFamily: 'Bitwise', fontSize: '12px',fill: '#00FFFF', align: "center" }).setVisible(player.pierce);   //299
+    this.powerupText3 = add.text(349, 10, "E", { fontFamily: 'Bitwise', fontSize: '12px',fill: '#00FFFF', align: "center" }).setVisible(player.trap);   //349
+    this.powerupText4 = add.text(390, 10, "N/A", { fontFamily: 'Bitwise', fontSize: '12px',fill: '#00FFFF', align: "center" }).setVisible(player.haste > 0); //390
+    this.hasteStackText = add.text(414, 39, "1", { fontFamily: 'Bitwise', fontSize: '12px',fill: '#00FFFF', align: "center" }).setVisible(player.haste > 0); //414
+    this.bossHPText = add.text(100, 50, "Boss HP: " + tutorialboss.healthPercent, { fontFamily: 'Bitwise', fontSize: '20px',fill: '#00FFFF', align: "center" }).setVisible(false);
 
     this.createStage1();
   }
@@ -283,9 +273,7 @@ class Tutorial extends Phaser.Scene{
         this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
     }
 
-
     //able to move to stage 2
-
     if(this.numEnemiesCreated >= 5)
     {
       this.waveCreateTimer.paused = true;
@@ -296,8 +284,6 @@ class Tutorial extends Phaser.Scene{
       this.waveAttackTimer.paused = false;
       this.worldsX = 1400;
     }
-    //able to move to stage 3
-
     // make enemies respawn at wave start point if they leave camera view
     for (var i = 0; i < this.tutorialWave.getChildren().length; i++) {
       var enemy = this.tutorialWave.getChildren()[i];
@@ -316,7 +302,6 @@ class Tutorial extends Phaser.Scene{
       this.startBoss = true;
     }
     if (this.startBoss){
-      player.healthBar.setVisible(true);
       tutorialboss.healthBar.setVisible(true);
       this.bossHPText.setVisible(true);
       tutorialboss.sprite.setVisible(true);
@@ -324,145 +309,19 @@ class Tutorial extends Phaser.Scene{
       this.timer.paused = false;
     }
     if (tutorialboss.sprite.x < 2800 + 150 && tutorialboss.sprite.x > 2800 + 140){ //this.sys.game.config.width //7000 + 150 // 7000 + 140
-      this.dinogrowl.play();
+      this.randomBloc();
     }
     if (tutorialboss.sprite.x <= tutorialboss.minX) {
       tutorialboss.speed = 0;
-      tutorialboss.sprite.setCollideWorldBounds(true);
-      this.barrier5.disableBody(true,true);
     }
     if (tutorialboss.health <= 0) {
-      this.ability3.setMute(true);
-      tutorialboss.isAlive = false;
       tutorialboss.sprite.disableBody(true, true);
-      tutorialboss.sprite.setActive(false);
-      tutorialboss.sprite.setVisible(false);
       this.timer.paused = true;
+      this.barrier5.setVisible(false);
       this.tutorialtreasure.setVisible(true);
       this.canGrabTreasure = true;
     }
-    //ability three
-    if (this.timer.getProgress().toString().substr(0,4) < 0.4){
-      if (this.timer2.getProgress().toString().substr(0,4) >= 0.05 && this.timer2.getProgress().toString().substr(0,4) <= 0.25){
-        this.physics.moveToObject(tutorialboss.sprite, player.sprite, 790);
-      }
-      else if (this.timer2.getProgress().toString().substr(0,4) > 0.25 && this.timer2.getProgress().toString().substr(0,4) <= 0.5){
-        this.physics.moveToObject(tutorialboss.sprite, this.tutorialtreasure, 790);
-      }
-    }
-    //press spacebar to throw star
-    if (Phaser.Input.Keyboard.JustDown(this.spacebar))
-    {
-      this.firstSpacePressed = true;
-      this.throwstar.play();
-      let playerx = player.sprite.x;
-      let playery = player.sprite.y;
-      let pbullet = this.playerbullets.create(playerx, playery, 'star');
-      pbullet.setVelocityX(800);
-    }
-    //press z key to throw 3 stars
-    else if (Phaser.Input.Keyboard.JustDown(this.qkey) && player.multishot == true && player.canMultishotAgain)
-    {
-      this.firstQPressed = true;
-      this.abilityTimer1.isPaused = false;
-      player.canMultishotAgain = false;
-      this.throwtriplestar.play();
-      let playerx = player.sprite.x;
-      let playery = player.sprite.y;
-      let pbullet1 = this.playerbullets.create(playerx, playery - 25, 'star');
-      let pbullet2 = this.playerbullets.create(playerx, playery, 'star');
-      let pbullet3 = this.playerbullets.create(playerx, playery + 25, 'star');
-      pbullet1.setVelocityX(800);
-      pbullet1.setVelocityY(-100);
-      pbullet2.setVelocityX(800);
-      pbullet3.setVelocityX(800);
-      pbullet3.setVelocityY(100);
-    }
-    //press x key to throw big piercing star
-    else if (Phaser.Input.Keyboard.JustDown(this.wkey) && player.pierce == true && player.canPierceAgain)
-    {
-      this.firstWPressed = true;
-      this.abilityTimer2.isPaused = false;
-      player.canPierceAgain = false;
-      this.throwbigstar.play();
-      let playerx = player.sprite.x;
-      let playery = player.sprite.y;
-      let pbullet = this.playerbigbullets.create(playerx, playery, 'starbig');
-      pbullet.setVelocityX(800);
-    }
-    //melee
-    else if (Phaser.Input.Keyboard.JustDown(this.ekey) && player.trap == true && player.canTrapAgain)
-    {
-      this.firstEPressed = true;
-      this.abilityTimer3.isPaused = false;
-      player.canTrapAgain = false;
-      let playerx = player.sprite.x;
-      let playery = player.sprite.y;
-      let ptrap = this.playertrap.create(playerx, playery, 'trap');
-      }
-    //press v to heal - this should go somewhere else
-    else if(Phaser.Input.Keyboard.JustDown(this.aKey) && player.health < 100 && player.canHealAgain)
-    {
-      this.firstAPressed = true;
-      this.healTimer.isPaused = false;
-      player.canHealAgain = false;
-      this.healthUp.play();
-      if(player.health > 80)
-      {
-        player.health = 100;
-        player.healthPercent = 100;
-      } else {
-        player.health += 20;
-        player.healthPercent += 20;
-      }
-      this.setValue(player.healthBar, player.healthPercent);
-      console.log("player health is : " + player.health);
-    }
-    //press S to shield
-    else if(Phaser.Input.Keyboard.JustDown(this.skey) && !player.shielded)
-    {
-      this.firstSPressed = true;
-      this.shieldUp.play();
-      player.shielded = true;
-      player.sprite.setTexture('shield');
-      console.log("player shield is active");
-    }
-
-    //press d key to teleport 100 pixels in direction of arrow key
-    else if (Phaser.Input.Keyboard.JustDown(this.dkey))
-    {
-      if (this.cursors.right.isDown){
-        this.teleport.play();
-        this.firstDPressed = true;
-        player.sprite.x += 100;
-      }
-      else if (this.cursors.left.isDown){
-        this.teleport.play();
-        this.firstDPressed = true;
-        player.sprite.x -= 100;
-      }
-      else if (this.cursors.up.isDown){
-        this.teleport.play();
-        this.firstDPressed = true;
-        player.sprite.y -= 100;
-      }
-      else if (this.cursors.down.isDown){
-        this.teleport.play();
-        this.firstDPressed = true;
-        player.sprite.y += 100;
-      }
-    }
-        else if(Phaser.Input.Keyboard.JustDown(this.pkey) && tutorialScenePaused == false)
-    {
-        this.cursors.right.reset();
-        this.cursors.left.reset();
-        this.cursors.up.reset();
-        this.cursors.down.reset();
-        tutorialScenePaused = true;
-        tutorialtheme.pause();
-        this.scene.pause("tutorialScene");
-        this.scene.launch("pauseScene");
-    }
+    this.checkInputs();
   }
 
 
@@ -539,63 +398,42 @@ createStage1() {
         bullet.setVelocityX(Phaser.Math.Between(-100,-200));
       }
 
-      enemy.setVelocityX(newVelocityX); //-50, -250
-      enemy.setVelocityY(newVelocityY); //-20, -20
+      enemy.setVelocityX(newVelocityX);
+      enemy.setVelocityY(newVelocityY);
     }
   }
 
+  /////////////////////////////////////////BOSS SECTION////
   pickAbility()
   {
-    var ability = 1; //Math.floor(Math.random() * 3) + 1;
-    this.useAbility(ability);
-  }
-
-  useAbility(ability){
-    if(ability == 1)
-    {
-      this.abilityOne();
-    }
-    else if (ability == 2)
-    {
-      this.abilityTwo();
-    }
-    else {
-      this.abilityThree();
-    }
+    var ability = 1; //normally randomized
+    this.abilityOne();
   }
 
   abilityOne() {
-    //this.ability1.play();
-    this.blocyell.play();
-    console.log("using ability one");
+    this.randomBloc();
     this.timer2.paused = true;
-    this.ability3.setMute(true);
-    for(let i = 0; i < 1; i++)
+    let x = tutorialboss.sprite.x;
+    let y = Phaser.Math.Between(tutorialboss.sprite.y - 100, tutorialboss.sprite.y + 100); //can and should randomize this
+    let bullet = this.bullets.create(x, y, 'bullet');
+    bullet.setVelocityX(-200);
+  }
+
+  randomBloc()
+  {
+    let num = Phaser.Math.Between(1,3);
+    switch(num)
     {
-      let x = tutorialboss.sprite.x;
-      let y = Phaser.Math.Between(tutorialboss.sprite.y - 100, tutorialboss.sprite.y + 100); //can and should randomize this
-      let bullet = this.bullets.create(x, y, 'bullet');
-      bullet.setVelocityX(-200);
+      case 1:
+        this.blocA.play();
+        break;
+      case 2:
+        this.blocC.play();
+        break;
+      case 3:
+        this.blocK.play();
+        break;
     }
-  }
-
-  abilityTwo(){
-    this.ability2.play();
-    console.log("using ability two");
-    this.timer2.paused = true;
-    this.ability3.setMute(true);
-    let x = Phaser.Math.Between(1400, tutorialboss.sprite.x - 250); //5600
-    let y = -200;
-    let laser = this.laser.create(x, y, 'laser');
-    laser.setVelocityY(250);
-
-  }
-
-  abilityThree() {
-    this.ability3.play();
-    console.log("using ability three");
-    this.timer2.paused = false;
-    this.ability3.setMute(false);
   }
 
   getHit(p, bullet)
@@ -613,39 +451,126 @@ createStage1() {
     this.setValue(player.healthBar, player.healthPercent);
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
-      //tutorialthemeplaying = false;
       this.gameOver();
     }
     console.log("player health is : " + player.health);
   }
 
-  dot(p, laser) {
-    if(player.shielded)
+  /////////////////////////////////////////PLAYER SECTION////
+  checkInputs()
+  {
+    //press spacebar to throw star
+    if (Phaser.Input.Keyboard.JustDown(this.spacebar))
     {
-      player.shielded = false;
-      console.log("player had a shield");
-      return;
+      this.firstSpacePressed = true;
+      this.throwstar.play();
+      let playerx = player.sprite.x;
+      let playery = player.sprite.y;
+      let pbullet = this.playerbullets.create(playerx, playery, 'star');
+      pbullet.setVelocityX(800);
     }
-    if (player.sprite.x >= 200){
-      player.health -= 30;
-      player.healthPercent-= 30;
+    //press q key to throw 3 stars
+    else if (Phaser.Input.Keyboard.JustDown(this.qkey) && player.multishot == true && player.canMultishotAgain)
+    {
+      this.firstQPressed = true;
+      this.abilityTimer1.isPaused = false;
+      player.canMultishotAgain = false;
+      this.throwtriplestar.play();
+      let playerx = player.sprite.x;
+      let playery = player.sprite.y;
+      let pbullet1 = this.playerbullets.create(playerx, playery - 25, 'star');
+      let pbullet2 = this.playerbullets.create(playerx, playery, 'star');
+      let pbullet3 = this.playerbullets.create(playerx, playery + 25, 'star');
+      pbullet1.setVelocityX(800);
+      pbullet1.setVelocityY(-100);
+      pbullet2.setVelocityX(800);
+      pbullet3.setVelocityX(800);
+      pbullet3.setVelocityY(100);
+    }
+    //press w key to throw big piercing star
+    else if (Phaser.Input.Keyboard.JustDown(this.wkey) && player.pierce == true && player.canPierceAgain)
+    {
+      this.firstWPressed = true;
+      this.abilityTimer2.isPaused = false;
+      player.canPierceAgain = false;
+      this.throwbigstar.play();
+      let playerx = player.sprite.x;
+      let playery = player.sprite.y;
+      let pbullet = this.playerbigbullets.create(playerx, playery, 'starbig');
+      pbullet.setVelocityX(800);
+    }
+    //trap
+    else if (Phaser.Input.Keyboard.JustDown(this.ekey) && player.trap == true && player.canTrapAgain)
+    {
+      this.firstEPressed = true;
+      this.abilityTimer3.isPaused = false;
+      player.canTrapAgain = false;
+      let playerx = player.sprite.x;
+      let playery = player.sprite.y;
+      let ptrap = this.playertrap.create(playerx, playery, 'trap');
+      }
+    //press a to heal
+    else if(Phaser.Input.Keyboard.JustDown(this.aKey) && player.health < 100 && player.canHealAgain)
+    {
+      this.firstAPressed = true;
+      this.healTimer.isPaused = false;
+      player.canHealAgain = false;
+      this.healthUp.play();
+      if(player.health > 80)
+      {
+        player.health = 100;
+        player.healthPercent = 100;
+      } else {
+        player.health += 20;
+        player.healthPercent += 20;
+      }
       this.setValue(player.healthBar, player.healthPercent);
-      player.sprite.x = player.sprite.x- 150;
-      player.sprite.tint = Math.random() * 0xffffff;
-      this.cameras.main.shake(300);
       console.log("player health is : " + player.health);
     }
-    else{
-      player.health -= 30;
-      player.healthPercent -= 30;
-      this.setValue(player.healthBar, player.healthPercent);
-      player.sprite.x = player.sprite.x + 200;
-      this.laser.tint = Math.random() * 0xffffff;
-      this.cameras.main.shake(300);
-      console.log("player health is : " + player.health);
+    //press S to shield
+    else if(Phaser.Input.Keyboard.JustDown(this.skey) && !player.shielded)
+    {
+      this.firstSPressed = true;
+      this.shieldUp.play();
+      player.shielded = true;
+      player.sprite.setTexture('shield');
+      console.log("player shield is active");
     }
-    if (player.health<= 0){
-      this.gameOver();
+
+    //press d key to teleport 100 pixels in direction of arrow key
+    else if (Phaser.Input.Keyboard.JustDown(this.dkey))
+    {
+      if (this.cursors.right.isDown){
+        this.teleport.play();
+        this.firstDPressed = true;
+        player.sprite.x += 100;
+      }
+      else if (this.cursors.left.isDown){
+        this.teleport.play();
+        this.firstDPressed = true;
+        player.sprite.x -= 100;
+      }
+      else if (this.cursors.up.isDown){
+        this.teleport.play();
+        this.firstDPressed = true;
+        player.sprite.y -= 100;
+      }
+      else if (this.cursors.down.isDown){
+        this.teleport.play();
+        this.firstDPressed = true;
+        player.sprite.y += 100;
+      }
+    }
+        else if(Phaser.Input.Keyboard.JustDown(this.pkey) && tutorialScenePaused == false)
+    {
+        this.cursors.right.reset();
+        this.cursors.left.reset();
+        this.cursors.up.reset();
+        this.cursors.down.reset();
+        tutorialScenePaused = true;
+        tutorialtheme.pause();
+        this.scene.pause("tutorialScene");
+        this.scene.launch("pauseScene");
     }
   }
 
@@ -694,6 +619,8 @@ createStage1() {
     player.canHealAgain = true;
   }
 
+
+  /////////////////////////////////////////COLLISON SECTION////
   hitPlayer(p, b)
   {
     if(player.shielded)
@@ -732,7 +659,6 @@ createStage1() {
   collideEnemy (enemy, pbullet)
   {
     pbullet.disableBody(true,true);
-    //enemy.disableBody(true, true);
     enemy.destroy();
     this.numEnemiesKilled += 1;
   }
@@ -745,10 +671,8 @@ createStage1() {
     player.speed += 0.1;
   }
 
-
   pierceEnemy (enemy, pbullet)
   {
-    //enemy.disableBody(true, true);
     enemy.destroy();
     this.numEnemiesKilled += 1;
   }
@@ -759,7 +683,7 @@ createStage1() {
     tutorialboss.healthPercent -= 1;
     tutorialboss.health -= 1;
     this.setValue(tutorialboss.healthBar, tutorialboss.healthPercent);
-    //this.cameras.main.shake(400, 0.01); //duration, intensity
+    this.cameras.main.shake(400, 0.01); //duration, intensity
   }
 
   pierceBoss (b, pbullet)
@@ -773,7 +697,6 @@ createStage1() {
   {
     tutorialtheme.stop();
     this.sound.stopAll();
-    //tutorialthemeplaying = false;
     // flag to set player is dead
     player.isAlive = false;
     // shake the camera
