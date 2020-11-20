@@ -17,27 +17,6 @@ var config = {
 
   scene: [PreloadScene, MainMenu, Tutorial, BossScene, CodeScene, InfiniteScene, PauseScene, WinScene, LoseScene, Credits, IMintroScene, IMintro2Scene]
 }
-var tutorialplayer = {
-  speed: 10,
-  health: 100,
-  isAlive: true,
-  healthPercent: 100,
-  healthBar: 0,
-  haste: 0,
-  shielded: false,
-  multishot: false,
-  pierce: false,
-  trap: false,
-  canMultishotAgain: false,
-  canPierceAgain: false,
-  canTrapAgain: false,
-  //kaboom: false,
-  check: function()
-  {
-    console.log("this is the function inside the tutorialplayer");
-    console.log(tutorialplayer);
-  },
-}
 
 var player = {
   speed: 10,
@@ -103,7 +82,6 @@ var switchScene = false;
 var bossNumber = 0;
 var theme;
 var tutorialtheme;
-//var tutorialthemeplaying = false;
 var currentBackground;
 
 var game = new Phaser.Game(config);

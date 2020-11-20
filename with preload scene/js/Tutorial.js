@@ -300,6 +300,7 @@ class Tutorial extends Phaser.Scene{
     // spawns boss when player crosses threshold
     if (this.numEnemiesKilled == 9 && player.hasteCollected) { //400 //6000 player.sprite.x + 17 > 5700
       this.startBoss = true;
+      console.log("boss started");
     }
     if (this.startBoss){
       tutorialboss.healthBar.setVisible(true);
@@ -645,7 +646,7 @@ createStage1() {
   {
     tutorialboss.healthPercent -= 1;
     this.setValue(tutorialboss.healthBar, tutorialboss.healthPercent);
-    this.cameras.main.shake(400, 0.01); //duration, intensity
+    //this.cameras.main.shake(400, 0.01); //duration, intensity
     tutorialboss.health -= 1;
     tutorialboss.sprite.x = 7150; //1550
     tutorialboss.speed = 2;
