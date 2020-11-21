@@ -684,7 +684,6 @@ createStage1() {
     tutorialboss.healthPercent -= 1;
     tutorialboss.health -= 1;
     this.setValue(tutorialboss.healthBar, tutorialboss.healthPercent);
-    this.cameras.main.shake(400, 0.01); //duration, intensity
   }
 
   pierceBoss (b, pbullet)
@@ -873,7 +872,7 @@ createStage1() {
           ease: 'Power2'
         });
     }
-    if(this.numEnemiesKilled >= 4){
+    if(this.numEnemiesKilled >= 4 && this.firstDPressed){
         this.abilityIcon1.setVisible(false);
         this.abilityIcon2.setVisible(false);
         this.abilityIcon3.setVisible(false);
