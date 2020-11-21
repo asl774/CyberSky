@@ -246,7 +246,7 @@ class Tutorial extends Phaser.Scene{
   update()
   {
     this.setHealthBarPosition(player.healthBar, player.sprite.x - 25, player.sprite.y - 40);
-    this.bossHPText.setText("Boss HP: " + Math.ceil(tutorialboss.healthPercent));
+    this.bossHPText.setText("Boss HP: " + Math.ceil(tutorialboss.health));
     this.stopTextScroll();
     if (!player.isAlive) {
       this.gameOver();
@@ -321,6 +321,7 @@ class Tutorial extends Phaser.Scene{
       this.barrier5.setVisible(false);
       this.tutorialtreasure.setVisible(true);
       this.canGrabTreasure = true;
+      tutorialboss.health = 0;
     }
     this.checkInputs();
   }

@@ -355,7 +355,7 @@ class BossScene extends Phaser.Scene{
     //this.numKillsText2.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText3.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText4.setText("Enemies Killed: " + this.numEnemiesKilled);
-    this.bossHPText.setText("Boss HP: " + Math.ceil(boss.healthPercent));
+    this.bossHPText.setText("Boss HP: " + Math.ceil(boss.health));
     /*
     this.timerText.setText("Timer Progress: " + this.timer.getProgress().toString().substr(0,4));
     this.timer3Text.setText("Wave 1 Attack Progress: " + this.waveAttackTimer.getProgress().toString().substr(0,4));
@@ -385,7 +385,7 @@ class BossScene extends Phaser.Scene{
     }
     if (player.health < 0)
         player.health = 0;
-    if (boss.health < 0)
+    if (boss.health <= 0)
         boss.health = 0;
     if (player.shielded){
       player.sprite.setTexture('shield');
@@ -551,7 +551,7 @@ class BossScene extends Phaser.Scene{
       this.barrier5.disableBody(true,true);
     }
     if (boss.health <= 0) {
-      //this.dinodie.play();
+      boss.health = 0;
       this.ability3.setMute(true);
       boss.isAlive = false;
       boss.sprite.disableBody(true, true);
@@ -1377,14 +1377,7 @@ class BossScene extends Phaser.Scene{
         x -= 70;
       }
       x = boss.sprite.x - 180;
-      y = boss.sprite.y - 20;
-      for (var i = 0; i < 5; i++){
-        let bullet = this.bullets.create(x, y, 'bat');
-        bullet.setVelocityX(vel);
-        x -= 70;
-      }
-      x = boss.sprite.x - 180;
-      y = boss.sprite.y + 80;
+      y = boss.sprite.y + 30;
       for (var i = 0; i < 5; i++){
         let bullet = this.bullets.create(x, y, 'bat');
         bullet.setVelocityX(vel);
@@ -1398,7 +1391,14 @@ class BossScene extends Phaser.Scene{
         x -= 70;
       }
       x = boss.sprite.x - 180;
-      y = boss.sprite.y - 220;
+      y = boss.sprite.y + 330;
+      for (var i = 0; i < 5; i++){
+        let bullet = this.bullets.create(x, y, 'bat');
+        bullet.setVelocityX(vel);
+        x -= 70;
+      }
+      x = boss.sprite.x - 180;
+      y = boss.sprite.y - 270;
       for (var i = 0; i < 5; i++){
         let bullet = this.bullets.create(x, y, 'bat');
         bullet.setVelocityX(vel);
@@ -1699,10 +1699,15 @@ class BossScene extends Phaser.Scene{
   collideBoss (b, pbullet)
   {
     pbullet.destroy();
-    if (!(difficulty == 4 || difficulty == 5))
+    if (!(difficulty == 2 || difficulty == 4 || difficulty == 5))
     {
         boss.healthPercent -= 0.5 + (difficulty/2);
         boss.health -= 0.5 + (difficulty/2);
+    }
+    else if (difficulty == 2)
+    {
+        boss.healthPercent -= (0.5 + (difficulty/2)) / 2;
+        boss.health -= (0.5 + (difficulty/2)) / 2;
     }
     else
     {
@@ -1724,10 +1729,15 @@ class BossScene extends Phaser.Scene{
   pierceBoss (b, pbullet)
   {
 
-    if (!(difficulty == 4 || difficulty == 5))
+    if (!(difficulty == 2 || difficulty == 4 || difficulty == 5))
     {
         boss.healthPercent -= 0.05;
         boss.health -= 0.05;
+    }
+    else if (difficulty == 2)
+    {
+        boss.healthPercent -= 0.05 / 2;
+        boss.health -= 0.05 / 2;
     }
     else
     {

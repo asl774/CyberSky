@@ -264,9 +264,9 @@ class InfiniteScene extends Phaser.Scene{
     this.lkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     this.pkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
     //timer testing
-    this.timer = this.time.addEvent({delay : 2000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
-    this.yakuzaTimer = this.time.addEvent({delay : 300, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
-    this.timer2 = this.time.addEvent({delay : 2000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
+    this.timer = this.time.addEvent({delay : 1750, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
+    this.yakuzaTimer = this.time.addEvent({delay : 400, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
+    this.timer2 = this.time.addEvent({delay : 1750, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
     this.waveAttackTimer = this.time.addEvent({delay : 3000, callback: this.waveAttack, callbackScope: this, loop: true, paused: false }); //2500
     this.waveCreateTimer = this.time.addEvent({delay : 1500, callback: this.createWave, callbackScope: this, loop: true, paused: false }); //1500
     this.poweruptimer1 = this.time.addEvent({delay : 5000, callback: this.createPowerup1, callbackScope: this, loop: true, paused: false });
@@ -343,7 +343,7 @@ class InfiniteScene extends Phaser.Scene{
     //this.numKillsText2.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText3.setText("Enemies Killed: " + this.numEnemiesKilled);
     //this.numKillsText4.setText("Enemies Killed: " + this.numEnemiesKilled);
-    this.bossHPText.setText("Boss HP: " + Math.ceil(boss.healthPercent));
+    this.bossHPText.setText("Boss HP: " + Math.ceil(boss.health));
     //check if player is alive
 
     if (!player.isAlive) {
@@ -356,7 +356,7 @@ class InfiniteScene extends Phaser.Scene{
     }
     if (player.health < 0)
         player.health = 0;
-    if (boss.health < 0)
+    if (boss.health <= 0)
         boss.health = 0;
     if (player.shielded){
       player.sprite.setTexture('shield');
@@ -522,7 +522,7 @@ class InfiniteScene extends Phaser.Scene{
       this.barrier5.disableBody(true,true);
     }
     if (boss.health <= 0) {
-      //this.dinodie.play();
+      boss.health = 0;
       this.ability3.setMute(true);
       boss.isAlive = false;
       boss.sprite.disableBody(true, true);
@@ -1165,7 +1165,7 @@ class InfiniteScene extends Phaser.Scene{
     else if (bossNumber == 4){
         this.firebreathsound2.play();
                 // firerain
-        for(let i = 0; i < 5; i++){
+        for(let i = 0; i < 10; i++){
             let x = Phaser.Math.Between(5600, boss.sprite.x - 250);
             let y = -200;
             let laser = this.laser.create(x, y, 'firerain');
@@ -1247,28 +1247,28 @@ class InfiniteScene extends Phaser.Scene{
         x -= 70;
       }
       x = boss.sprite.x - 180;
-      y = boss.sprite.y - 20;
+      y = boss.sprite.y - 10;
       for (var i = 0; i < 5; i++){
         let bullet = this.bullets.create(x, y, 'bat');
         bullet.setVelocityX(vel);
         x -= 70;
       }
       x = boss.sprite.x - 180;
-      y = boss.sprite.y + 80;
+      y = boss.sprite.y + 90;
       for (var i = 0; i < 5; i++){
         let bullet = this.bullets.create(x, y, 'bat');
         bullet.setVelocityX(vel);
         x -= 70;
       }
       x = boss.sprite.x - 180;
-      y = boss.sprite.y + 180;
+      y = boss.sprite.y + 190;
       for (var i = 0; i < 5; i++){
         let bullet = this.bullets.create(x, y, 'bat');
         bullet.setVelocityX(vel);
         x -= 70;
       }
       x = boss.sprite.x - 180;
-      y = boss.sprite.y - 220;
+      y = boss.sprite.y - 230;
       for (var i = 0; i < 5; i++){
         let bullet = this.bullets.create(x, y, 'bat');
         bullet.setVelocityX(vel);
@@ -1540,8 +1540,8 @@ class InfiniteScene extends Phaser.Scene{
   collideBoss (b, pbullet)
   {
     pbullet.destroy();
-    boss.healthPercent -= 0.5 + (difficulty/2);
-    boss.health -= 0.5 + (difficulty/2);
+    boss.healthPercent -= (0.5 + (difficulty/2)) / (difficulty - 5);
+    boss.health -= (0.5 + (difficulty/2)) / (difficulty - 5);
     if (boss.health <= 0)
     {
         this.setValue(boss.healthBar, 0);
@@ -1554,8 +1554,8 @@ class InfiniteScene extends Phaser.Scene{
 
   pierceBoss (b, pbullet)
   {
-    boss.healthPercent -= 0.05;
-    boss.health -= 0.05;
+    boss.healthPercent -= 0.05 / (difficulty - 5);
+    boss.health -= 0.05 / (difficulty - 5);
     if (boss.health <= 0)
     {
         this.setValue(boss.healthBar, 0);
