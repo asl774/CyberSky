@@ -135,6 +135,7 @@ class Tutorial extends Phaser.Scene{
     this.setValue(tutorialboss.healthBar, 100);
     tutorialboss.healthBar.setVisible(false);
     //barrier
+    this.barrier0 = addPhysics.sprite(0, 300, 'barrier');
     this.barrier = addPhysics.sprite(1400, 300, 'barrier');
     this.barrier2 = addPhysics.sprite(1400 * 2 - 40, 300, 'barrier');
     this.barrier3 = addPhysics.sprite(1400 * 3, 300, 'barrier');
@@ -175,6 +176,9 @@ class Tutorial extends Phaser.Scene{
     addPhysics.overlap(this.barrier4, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
     addPhysics.overlap(this.barrier5, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     addPhysics.overlap(this.barrier5, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
+    addPhysics.overlap(this.barrier0, this.bullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
+    addPhysics.overlap(this.barrier, this.bullets, this.collide, null, this); //trigger b/w playerbullets & barrier
+
     //camera
     this.cameras.main.resetFX(); //reset cameras
     //keyboard input
