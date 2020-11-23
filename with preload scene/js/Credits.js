@@ -9,10 +9,11 @@ class Credits extends Phaser.Scene{
 /*
         this.add.text(window.innerWidth/2 - 300, window.innerHeight/2, 'CREDITS', { font: '50px Courier', fill: '#00ffff' });
         this.add.text(window.innerWidth/2 - 300, window.innerHeight/2 + 100, 'click anywhere to return to main menu', { font: '20px Courier', fill: '#00ffff' });
+*/
         this.input.once('pointerup', function (event) {
         this.scene.start('mainMenu');
         }, this);
-*/
+
     var content = [
     "Credits",
     "",
@@ -26,10 +27,17 @@ class Credits extends Phaser.Scene{
       "Programmers         \tAlbert Liang, Christopher Perry, Kat Byers",
       "Font                \t\t\tBitwise by Digital Graphics Lab",
     "",
-    "Thank you for playing!"
+
+    "",
+    "",
+    "",
+    "",
+    "",
+    "Thank you for playing!",
+    "Click anywhere to return to main menu"
     ];
 this.creditsText = this.add.text(0, 0, content, { fontFamily: 'Bitwise', fontSize: 25, fill: '#ffffff'});
-this.zone = this.add.zone(config.width/2, config.height + 200, config.width, config.height);
+this.zone = this.add.zone(config.width/2, config.height + 300, config.width, config.height);
  
 Phaser.Display.Align.In.Center(
   this.creditsText,
@@ -39,7 +47,7 @@ Phaser.Display.Align.In.Center(
 
 this.creditsTween = this.tweens.add({
   targets: this.creditsText,
-  y: -500,
+  y: -700,
   ease: 'Power0',
   duration: 30000,
   delay: 1000,
