@@ -186,15 +186,15 @@ class Tutorial extends Phaser.Scene{
     this.cursors = keyboard.createCursorKeys();
     this.spacebar = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.aKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    this.skey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    this.dkey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-    this.qkey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
-    this.wkey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-    this.ekey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
-    this.pkey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+    this.sKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    this.dKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    this.qKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+    this.wKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    this.eKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    this.pKey = keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
     this.aKey.enabled = false;
-    this.skey.enabled = false;
-    this.dkey.enabled = false;
+    this.sKey.enabled = false;
+    this.dKey.enabled = false;
     //timer testing
     this.timer = time.addEvent({delay : 5000, callback: this.pickAbility, callbackScope: this, loop: true, paused: true });
     this.timer2 = time.addEvent({delay : 5000, callback: this.abilityThree, callbackScope: this, loop: true, paused: true });
@@ -476,7 +476,7 @@ createStage1() {
       pbullet.setVelocityX(800);
     }
     //press q key to throw 3 stars
-    else if (Phaser.Input.Keyboard.JustDown(this.qkey) && player.multishot == true && player.canMultishotAgain)
+    else if (Phaser.Input.Keyboard.JustDown(this.qKey) && player.multishot == true && player.canMultishotAgain)
     {
       this.firstQPressed = true;
       this.abilityTimer1.isPaused = false;
@@ -494,7 +494,7 @@ createStage1() {
       pbullet3.setVelocityY(100);
     }
     //press w key to throw big piercing star
-    else if (Phaser.Input.Keyboard.JustDown(this.wkey) && player.pierce == true && player.canPierceAgain)
+    else if (Phaser.Input.Keyboard.JustDown(this.wKey) && player.pierce == true && player.canPierceAgain)
     {
       this.firstWPressed = true;
       this.abilityTimer2.isPaused = false;
@@ -506,7 +506,7 @@ createStage1() {
       pbullet.setVelocityX(800);
     }
     //trap
-    else if (Phaser.Input.Keyboard.JustDown(this.ekey) && player.trap == true && player.canTrapAgain)
+    else if (Phaser.Input.Keyboard.JustDown(this.eKey) && player.trap == true && player.canTrapAgain)
     {
       this.firstEPressed = true;
       this.abilityTimer3.isPaused = false;
@@ -534,7 +534,7 @@ createStage1() {
       console.log("player health is : " + player.health);
     }
     //press S to shield
-    else if(Phaser.Input.Keyboard.JustDown(this.skey) && !player.shielded)
+    else if(Phaser.Input.Keyboard.JustDown(this.sKey) && !player.shielded)
     {
       this.firstSPressed = true;
       this.shieldUp.play();
@@ -544,7 +544,7 @@ createStage1() {
     }
 
     //press d key to teleport 100 pixels in direction of arrow key
-    else if (Phaser.Input.Keyboard.JustDown(this.dkey))
+    else if (Phaser.Input.Keyboard.JustDown(this.dKey))
     {
       if (this.cursors.right.isDown){
         this.teleport.play();
@@ -567,7 +567,7 @@ createStage1() {
         player.sprite.y += 100;
       }
     }
-        else if(Phaser.Input.Keyboard.JustDown(this.pkey) && tutorialScenePaused == false)
+        else if(Phaser.Input.Keyboard.JustDown(this.pKey) && tutorialScenePaused == false)
     {
         this.cursors.right.reset();
         this.cursors.left.reset();
@@ -819,7 +819,7 @@ createStage1() {
         });
     }
     if(this.firstAPressed){
-        this.skey.enabled = true;
+        this.sKey.enabled = true;
         this.abilityIcon2.setVisible(true);
         this.tweens.add({
           targets: this.stage1Text3,
@@ -841,7 +841,7 @@ createStage1() {
         });
     }
     if(this.firstSPressed){
-        this.dkey.enabled = true;
+        this.dKey.enabled = true;
         this.abilityIcon3.setVisible(true);
         this.tweens.add({
           targets: this.stage1Text4,
