@@ -150,6 +150,7 @@ class PreloadScene extends Phaser.Scene{
       this.load.audio('dinodie', [ 'dinodie.mp3' ]);
       this.load.audio('win', ['totalWin.wav']);
       this.load.audio('death', [ 'oofSound.mp3' ]);
+      this.load.audio('chargeUp', ['chargingup.wav']);
 
       //fonts :))
     }

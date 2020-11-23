@@ -18,12 +18,12 @@ class Credits extends Phaser.Scene{
     "Credits",
     "",
       "Sprite Art          \t\t\tKorba via opengameart.org, Graphics RF via vecteezy.com",
-      "Background Art      \tansimuz via opengameart.org",
+      "Background Art      \tansimuz, kitart360, crazyduckgames, Alucard via opengameart.org,",
       "Boss Art            \t\tAlbert Liang",
       "Enemy Art           \t\twarlloyd on opengameart.org",
       "Music               \t\t\tFoolBoyMedia, Matthus via freesound.org",
-      "SFX                 \t\tMATRIXXX, JustInvoke, Mativve, Timbre, richardemoore, CGEffex, sonictechtonic,", 
-                           "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\terickjohanzm, SilverIllusionist via freesound.org",
+      "SFX                 \t\tMATRIXXX, JustInvoke, Mativve, Timbre, richardemoore, CGEffex, sonictechtonic,",
+                           "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\terickjohanzm, SilverIllusionist, spoonsandlessspoons via freesound.org",
       "Programmers         \tAlbert Liang, Christopher Perry, Kat Byers",
       "Font                \t\t\tBitwise by Digital Graphics Lab",
     "",
@@ -38,12 +38,12 @@ class Credits extends Phaser.Scene{
     ];
 this.creditsText = this.add.text(0, 0, content, { fontFamily: 'Bitwise', fontSize: 25, fill: '#ffffff'});
 this.zone = this.add.zone(config.width/2, config.height + 300, config.width, config.height);
- 
+
 Phaser.Display.Align.In.Center(
   this.creditsText,
   this.zone
 );
- 
+
 
 this.creditsTween = this.tweens.add({
   targets: this.creditsText,
@@ -63,13 +63,13 @@ this.creditsTween = this.tweens.add({
 }
 
 /* list of all the credits  we need to put in:
-   background art - ansimuz.com via opengameart.org
+   background art - ansimuz.com, kitart360, crazyduckgames via opengameart.org
    boss art - Albert Liang
    enemy art - warlloyd on opengameart.org
    music - tutorial + main screen
    sfx - MATRIXXX, JustInvoke, Mativve via freesound.org,
    programmers - Albert Liang, Christopher Perry, Kat Byers
-   font - Bitwise by Digital Graphics Lab 
+   font - Bitwise by Digital Graphics Lab
 */
 
 /*

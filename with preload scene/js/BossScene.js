@@ -80,7 +80,8 @@ class BossScene extends Phaser.Scene{
     this.dinodie = sound.add('dinodie');
     this.deathSound = sound.add('death');
     this.hastesound = sound.add('hastesfx');
-    this.trapsfx = sound.add('trapsfx')
+    this.trapsfx = sound.add('trapsfx');
+    this.chargeUp = sound.add('chargeUp');
 
 
     if (firstLevel) {
@@ -239,6 +240,7 @@ class BossScene extends Phaser.Scene{
     this.abilityTimer3 = this.time.addEvent({delay : 1100 - player.haste, callback: this.pauseAbilityTimer3, callbackScope: this, loop: true, paused: false });
     this.healTimer = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
     this.dashTimer = this.time.addEvent({delay : 1000 - player.haste, callback: this.pauseDashTimer, callbackScope: this, loop: true, paused: false });
+    this.chargingTimer = this.time.addEvent({delay : 1000, callback: this.warnPlayer, callbackScope: this, loop: false, paused: true });
     this.levelText = this.add.text(100, 10, "level # and stage : " + difficulty, { fontFamily: 'Bitwise', fontSize: '20px', fill: '#00FFFF', align: "center" });
     this.numKillsText = this.add.text(100, 30, "# enemies killed : " + this.numEnemiesKilled, { fontFamily: 'Bitwise', fontSize: '20px', fill: '#00FFFF', align: "center" });
     this.abilityBarText = this.add.text(350, 15, "Abilities: ", { fontFamily: 'Bitwise', fontSize: '20px', fill: '#00FFFF', align: "center" });
@@ -991,7 +993,9 @@ class BossScene extends Phaser.Scene{
           this.abilityFour();
         }
         else {
-          this.abilityFive();
+          this.chargeUp.play();
+          this.chargingTimer.paused = false;
+          warnPlayer();
         }
     }
     else{
@@ -1009,6 +1013,12 @@ class BossScene extends Phaser.Scene{
         }
     }
 
+  }
+
+  warnPlayer()
+  {
+    this.chargingTimer.paused = true;
+    this.abilityFive();
   }
 
   useDash(){
