@@ -110,7 +110,7 @@ class BossScene extends Phaser.Scene{
     {
       this.add.image(0, 0, 'background7').setOrigin(0);
       this.add.image(5600, 0, 'background8').setOrigin(0);
-      currentBackground = 'background8'; 
+      currentBackground = 'background8';
     }
     // player
     player.sprite = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninja');
@@ -141,13 +141,13 @@ class BossScene extends Phaser.Scene{
     //this.puui5 = this.add.image(6100, 685, 'PUUI');
     this.hud = this.add.image(700, 50, "hud").setAlpha(0.80);
     //this.powerupBar = this.makePowerupBar(350, 0, 0xffffff);
-    this.abilityIcon1 = this.add.image(500, 34, "healAbility");
-    this.abilityIcon2 = this.add.image(550, 34, "shieldAbility");
-    this.abilityIcon3 = this.add.image(600, 34, "dashAbility");
-    this.powerupIcon1 = this.add.image(780, 34, "multishotPU"); //480
-    this.powerupIcon2 = this.add.image(830, 34, "piercePU");    //530
-    this.powerupIcon3 = this.add.image(880, 37, "trapPU");      //580
-    this.powerupIcon4 = this.add.image(930, 35, "hastePU");     //630
+    this.abilityIcon1 = this.add.image(460, 44, "healAbility");
+    this.abilityIcon2 = this.add.image(510, 44, "shieldAbility");
+    this.abilityIcon3 = this.add.image(560, 44, "dashAbility");
+    this.powerupIcon1 = this.add.image(740, 44, "multishotPU"); //480
+    this.powerupIcon2 = this.add.image(790, 44, "piercePU");    //530
+    this.powerupIcon3 = this.add.image(840, 47, "trapPU");      //580
+    this.powerupIcon4 = this.add.image(890, 45, "hastePU");     //630
     this.powerupIcon1.setVisible(player.multishot);
     this.powerupIcon2.setVisible(player.pierce);
     this.powerupIcon3.setVisible(player.trap);
@@ -177,10 +177,6 @@ class BossScene extends Phaser.Scene{
     this.treasure = this.physics.add.sprite(7000 - 70, this.sys.game.config.height / 2, 'treasure');
     this.treasure.setScale(0.6);
     //boss
-    //if (infiniteMode == true){
-        //this.theme.play();
-        //difficulty = Phaser.Math.Between(1,4);
-    //}
     if (difficulty == 1 || difficulty == 5)
         boss.sprite = this.physics.add.sprite(7150,300, 'boss'); //boss
     else if (difficulty == 2)
@@ -278,30 +274,30 @@ class BossScene extends Phaser.Scene{
     //this.timerText = this.add.text(6000, 100, "got here", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     //this.text = this.add.text(6000,150,"");
 
-    this.levelText = this.add.text(100, 10, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#00FFFF', align: "center" });
+    this.levelText = this.add.text(100, 10, "level # and stage : " + difficulty, { fontFamily: 'Bitwise', fontSize: '20px', fill: '#00FFFF', align: "center" });
     //this.levelText2 = this.add.text(1500, 0, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     //this.levelText3 = this.add.text(2900, 0, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
     //this.levelText4 = this.add.text(4300, 0, "level # and stage: " + difficulty, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.numKillsText = this.add.text(100, 25, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#00FFFF', align: "center" });
-    //this.numKillsText2 = this.add.text(1500, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    //this.numKillsText3 = this.add.text(2900, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    //this.numKillsText4 = this.add.text(4300, 15, "# enemies killed: " + this.numEnemiesKilled, { fontSize: '20px', fill: '#FFFFFF', align: "center" });
-    this.abilityBarText = this.add.text(350, 10, "Abilities: ", { fontSize: '20px', fill: '#00FFFF', align: "center" });
-    this.abilityText1 = this.add.text(496, 10, "A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });
-    this.abilityText2 = this.add.text(547, 10, "S", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });
-    this.abilityText3 = this.add.text(598, 10, "D", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });
-    this.powerupBarText = this.add.text(650, 10, "Powerups: ", { fontSize: '20px', fill: '#00FFFF', align: "center" }); //350
-    this.powerupText = this.add.text(778, 10, "Q", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });        //478
-    this.powerupText2 = this.add.text(829, 10, "W", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });       //529
-    this.powerupText3 = this.add.text(879, 10, "E", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });       //579
-    this.powerupText4 = this.add.text(920, 10, "N/A", { fontSize: 'bold 12px', fill: '#00FFFF', align: "center" });     //620
-    this.hasteStackText = this.add.text(944, 39, "1", { fontSize: 'bold 11px', fill: '#00FFFF', align: "center" });     //644
+    this.numKillsText = this.add.text(100, 30, "# enemies killed : " + this.numEnemiesKilled, { fontFamily: 'Bitwise', fontSize: '20px', fill: '#00FFFF', align: "center" });
+    //this.numKillsText2 = this.add.text(1500, 15, "# enemies killed: " + this.numEnemiesKilled, { fontFamily: 'Bitwise', fontSize: '20px',: '20px', fill: '#FFFFFF', align: "center" });
+    //this.numKillsText3 = this.add.text(2900, 15, "# enemies killed: " + this.numEnemiesKilled, { fontFamily: 'Bitwise', fontSize: '20px',: '20px', fill: '#FFFFFF', align: "center" });
+    //this.numKillsText4 = this.add.text(4300, 15, "# enemies killed: " + this.numEnemiesKilled, { fontFamily: 'Bitwise', fontSize: '20px',: '20px', fill: '#FFFFFF', align: "center" });
+    this.abilityBarText = this.add.text(350, 15, "Abilities: ", { fontFamily: 'Bitwise', fontSize: '20px', fill: '#00FFFF', align: "center" });
+    this.abilityText1 = this.add.text(453, 15, "A", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" });
+    this.abilityText2 = this.add.text(504, 15, "S", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" });
+    this.abilityText3 = this.add.text(555, 15, "D", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" });
+    this.powerupBarText = this.add.text(607, 15, "Powerups: ", { fontFamily: 'Bitwise', fontSize: '20px', fill: '#00FFFF', align: "center" }); //350
+    this.powerupText = this.add.text(735, 15, "Q", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" });        //478
+    this.powerupText2 = this.add.text(786, 15, "W", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" });       //529
+    this.powerupText3 = this.add.text(836, 15, "E", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" });       //579
+    this.powerupText4 = this.add.text(877, 15, "N/A", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" });     //620
+    this.hasteStackText = this.add.text(904, 39, "1", { fontFamily: 'Bitwise', fontSize: 'bold 11px', fill: '#00FFFF', align: "center" });     //644
     this.powerupText.setVisible(player.multishot);
     this.powerupText2.setVisible(player.pierce);
     this.powerupText3.setVisible(player.trap);
     this.powerupText4.setVisible(player.haste > 0);
     this.hasteStackText.setVisible(player.haste > 0);
-    this.bossHPText = this.add.text(100, 50, "Boss HP: " + boss.healthPercent, { fontSize: '20px', fill: '#00FFFF', align: "center" });
+    this.bossHPText = this.add.text(100, 50, "Boss HP: " + boss.healthPercent, { fontFamily: 'Bitwise', fontSize: '20px', fill: '#00FFFF', align: "center" });
     this.bossHPText.setVisible(false);
     /*
     this.timer3Text = this.add.text(100, 100, "wave1 attack: ", { fontSize: '20px', fill: '#FFFFFF', align: "center" });
@@ -402,7 +398,7 @@ class BossScene extends Phaser.Scene{
     } else if (this.cursors.down.isDown){
       player.sprite.y += player.speed;
     }
-    // locked camera conditions 
+    // locked camera conditions
     if(this.numEnemiesKilled >= (10 * difficulty) * this.enemyWave)
     {
       this.enemyx += 1400;
