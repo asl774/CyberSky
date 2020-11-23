@@ -993,9 +993,9 @@ class BossScene extends Phaser.Scene{
           this.abilityFour();
         }
         else {
-          this.chargeUp.play();
+          //this.chargeUp.play();
           this.chargingTimer.paused = false;
-          warnPlayer();
+          this.warnPlayer();
         }
     }
     else{
