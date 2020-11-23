@@ -3,8 +3,8 @@ var config = {
   type: Phaser.AUTO,
   parent: 'phaser-example',
   autoCenter: Phaser.Scale.CENTER_BOTH,
-  width: 1360, //640 1400 window.innerWidth
-  height: 600, //360 600 window.innerHeight
+  width: window.innerWidth, //640 1400 window.innerWidth //1360
+  height: window.innerHeight, //360 600 window.innerHeight /600
   dom: {
     createContainer: true
   },
