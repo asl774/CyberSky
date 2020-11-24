@@ -403,6 +403,10 @@ class BossScene extends Phaser.Scene{
       this.poweruptimer4.paused = false;
       this.worldsX = 4200 - 40;
     }
+    if (this.numEnemiesKilled >= 40 * difficulty){
+      this.waveAttackTimer.paused = true;
+      this.waveCreateTimer.paused = true;
+    }
     if (this.numEnemiesKilled >= 40 * difficulty && player.sprite.x >= 5600){
       this.stage = 5;
       this.worldsX = 5600;
