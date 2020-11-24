@@ -190,7 +190,7 @@ class InfiniteScene extends Phaser.Scene{
     this.barrier7.setVisible(false);
     // goal / end of level
     this.treasure = this.physics.add.sprite(7000 - 70, this.sys.game.config.height / 2, 'treasure');
-    this.treasure.setScale(0.6);
+    this.treasure.setScale(0.6).setVisible(false);
     //boss
     //if (infiniteMode == true){
         //this.theme.play();
@@ -528,6 +528,7 @@ class InfiniteScene extends Phaser.Scene{
       boss.sprite.disableBody(true, true);
       boss.sprite.setActive(false);
       boss.sprite.setVisible(false);
+      this.treasure.setVisible(true);
       if (bossNumber != 3)
         this.timer.paused = true;
       if (bossNumber == 3)
@@ -1587,15 +1588,17 @@ class InfiniteScene extends Phaser.Scene{
 
   endLevel()
   {
-    difficulty += 1; //increase difficulty
-    firstLevel = false;
-    if(difficulty >= 6 && infiniteMode == false) //win condition
-    {
-      this.sound.stopAll();
-      this.scene.start("winScene");
-    }
-    else {
-      this.scene.restart(); //start level over
+    if (this.treasure.visible == true){
+        difficulty += 1; //increase difficulty
+        firstLevel = false;
+        if(difficulty >= 6 && infiniteMode == false) //win condition
+        {
+          this.sound.stopAll();
+          this.scene.start("winScene");
+        }
+        else {
+          this.scene.restart(); //start level over
+        }
     }
   }
 

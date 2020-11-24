@@ -77,7 +77,7 @@ class MainMenu extends Phaser.Scene{
         difficulty = 1;
       }
       else {
-        difficulty = 5;
+        difficulty = 6;
       }
       this.scene.start(sceneName);
     }
