@@ -43,6 +43,7 @@ class BossScene extends Phaser.Scene{
     this.enemyWave = 1;
     this.worldsX = 0;
     this.stage = 1;
+    this.crossedBossLine = false;
   }
 
 
@@ -367,7 +368,7 @@ class BossScene extends Phaser.Scene{
       this.enemyWave = 4;
     }
     // can move to boss
-    if (this.numEnemiesKilled >= 39 * difficulty + difficulty - 1 && this.numEnemiesKilled < 40 * difficulty){
+    if (this.numEnemiesKilled >= 40 * difficulty && this.numEnemiesKilled < 50 * difficulty){
       this.poweruptimer4.paused = true;
       this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
       this.physics.world.setBounds(this.worldsX, 30, 1440, 560);
@@ -430,10 +431,14 @@ class BossScene extends Phaser.Scene{
 
     // make player stay in boss area
     if (this.numEnemiesKilled >= 40 * difficulty && player.sprite.x > 5600){
+      this.crossedBossLine = true;
       this.cameras.main.setBounds(5600, 0, 1300, 560);
       this.physics.world.setBounds(5600, 30, 1350, 560);
     }
-
+    if (this.crossedBossLine == true){
+      this.cameras.main.setBounds(5600, 0, 1300, 560);
+      this.physics.world.setBounds(5600, 30, 1350, 560);
+    }
     // spawns boss when player crosses threshold
     if (this.numEnemiesKilled >= 40 * difficulty && player.sprite.x + 17 > 5700) { //400 //6000
       this.startBoss = true;
