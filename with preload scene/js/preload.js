@@ -34,7 +34,6 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('background17', 'assets/cyberpunk-tokyo3-boss.png');
       this.load.image('endBG', 'assets/dead.png');
       this.load.image('player', 'assets/player.png');
-      this.load.image('dragon', 'assets/dragon.png');
       this.load.image('treasure', 'assets/treasure.png');
       this.load.image('barrier', 'assets/finishline.png');
       this.load.image('bottombarrier', 'assets/bottombarrier.png');
