@@ -18,7 +18,7 @@ class Credits extends Phaser.Scene{
     "Credits",
     "",
       "Sprite Art          \t\t\tKorba via opengameart.org, Graphics RF via vecteezy.com",
-      "Background Art      \tansimuz, kitart360, crazyduckgames, Alucard via opengameart.org,",
+      "Background Art      \tansimuz, kitart360, crazyduckgames, Alucard, cubbic, TgpArcher via opengameart.org,",
       "Boss Art            \t\tAlbert Liang",
       "Enemy Art           \t\twarlloyd on opengameart.org",
       "Music               \t\t\tFoolBoyMedia, Matthus via freesound.org",
