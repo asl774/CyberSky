@@ -6,7 +6,7 @@ class MainMenu extends Phaser.Scene{
   create(){
         var add = this.add;
         //background image goes here
-        add.image(0,0, 'background2').setOrigin(0,0);
+        add.image(0,0, 'background1').setOrigin(0,0);
 
         var title = add.rectangle(650, 250, 2000, 150, 0x37092C).setInteractive();
         title.setStrokeStyle(4, 0x5C2C4F);

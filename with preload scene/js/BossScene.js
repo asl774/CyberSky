@@ -116,38 +116,25 @@ class BossScene extends Phaser.Scene{
     this.abilityIcon1 = this.add.image(460, 44, "healAbility");
     this.abilityIcon2 = this.add.image(510, 44, "shieldAbility");
     this.abilityIcon3 = this.add.image(560, 44, "dashAbility");
-    this.powerupIcon1 = this.add.image(740, 44, "multishotPU"); //480
-    this.powerupIcon2 = this.add.image(790, 44, "piercePU");    //530
-    this.powerupIcon3 = this.add.image(840, 47, "trapPU");      //580
-    this.powerupIcon4 = this.add.image(890, 45, "hastePU");     //630
-    this.powerupIcon1.setVisible(player.multishot);
-    this.powerupIcon2.setVisible(player.pierce);
-    this.powerupIcon3.setVisible(player.trap);
-    this.powerupIcon4.setVisible(player.haste > 0);
+    this.powerupIcon1 = this.add.image(740, 44, "multishotPU").setVisible(player.mulitshot); //480
+    this.powerupIcon2 = this.add.image(790, 44, "piercePU").setVisible(player.pierce);    //530
+    this.powerupIcon3 = this.add.image(840, 47, "trapPU").setVisible(player.trap);      //580
+    this.powerupIcon4 = this.add.image(890, 45, "hastePU").setVisible(player.haste > 0);     //630
     //boss health bar
     boss.healthBar = this.makeBar(5850,50,0xe74c3c); //5600
-    this.setValue(boss.healthBar, 100);
+    this.setValue(boss.healthBar, 100)
     boss.healthBar.setVisible(false);
     //barrier
-    this.barrier0 = addPhysics.sprite(0, 300, 'barrier');
-    this.barrier = addPhysics.sprite(1400, 300, 'barrier');
-    this.barrier2 = addPhysics.sprite(1400 * 2, 300, 'barrier');
-    this.barrier3 = addPhysics.sprite(1400 * 3, 300, 'barrier');
-    this.barrier4 = addPhysics.sprite(1400 * 4, 300, 'barrier');
-    this.barrier5 = addPhysics.sprite(6470, 300, 'barrier');
-    this.barrier6 = addPhysics.sprite(6300, 600, 'bottombarrier');
-    this.barrier7 = addPhysics.sprite(6300, 0, 'bottombarrier');
-    this.barrier0.setVisible(false);
-    this.barrier.setVisible(false);
-    this.barrier2.setVisible(false);
-    this.barrier3.setVisible(false);
-    this.barrier4.setVisible(false);
-    this.barrier5.setVisible(false);
-    this.barrier6.setVisible(false);
-    this.barrier7.setVisible(false);
+    this.barrier0 = addPhysics.sprite(0, 300, 'barrier').setVisible(false);
+    this.barrier = addPhysics.sprite(1400, 300, 'barrier').setVisible(false);
+    this.barrier2 = addPhysics.sprite(1400 * 2, 300, 'barrier').setVisible(false);
+    this.barrier3 = addPhysics.sprite(1400 * 3, 300, 'barrier').setVisible(false);
+    this.barrier4 = addPhysics.sprite(1400 * 4, 300, 'barrier').setVisible(false);
+    this.barrier5 = addPhysics.sprite(6470, 300, 'barrier').setVisible(false);
+    this.barrier6 = addPhysics.sprite(6300, 600, 'bottombarrier').setVisible(false);
+    this.barrier7 = addPhysics.sprite(6300, 0, 'bottombarrier').setVisible(false);
     // goal / end of level
-    this.treasure = addPhysics.sprite(7000 - 70, this.sys.game.config.height / 2, 'treasure');
-    this.treasure.setScale(0.6).setVisible(false);
+    this.treasure = addPhysics.sprite(7000 - 70, this.sys.game.config.height / 2, 'treasure').setScale(0.6).setVisible(false);
     //boss
     if (difficulty == 1 || difficulty == 5)
         boss.sprite = addPhysics.sprite(7150,300, 'boss'); //boss
@@ -165,6 +152,7 @@ class BossScene extends Phaser.Scene{
     this.octobeam = addPhysics.group();
     this.laser = addPhysics.group(); // create attack 2
     //colliders / triggers
+    //player harm triggers
     addPhysics.overlap(player.sprite, this.bullets, this.getHit, null, this); //trigger b/w player & bullets
     addPhysics.overlap(player.sprite, this.pierceBullets, this.getHitPierce, null, this); //trigger b/w player & bullets
     addPhysics.overlap(player.sprite, this.dinofire, this.getHitDinoFire, null, this); //trigger b/w player & beam
@@ -173,15 +161,18 @@ class BossScene extends Phaser.Scene{
     addPhysics.overlap(player.sprite, this.laser, this.dot, null, this); //trigger b/w player & laser
     addPhysics.overlap(player.sprite, this.treasure, this.endLevel, null, this); //trigger b/w player & treasure
     addPhysics.overlap(player.sprite, boss.sprite, this.hitPlayer, null, this); //trigger b/w player & boss
+    //powerup triggers
     addPhysics.overlap(player.sprite, this.powerup1, this.powerupOne, null, this);
     addPhysics.overlap(player.sprite, this.powerup2, this.powerupTwo, null, this);
     addPhysics.overlap(player.sprite, this.powerup3, this.powerupThree, null, this);
     addPhysics.overlap(player.sprite, this.powerup4, this.powerupFour, null, this);
+    //player attack / enemy triggers
     addPhysics.overlap(boss.sprite, this.playerbullets, this.collideBoss, null, this); //trigger b/w playerbullets & boss
     addPhysics.overlap(this.wave, this.playertrap, this.meleeEnemy, null, this);//melee enemy
     addPhysics.overlap(boss.sprite, this.playerbigbullets, this.pierceBoss, null, this); //trigger b/w playerbigbullets & boss
     addPhysics.overlap(this.wave, this.playerbullets, this.collideEnemy, null, this); //trigger b/w playerbullets & enemy
     addPhysics.overlap(this.wave, this.playerbigbullets, this.pierceEnemy, null, this); //trigger b/w playerbigbullets & enemy
+    //barrier triggers
     addPhysics.overlap(this.barrier0, this.bullets, this.collide, null, this); //trigger b/w boss bullets & barrier
     addPhysics.overlap(this.barrier, this.playerbullets, this.collide, null, this); //trigger b/w playerbullets & barrier
     addPhysics.overlap(this.barrier, this.playerbigbullets, this.collide, null, this); //trigger b/w playerbigbullets & barrier
@@ -221,7 +212,6 @@ class BossScene extends Phaser.Scene{
     this.wkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.ekey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
     this.vkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
-    //this.bkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
     this.kkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
     this.lkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L);
     this.pkey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
@@ -249,50 +239,20 @@ class BossScene extends Phaser.Scene{
     this.abilityText2 = this.add.text(504, 15, "S", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" });
     this.abilityText3 = this.add.text(555, 15, "D", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" });
     this.powerupBarText = this.add.text(607, 15, "Powerups: ", { fontFamily: 'Bitwise', fontSize: '20px', fill: '#00FFFF', align: "center" }); //350
-    this.powerupText = this.add.text(735, 15, "Q", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" });        //478
-    this.powerupText2 = this.add.text(786, 15, "W", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" });       //529
-    this.powerupText3 = this.add.text(836, 15, "E", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" });       //579
-    this.powerupText4 = this.add.text(877, 15, "N/A", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" });     //620
-    this.hasteStackText = this.add.text(908, 39, "1", { fontFamily: 'Bitwise', fontSize: 'bold 11px', fill: '#00FFFF', align: "center" });     //644
-    this.powerupText.setVisible(player.multishot);
-    this.powerupText2.setVisible(player.pierce);
-    this.powerupText3.setVisible(player.trap);
-    this.powerupText4.setVisible(player.haste > 0);
-    this.hasteStackText.setVisible(player.haste > 0);
-    this.bossHPText = this.add.text(100, 50, "Boss HP: " + boss.healthPercent, { fontFamily: 'Bitwise', fontSize: '20px', fill: '#00FFFF', align: "center" });
-    this.bossHPText.setVisible(false);
+    this.powerupText = this.add.text(735, 15, "Q", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" }).setVisible(player.multishot);        //478
+    this.powerupText2 = this.add.text(786, 15, "W", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" }).setVisible(player.pierce);       //529
+    this.powerupText3 = this.add.text(836, 15, "E", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" }).setVisible(player.trap);       //579
+    this.powerupText4 = this.add.text(877, 15, "N/A", { fontFamily: 'Bitwise', fontSize: 'bold 15px', fill: '#00FFFF', align: "center" }).setVisible(player.haste > 0);     //620
+    this.hasteStackText = this.add.text(908, 39, "1", { fontFamily: 'Bitwise', fontSize: 'bold 11px', fill: '#00FFFF', align: "center" }).setVisible(player.haste > 0);     //644
+    this.bossHPText = this.add.text(100, 50, "Boss HP: " + boss.healthPercent, { fontFamily: 'Bitwise', fontSize: '20px', fill: '#00FFFF', align: "center" }).setVisible(false);;
   }
 
   update()
   {
     this.setHealthBarPosition(player.healthBar, player.sprite.x - 25, player.sprite.y - 40);
-    this.levelText.setScrollFactor(0,0);
-    this.numKillsText.setScrollFactor(0,0);
-    this.powerupBarText.setScrollFactor(0,0);
-    this.hud.setScrollFactor(0,0);
-    this.abilityBarText.setScrollFactor(0,0);
-    this.abilityText1.setScrollFactor(0,0);
-    this.abilityText2.setScrollFactor(0,0);
-    this.abilityText3.setScrollFactor(0,0);
-    this.abilityIcon1.setScrollFactor(0,0);
-    this.abilityIcon2.setScrollFactor(0,0);
-    this.abilityIcon3.setScrollFactor(0,0);
-    this.powerupIcon1.setScrollFactor(0,0);
-    this.powerupIcon2.setScrollFactor(0,0);
-    this.powerupIcon3.setScrollFactor(0,0);
-    this.powerupIcon4.setScrollFactor(0,0);
-    this.powerupText.setScrollFactor(0,0);
-    this.powerupText2.setScrollFactor(0,0);
-    this.powerupText3.setScrollFactor(0,0);
-    this.powerupText4.setScrollFactor(0,0);
-    this.hasteStackText.setScrollFactor(0,0);
-    this.bossHPText.setScrollFactor(0,0);
-    this.levelText.setText("Level: " + difficulty + " Stage: " + this.stage);
-    this.numKillsText.setText("Enemies Killed: " + this.numEnemiesKilled);
-    this.hasteStackText.setText(Math.ceil(player.haste / 100));
-    this.bossHPText.setText("Boss HP: " + Math.ceil(boss.health));
-    //check if player is alive
+    this.stopTextScroll();
 
+    //check if player is alive
     if (!player.isAlive) {
       this.deathSound.play();
       this.sound.stopAll();
@@ -426,9 +386,6 @@ class BossScene extends Phaser.Scene{
         enemy.y = Phaser.Math.Between(100, 500);
       }
     }
-
-
-
     // make player stay in boss area
     if (this.numEnemiesKilled >= 40 * difficulty && player.sprite.x > 5600){
       this.crossedBossLine = true;
@@ -599,74 +556,10 @@ class BossScene extends Phaser.Scene{
     if (bossScenePaused == false){
         theme.resume();
     }
-    /*
-    else if(Phaser.Input.Keyboard.JustDown(this.pkey) && gamePaused == true)
-    {
-        this.theme.resume();
-        game.scene.resume("bossScene");
-    }
-    */
-    /*
-    //press a to throw extra star1
-    else if (Phaser.Input.Keyboard.JustDown(this.akey))
-    {
-      this.throwstar.play();
-      let playerx = player.sprite.x;
-      let playery = player.sprite.y;
-      let pbullet = this.playerbullets.create(playerx, playery, 'star1');
-      pbullet.setVelocityX(200);
-    }
-    //press s to throw extra star2
-    else if (Phaser.Input.Keyboard.JustDown(this.skey))
-    {
-      this.throwstar.play();
-      let playerx = player.sprite.x;
-      let playery = player.sprite.y;
-      let pbullet = this.playerbullets.create(playerx, playery, 'star2');
-      pbullet.setVelocityX(200);
-    }
-    //press d to throw extra star3
-    else if (Phaser.Input.Keyboard.JustDown(this.dkey))
-    {
-      this.throwstar.play();
-      let playerx = player.sprite.x;
-      let playery = player.sprite.y;
-      let pbullet = this.playerbullets.create(playerx, playery, 'star3');
-      pbullet.setVelocityX(200);
-    }
-    //press q to throw extra star4
-    else if (Phaser.Input.Keyboard.JustDown(this.qkey))
-    {
-      this.throwstar.play();
-      let playerx = player.sprite.x;
-      let playery = player.sprite.y;
-      let pbullet = this.playerbullets.create(playerx, playery, 'star4');
-      pbullet.setVelocityX(200);
-    }
-    //press w to throw extra star5
-    else if (Phaser.Input.Keyboard.JustDown(this.wkey))
-    {
-      this.throwstar.play();
-      let playerx = player.sprite.x;
-      let playery = player.sprite.y;
-      let pbullet = this.playerbullets.create(playerx, playery, 'star5');
-      pbullet.setVelocityX(200);
-    }
-    //press e to throw extra star6
-    else if (Phaser.Input.Keyboard.JustDown(this.ekey))
-    {
-      this.throwstar.play();
-      let playerx = player.sprite.x;
-      let playery = player.sprite.y;
-      let pbullet = this.playerbullets.create(playerx, playery, 'star6');
-      pbullet.setVelocityX(200);
-    }
- */
-
-
 
   }
 
+  /////////////////////////////////////////UI SECTION////
   makeBar(x, y, color){
     //draw the bar
     let bar = this.add.graphics();
@@ -719,6 +612,36 @@ class BossScene extends Phaser.Scene{
     bar.y = y;
   }
 
+  stopTextScroll()
+  {
+    this.levelText.setScrollFactor(0,0);
+    this.numKillsText.setScrollFactor(0,0);
+    this.powerupBarText.setScrollFactor(0,0);
+    this.hud.setScrollFactor(0,0);
+    this.abilityBarText.setScrollFactor(0,0);
+    this.abilityText1.setScrollFactor(0,0);
+    this.abilityText2.setScrollFactor(0,0);
+    this.abilityText3.setScrollFactor(0,0);
+    this.abilityIcon1.setScrollFactor(0,0);
+    this.abilityIcon2.setScrollFactor(0,0);
+    this.abilityIcon3.setScrollFactor(0,0);
+    this.powerupIcon1.setScrollFactor(0,0);
+    this.powerupIcon2.setScrollFactor(0,0);
+    this.powerupIcon3.setScrollFactor(0,0);
+    this.powerupIcon4.setScrollFactor(0,0);
+    this.powerupText.setScrollFactor(0,0);
+    this.powerupText2.setScrollFactor(0,0);
+    this.powerupText3.setScrollFactor(0,0);
+    this.powerupText4.setScrollFactor(0,0);
+    this.hasteStackText.setScrollFactor(0,0);
+    this.bossHPText.setScrollFactor(0,0);
+    this.levelText.setText("Level: " + difficulty + " Stage: " + this.stage);
+    this.numKillsText.setText("Enemies Killed: " + this.numEnemiesKilled);
+    this.hasteStackText.setText(Math.ceil(player.haste / 100));
+    this.bossHPText.setText("Boss HP: " + Math.ceil(boss.health));
+  }
+
+  /////////////////////////////////////////SCENE ADJUST SECTION////
   resetScene(){
     theme = this.sound.add('theme', {volume: 0.3});
     theme.setLoop(true);
@@ -731,38 +654,68 @@ class BossScene extends Phaser.Scene{
     player.canMultishotAgain = false;
     player.canPierceAgain = false;
     player.canTrapAgain = false;
-}
+  }
+
   pickBackground()
   {
-    var randNum = Math.random();
+    var lastBG = currentBackground;
+    var newBG = this.randomBackground();
     var add = this.add;
-    if (randNum > 0 && randNum <= 0.25) //0,0.33
+
+    while(lastBG == newBG)
     {
-      add.image(0, 0, 'background12').setOrigin(0);     //background1
-      add.image(5600, 0, 'background13').setOrigin(0);   //background2
-      currentBackground = 'background13';
+      newBG = this.randomBackground();
     }
-    else if (randNum > 0.25 && randNum <= 0.5) //0,0.33
-    {
-      add.image(0, 0, 'background14').setOrigin(0);      //background3
-      add.image(5600, 0, 'background15').setOrigin(0);   //background4
-      currentBackground = 'background15';
-    }
-    else if (randNum > 0.5 && randNum <= 0.75) //0,0.33
-    {
-      add.image(0, 0, 'background16').setOrigin(0);      //background5
-      add.image(5600, 0, 'background17').setOrigin(0);   //background6
-      currentBackground = 'background17';
-    }
-    else if (randNum > 0.75 && randNum <= 1)
-    {
-      add.image(0, 0, 'background7').setOrigin(0);
-      add.image(5600, 0, 'background8').setOrigin(0);
-      currentBackground = 'background8';
+    switch(newBG){
+      case 'background13':
+        add.image(0, 0, 'background12').setOrigin(0);
+        add.image(5600, 0, 'background13').setOrigin(0);
+        currentBackground = 'background13';
+        break;
+      case 'background15':
+        add.image(0, 0, 'background14').setOrigin(0);
+        add.image(5600, 0, 'background15').setOrigin(0);
+        currentBackground = 'background15';
+        break;
+      case 'background17':
+        add.image(0, 0, 'background16').setOrigin(0);
+        add.image(5600, 0, 'background17').setOrigin(0);
+        currentBackground = 'background17';
+        break;
+      case 'background8':
+        add.image(0, 0, 'background7').setOrigin(0);
+        add.image(5600, 0, 'background8').setOrigin(0);
+        currentBackground = 'background8';
+        break;
+
     }
   }
 
-  //this can be one function
+  randomBackground()
+  {
+    var randNum = Math.random();
+    var add = this.add;
+    var newBG;
+    if (randNum > 0 && randNum <= 0.25) //0,0.33
+    {
+      newBG = 'background13';
+    }
+    else if (randNum > 0.25 && randNum <= 0.5) //0,0.33
+    {
+      newBG = 'background15';
+    }
+    else if (randNum > 0.5 && randNum <= 0.75) //0,0.33
+    {
+      newBG = 'background17';
+    }
+    else if (randNum > 0.75 && randNum <= 1)
+    {
+      newBG = 'background8';
+    }
+    return newBG;
+  }
+
+  /////////////////////////////////////////POWERUP SECTION////
   createPowerup1() {
     let x = Phaser.Math.Between(0 + 50, 1400 - 50);
     let y = -100;
@@ -850,44 +803,46 @@ class BossScene extends Phaser.Scene{
 
   }
 
-  ///<summary> All the stuff that controls creating waves and their respective attacks </summary>
+  /////////////////////////////////////////ENEMY SECTION////
 
   createWave() {
     for (var j = 100; j < 600; j += 100)
     {
-      var randNum = Math.random();
-      if (randNum > 0 && randNum <= 0.07)
-          this.wave.create(this.enemyx, j, 'enemy1');
-      else if (randNum > 0.07 && randNum <= 0.14)
-          this.wave.create(this.enemyx, j, 'enemy2');
-      else if (randNum > 0.14 && randNum <= 0.21)
-          this.wave.create(this.enemyx, j, 'enemy3');
-      else if (randNum > 0.21 && randNum <= 0.28)
-          this.wave.create(this.enemyx, j, 'enemy4');
-      else if (randNum > 0.28 && randNum <= 0.35)
-          this.wave.create(this.enemyx, j, 'enemy5');
-      else if (randNum > 0.35 && randNum <= 0.42)
-          this.wave.create(this.enemyx, j, 'enemy6');
-      else if (randNum > 0.42 && randNum <= 0.49)
-          this.wave.create(this.enemyx, j, 'enemy7');
-      else if (randNum > 0.49 && randNum <= 0.56)
-          this.wave.create(this.enemyx, j, 'enemy8');
-      else if (randNum > 0.56 && randNum <= 0.63)
-          this.wave.create(this.enemyx, j, 'enemy9');
-      else if (randNum > 0.63 && randNum <= 0.70)
-          this.wave.create(this.enemyx, j, 'enemy10');
-      else if (randNum > 0.70 && randNum <= 0.77)
-          this.wave.create(this.enemyx, j, 'enemy11');
-      else if (randNum > 0.77 && randNum <= 0.84)
-          this.wave.create(this.enemyx, j, 'enemy12');
-      else if (randNum > 0.84 && randNum <= 0.91)
-          this.wave.create(this.enemyx, j, 'enemy13');
-      else if (randNum > 0.91 && randNum <= 1.0)
-          this.wave.create(this.enemyx, j, 'enemy14');
+      this.pickEnemySprite(this.enemyx, j, this.wave);
     }
     this.numEnemiesCreated += 5;
+  }
 
-
+  pickEnemySprite(x, y, wave) {
+    var randNum = Math.random();
+    if (randNum > 0 && randNum <= 0.07)
+        wave.create(x, y, 'enemy1');
+    else if (randNum > 0.07 && randNum <= 0.14)
+        wave.create(x, y, 'enemy2');
+    else if (randNum > 0.14 && randNum <= 0.21)
+        wave.create(x, y, 'enemy3');
+    else if (randNum > 0.21 && randNum <= 0.28)
+        wave.create(x, y, 'enemy4');
+    else if (randNum > 0.28 && randNum <= 0.35)
+        wave.create(x, y, 'enemy5');
+    else if (randNum > 0.35 && randNum <= 0.42)
+        wave.create(x, y, 'enemy6');
+    else if (randNum > 0.42 && randNum <= 0.49)
+        wave.create(x, y, 'enemy7');
+    else if (randNum > 0.49 && randNum <= 0.56)
+        wave.create(x, y, 'enemy8');
+    else if (randNum > 0.56 && randNum <= 0.63)
+        wave.create(x, y, 'enemy9');
+    else if (randNum > 0.63 && randNum <= 0.70)
+        wave.create(x, y, 'enemy10');
+    else if (randNum > 0.70 && randNum <= 0.77)
+        wave.create(x, y, 'enemy11');
+    else if (randNum > 0.77 && randNum <= 0.84)
+        wave.create(x, y, 'enemy12');
+    else if (randNum > 0.84 && randNum <= 0.91)
+        wave.create(x, y, 'enemy13');
+    else if (randNum > 0.91 && randNum <= 1.0)
+        wave.create(x, y, 'enemy14');
   }
 
   waveAttack()
