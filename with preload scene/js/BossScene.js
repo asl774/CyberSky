@@ -116,7 +116,7 @@ class BossScene extends Phaser.Scene{
     this.abilityIcon1 = this.add.image(460, 44, "healAbility");
     this.abilityIcon2 = this.add.image(510, 44, "shieldAbility");
     this.abilityIcon3 = this.add.image(560, 44, "dashAbility");
-    this.powerupIcon1 = this.add.image(740, 44, "multishotPU").setVisible(player.mulitshot); //480
+    this.powerupIcon1 = this.add.image(740, 44, "multishotPU").setVisible(player.multishot); //480
     this.powerupIcon2 = this.add.image(790, 44, "piercePU").setVisible(player.pierce);    //530
     this.powerupIcon3 = this.add.image(840, 47, "trapPU").setVisible(player.trap);      //580
     this.powerupIcon4 = this.add.image(890, 45, "hastePU").setVisible(player.haste > 0);     //630
