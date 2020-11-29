@@ -667,27 +667,41 @@ class BossScene extends Phaser.Scene{
       newBG = this.randomBackground();
     }
     switch(newBG){
-      case 'background13':
-        add.image(0, 0, 'background12').setOrigin(0);
-        add.image(5600, 0, 'background13').setOrigin(0);
-        currentBackground = 'background13';
+      case 'background2':
+        add.image(0, 0, 'background1').setOrigin(0);
+        add.image(5600, 0, 'background2').setOrigin(0);
+        currentBackground = 'background2';
         break;
-      case 'background15':
-        add.image(0, 0, 'background14').setOrigin(0);
-        add.image(5600, 0, 'background15').setOrigin(0);
-        currentBackground = 'background15';
+      case 'background4':
+        add.image(0, 0, 'background3').setOrigin(0);
+        add.image(5600, 0, 'background4').setOrigin(0);
+        currentBackground = 'background4';
         break;
-      case 'background17':
-        add.image(0, 0, 'background16').setOrigin(0);
-        add.image(5600, 0, 'background17').setOrigin(0);
-        currentBackground = 'background17';
+      case 'background6':
+        add.image(0, 0, 'background5').setOrigin(0);
+        add.image(5600, 0, 'background6').setOrigin(0);
+        currentBackground = 'background6';
         break;
       case 'background8':
         add.image(0, 0, 'background7').setOrigin(0);
         add.image(5600, 0, 'background8').setOrigin(0);
         currentBackground = 'background8';
         break;
-
+      case 'background10':
+        add.image(0, 0, 'background9').setOrigin(0);
+        add.image(5600, 0, 'background10').setOrigin(0);
+        currentBackground = 'background10';
+        break;
+      case 'background12':
+        add.image(0, 0, 'background11').setOrigin(0);
+        add.image(5600, 0, 'background12').setOrigin(0);
+        currentBackground = 'background12';
+        break;
+      case 'background14':
+        add.image(0, 0, 'background13').setOrigin(0);
+        add.image(5600, 0, 'background14').setOrigin(0);
+        currentBackground = 'background14';
+        break;
     }
   }
 
@@ -696,21 +710,33 @@ class BossScene extends Phaser.Scene{
     var randNum = Math.random();
     var add = this.add;
     var newBG;
-    if (randNum > 0 && randNum <= 0.25) //0,0.33
+    if (randNum > 0 && randNum <= 0.14) //0,0.33
     {
-      newBG = 'background13';
+      newBG = 'background2';
     }
-    else if (randNum > 0.25 && randNum <= 0.5) //0,0.33
+    else if (randNum > 0.14 && randNum <= 0.28) //0,0.33
     {
-      newBG = 'background15';
+      newBG = 'background4';
     }
-    else if (randNum > 0.5 && randNum <= 0.75) //0,0.33
+    else if (randNum > 0.28 && randNum <= 0.42) //0,0.33
     {
-      newBG = 'background17';
+      newBG = 'background6';
     }
-    else if (randNum > 0.75 && randNum <= 1)
+    else if (randNum > 0.42 && randNum <= 0.56)
     {
       newBG = 'background8';
+    }
+    else if (randNum > 0.56 && randNum <= 0.70)
+    {
+      newBG = 'background10';
+    }
+    else if (randNum > 0.70 && randNum <= 0.84)
+    {
+      newBG = 'background12';
+    }
+    else if (randNum > 0.84 && randNum <= 1.0)
+    {
+      newBG = 'background14';
     }
     return newBG;
   }

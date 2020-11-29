@@ -17,21 +17,19 @@ class PreloadScene extends Phaser.Scene{
 
       this.load.image('background1', 'assets/cyberpunk-street3.png');
       this.load.image('background2', 'assets/cyberpunk-street.png');
-      this.load.image('background3', 'assets/cyberpunk-street-sky.png');
-      this.load.image('background4', 'assets/cyberpunk-street-sky-boss.png');
-      this.load.image('background5', 'assets/cyberpunk-street-stars.png');
-      this.load.image('background6', 'assets/cyberpunk-street-stars-boss.png');
-      this.load.image('background7', 'assets/cyberpunk-street-UT.png');
-      this.load.image('background8', 'assets/cyberpunk-street-UT-boss.png');
-      this.load.image('background9', 'assets/cyberpunk-tokyo.png');
-      this.load.image('background10', 'assets/cyberpunk-day.png');
-      this.load.image('backgroun11', 'assets/recolor-street.png');
-      this.load.image('background12', 'assets/cyberpunk-day3.png');
-      this.load.image('background13', 'assets/cyberpunk-day3-boss.png');
-      this.load.image('background14', 'assets/recolor-street3.png');
-      this.load.image('background15', 'assets/recolor-street3-boss.png');
-      this.load.image('background16', 'assets/cyberpunk-tokyo3.png');
-      this.load.image('background17', 'assets/cyberpunk-tokyo3-boss.png');
+      this.load.image('background3', 'assets/backgrounds (original)/cyberpunk-night-stage.png');
+      this.load.image('background4', 'assets/backgrounds (original)/cyberpunk-night-boss.png');
+      this.load.image('background5', 'assets/backgrounds (original)/cyberpunk-pyramid-stage.png');
+      this.load.image('background6', 'assets/backgrounds (original)/cyberpunk-pyramid-boss.png');
+      this.load.image('background7', 'assets/backgrounds (original)/cyberpunk-snow-stage.png');
+      this.load.image('background8', 'assets/backgrounds (original)/cyberpunk-snow-boss.png');
+      this.load.image('background9', 'assets/backgrounds (original)/cyberpunk-tokyo-day-stage.png');
+      this.load.image('background10', 'assets/backgrounds (original)/cyberpunk-tokyo-day-boss.png');
+      this.load.image('background11', 'assets/backgrounds (original)/cyberpunk-tokyo-night-stage.png');
+      this.load.image('background12', 'assets/backgrounds (original)/cyberpunk-tokyo-night-boss.png');
+      this.load.image('background13', 'assets/backgrounds (original)/cyberpunk-castle-stage.png');
+      this.load.image('background14', 'assets/backgrounds (original)/cyberpunk-castle-boss.png');
+
       this.load.image('endBG', 'assets/dead.png');
       this.load.image('player', 'assets/player.png');
       this.load.image('treasure', 'assets/treasure.png');
@@ -74,12 +72,12 @@ class PreloadScene extends Phaser.Scene{
 
       this.load.image('star', 'assets/ninjastar3.png');
       this.load.image('starbig', 'assets/ninjastar.png');
-      this.load.image('star1', 'assets/star1.png');
-      this.load.image('star2', 'assets/star2.png');
-      this.load.image('star3', 'assets/star3.png');
-      this.load.image('star4', 'assets/star4.png');
-      this.load.image('star5', 'assets/star5.png');
-      this.load.image('star6', 'assets/star6.png');
+      // this.load.image('star1', 'assets/star1.png');
+      // this.load.image('star2', 'assets/star2.png');
+      // this.load.image('star3', 'assets/star3.png');
+      // this.load.image('star4', 'assets/star4.png');
+      // this.load.image('star5', 'assets/star5.png');
+      // this.load.image('star6', 'assets/star6.png');
       this.load.image('goldStar','assets/stargold.png');
       this.load.image('trapGold','assets/trapgold.png');
       this.load.image('autoCyan','assets/autos.png');
@@ -115,11 +113,11 @@ class PreloadScene extends Phaser.Scene{
       this.load.image('dashAbility', 'assets/dashAbility.png');
 
       //player sabre colors
-      this.load.image("redsword", "assets/redsword.png")
-      this.load.image("silversword", "assets/silversword.png")
-      this.load.image("purpsword", "assets/purpsword.png")
-      this.load.image("bluesword", "assets/bluesword.png")
-      this.load.image("greensword", "assets/greensword.png")
+      // this.load.image("redsword", "assets/redsword.png")
+      // this.load.image("silversword", "assets/silversword.png")
+      // this.load.image("purpsword", "assets/purpsword.png")
+      // this.load.image("bluesword", "assets/bluesword.png")
+      // this.load.image("greensword", "assets/greensword.png")
       this.load.image("trap", "assets/trap.png")
 
       this.load.setPath('assets');

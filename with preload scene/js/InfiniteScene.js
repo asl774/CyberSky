@@ -96,29 +96,47 @@ class InfiniteScene extends Phaser.Scene{
     this.cameras.main.setBounds(0, 0, 1400 - 40, 560);
     this.physics.world.setBounds(0, 30, 1400 - 40, 560);
     var randNum = Math.random();
-    if (randNum > 0 && randNum <= 0.25) //0,0.33
+    if (randNum > 0 && randNum <= 0.14) //0,0.33
     {
       this.add.image(0, 0, 'background1').setOrigin(0);
       this.add.image(5600, 0, 'background2').setOrigin(0);
       currentBackground = 'background2';
     }
-    else if (randNum > 0.25 && randNum <= 0.5) //0,0.33
+    else if (randNum > 0.14 && randNum <= 0.28) //0,0.33
     {
       this.add.image(0, 0, 'background3').setOrigin(0);
       this.add.image(5600, 0, 'background4').setOrigin(0);
       currentBackground = 'background4';
     }
-    else if (randNum > 0.5 && randNum <= 0.75) //0,0.33
+    else if (randNum > 0.28 && randNum <= 0.42) //0,0.33
     {
       this.add.image(0, 0, 'background5').setOrigin(0);
       this.add.image(5600, 0, 'background6').setOrigin(0);
       currentBackground = 'background6';
     }
-    else if (randNum > 0.75 && randNum <= 1)
+    else if (randNum > 0.42 && randNum <= 0.56)
     {
       this.add.image(0, 0, 'background7').setOrigin(0);
       this.add.image(5600, 0, 'background8').setOrigin(0);
       currentBackground = 'background8';
+    }
+    else if (randNum > 0.56 && randNum <= 0.70)
+    {
+      this.add.image(0, 0, 'background9').setOrigin(0);
+      this.add.image(5600, 0, 'background10').setOrigin(0);
+      currentBackground = 'background10';
+    }
+    else if (randNum > 0.70 && randNum <= 0.84)
+    {
+      this.add.image(0, 0, 'background11').setOrigin(0);
+      this.add.image(5600, 0, 'background12').setOrigin(0);
+      currentBackground = 'background12';
+    }
+    else if (randNum > 0.84 && randNum <= 1)
+    {
+      this.add.image(0, 0, 'background13').setOrigin(0);
+      this.add.image(5600, 0, 'background14').setOrigin(0);
+      currentBackground = 'background14';
     }
     // player
     player.sprite = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninjaIM');
