@@ -702,6 +702,11 @@ class BossScene extends Phaser.Scene{
         add.image(5600, 0, 'background14').setOrigin(0);
         currentBackground = 'background14';
         break;
+      case 'background16':
+        add.image(0, 0, 'background15').setOrigin(0);
+        add.image(5600, 0, 'background16').setOrigin(0);
+        currentBackground = 'background16';
+        break;
     }
   }
 
@@ -710,33 +715,37 @@ class BossScene extends Phaser.Scene{
     var randNum = Math.random();
     var add = this.add;
     var newBG;
-    if (randNum > 0 && randNum <= 0.14) //0,0.33
+    if (randNum > 0 && randNum <= 0.125) //0,0.33
     {
       newBG = 'background2';
     }
-    else if (randNum > 0.14 && randNum <= 0.28) //0,0.33
+    else if (randNum > 0.125 && randNum <= 0.25) //0,0.33
     {
       newBG = 'background4';
     }
-    else if (randNum > 0.28 && randNum <= 0.42) //0,0.33
+    else if (randNum > 0.25 && randNum <= 0.375) //0,0.33
     {
       newBG = 'background6';
     }
-    else if (randNum > 0.42 && randNum <= 0.56)
+    else if (randNum > 0.375 && randNum <= 0.50)
     {
       newBG = 'background8';
     }
-    else if (randNum > 0.56 && randNum <= 0.70)
+    else if (randNum > 0.50 && randNum <= 0.625)
     {
       newBG = 'background10';
     }
-    else if (randNum > 0.70 && randNum <= 0.84)
+    else if (randNum > 0.625 && randNum <= 0.75)
     {
       newBG = 'background12';
     }
-    else if (randNum > 0.84 && randNum <= 1.0)
+    else if (randNum > 0.75 && randNum <= 0.875)
     {
       newBG = 'background14';
+    }
+    else if (randNum > 0.875 && randNum <= 1.0)
+    {
+      newBG = 'background16';
     }
     return newBG;
   }
