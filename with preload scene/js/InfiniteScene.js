@@ -145,7 +145,7 @@ class InfiniteScene extends Phaser.Scene{
       currentBackground = 'background16';
     }
     // player
-    player.sprite = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninjaIM');
+    player.sprite = this.physics.add.sprite(20, this.sys.game.config.height / 2, 'ninjaIM'); ///////////////////////////////////////different
     player.sprite.setScale(0.5);
     player.sprite.setCollideWorldBounds(true); //can't run off screen
     player.healthBar = this.makePlayerBar(0, 50, 0x2ecc71);
@@ -157,13 +157,13 @@ class InfiniteScene extends Phaser.Scene{
     this.playerbullets = this.physics.add.group(); //create stars
     this.playerbigbullets = this.physics.add.group(); //create stars
     this.playertrap = this.physics.add.group(); //create trap
-    this.anims.create({
+    this.anims.create({    ///////////////////////////////////////different
       key: 'ninjaIM_ani',
       frames: this.anims.generateFrameNumbers("ninjaIM"),
       frameRate: 7,
       repeat: -1
     });
-    player.sprite.play("ninjaIM_ani"); //HIYA
+    player.sprite.play("ninjaIM_ani"); //HIYA ///////////////////////////////////////different
     //enemies
     this.wave1 = this.physics.add.group();
     //powerups
@@ -398,7 +398,7 @@ class InfiniteScene extends Phaser.Scene{
     } else if (this.cursors.down.isDown){
       player.sprite.y += player.speed;
     }
-    // locked camera conditions 
+    // locked camera conditions
     if(this.numEnemiesKilled >= (10 * difficulty) * this.enemyWave)
     {
       this.enemyx += 1400;
@@ -582,7 +582,7 @@ class InfiniteScene extends Phaser.Scene{
       this.throwstar.play();
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
-      let pbullet = this.playerbullets.create(playerx, playery, 'autoCyan');
+      let pbullet = this.playerbullets.create(playerx, playery, 'autoCyan'); ///////////////////////////////////////different
       pbullet.setVelocityX(800);
     }
     //press z key to throw 3 stars
@@ -593,9 +593,9 @@ class InfiniteScene extends Phaser.Scene{
       this.throwtriplestar.play();
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
-      let pbullet1 = this.playerbullets.create(playerx, playery - 25, 'smallGold');
-      let pbullet2 = this.playerbullets.create(playerx, playery, 'smallGold');
-      let pbullet3 = this.playerbullets.create(playerx, playery + 25, 'smallGold');
+      let pbullet1 = this.playerbullets.create(playerx, playery - 25, 'smallGold'); ///////////////////////////////////////different
+      let pbullet2 = this.playerbullets.create(playerx, playery, 'smallGold'); ///////////////////////////////////////different
+      let pbullet3 = this.playerbullets.create(playerx, playery + 25, 'smallGold'); ///////////////////////////////////////different
       pbullet1.setVelocityX(850);
       pbullet1.setVelocityY(-150);
       pbullet2.setVelocityX(850);
@@ -610,7 +610,7 @@ class InfiniteScene extends Phaser.Scene{
       this.throwbigstar.play();
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
-      let pbullet = this.playerbigbullets.create(playerx, playery, 'goldStar');
+      let pbullet = this.playerbigbullets.create(playerx, playery, 'goldStar'); ///////////////////////////////////////different
       pbullet.setVelocityX(800);
     }
     //t r a p c a r d
@@ -620,7 +620,7 @@ class InfiniteScene extends Phaser.Scene{
       player.canTrapAgain = false;
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
-      let ptrap = this.playertrap.create(playerx, playery, 'trapGold');
+      let ptrap = this.playertrap.create(playerx, playery, 'trapGold'); ///////////////////////////////////////different
       }
     //press c key to teleport 100 pixels in direction of arrow key
     else if (Phaser.Input.Keyboard.JustDown(this.dkey) && player.canDashAgain == true)
@@ -676,7 +676,7 @@ class InfiniteScene extends Phaser.Scene{
       console.log("player shield is active");
     }
 
-    else if(Phaser.Input.Keyboard.JustDown(this.pkey) && infiniteScenePaused == false)
+    else if(Phaser.Input.Keyboard.JustDown(this.pkey) && infiniteScenePaused == false) ///////////////////////////////////////different
     {
         this.cursors.right.reset();
         this.cursors.left.reset();
@@ -684,11 +684,11 @@ class InfiniteScene extends Phaser.Scene{
         this.cursors.down.reset();
         infiniteScenePaused = true;
         theme.pause();
-        this.scene.pause("infiniteScene");
+        this.scene.pause("infiniteScene"); ///////////////////////////////////////different
         this.scene.launch("pauseScene");
         console.log("got here?");
     }
-    if (infiniteScenePaused == false){
+    if (infiniteScenePaused == false){ ///////////////////////////////////////different
         theme.resume();
     }
 
