@@ -48,7 +48,7 @@ class MainMenu extends Phaser.Scene{
 
         //for testing purposes :)
         // this.input.once('pointerup', function (event) {
-        // this.scene.start('loseScene');
+        // this.scene.start('IMintroScene');
         // }, this);
     }
 

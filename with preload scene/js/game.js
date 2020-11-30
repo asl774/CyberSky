@@ -16,7 +16,7 @@ var config = {
       }
   },
 
-  scene: [PreloadScene, MainMenu, Tutorial, BossScene, CodeScene, InfiniteScene, PauseScene, WinScene, LoseScene, Credits, IMintroScene, IMintro2Scene]
+  scene: [PreloadScene, MainMenu, Tutorial, BossScene, CodeScene, InfiniteScene, PauseScene, WinScene, LoseScene, Credits, IMintroScene]
 }
 
 var player = {
