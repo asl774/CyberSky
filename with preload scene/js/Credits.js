@@ -6,10 +6,6 @@ class Credits extends Phaser.Scene{
     }
 
   create(){
-/*
-        this.add.text(window.innerWidth/2 - 300, window.innerHeight/2, 'CREDITS', { font: '50px Courier', fill: '#00ffff' });
-        this.add.text(window.innerWidth/2 - 300, window.innerHeight/2 + 100, 'click anywhere to return to main menu', { font: '20px Courier', fill: '#00ffff' });
-*/
         this.input.once('pointerup', function (event) {
         this.scene.start('mainMenu');
         }, this);
@@ -50,7 +46,7 @@ this.creditsTween = this.tweens.add({
   y: -700,
   ease: 'Power0',
   duration: 30000,
-  delay: 1000,
+  delay: 200,
   onComplete: function () {
     this.destroy;
     this.scene.start('mainMenu');
