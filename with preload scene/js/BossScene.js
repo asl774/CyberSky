@@ -113,6 +113,10 @@ class BossScene extends Phaser.Scene{
     this.powerup4 = addPhysics.group();
     // ---- ui for pu-----//
     this.hud = this.add.image(700, 50, "hud").setAlpha(0.80);
+    this.arrows1 = this.add.image(1230, 50, "arrows").setAlpha(0.80).setVisible(false);
+    this.arrows2 = this.add.image(1230, 50, "arrows").setAlpha(0.80).setVisible(false);
+    this.arrows3 = this.add.image(1230, 50, "arrows").setAlpha(0.80).setVisible(false);
+    this.arrows4 = this.add.image(1230, 50, "arrows").setAlpha(0.80).setVisible(false);
     this.abilityIcon1 = this.add.image(460, 44, "healAbility");
     this.abilityIcon2 = this.add.image(510, 44, "shieldAbility");
     this.abilityIcon3 = this.add.image(560, 44, "dashAbility");
@@ -312,6 +316,7 @@ class BossScene extends Phaser.Scene{
       this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
       this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
       this.enemyWave = 2;
+      this.arrows1.setVisible(true);
     }
     // can move to wave 3
     if (this.numEnemiesKilled >= 20 * difficulty && this.numEnemiesKilled < 30 * difficulty){
@@ -319,6 +324,7 @@ class BossScene extends Phaser.Scene{
       this.cameras.main.setBounds(0, 0, 1400 * 3 - 40, 560);
       this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
       this.enemyWave = 3;
+      this.arrows2.setVisible(true);
     }
     // can move to wave 4
     if (this.numEnemiesKilled >= 30 * difficulty && this.numEnemiesKilled < 40 * difficulty){
@@ -326,6 +332,7 @@ class BossScene extends Phaser.Scene{
       this.cameras.main.setBounds(0, 0, 1400 * 4 - 40, 560);
       this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
       this.enemyWave = 4;
+      this.arrows3.setVisible(true);
     }
     // can move to boss
     if (this.numEnemiesKilled >= 40 * difficulty && this.numEnemiesKilled < 50 * difficulty){
@@ -333,6 +340,7 @@ class BossScene extends Phaser.Scene{
       this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
       this.physics.world.setBounds(this.worldsX, 30, 1440, 560);
       this.enemyWave = 5;
+      this.arrows4.setVisible(true);
     }
 
     // make waves attack only when player crosses line
@@ -373,6 +381,18 @@ class BossScene extends Phaser.Scene{
       this.worldsX = 5600;
       this.poweruptimer5.paused = false;
       this.bossHPText.setVisible(true);
+    }
+    if (player.sprite.x >= 1400 - 50){
+        this.arrows1.setVisible(false);
+    }
+    if (player.sprite.x >= 2800 - 50){
+        this.arrows2.setVisible(false);
+    }
+    if (player.sprite.x >= 4200 - 50){
+        this.arrows3.setVisible(false);
+    }
+    if (player.sprite.x >= 5600 - 50){
+        this.arrows4.setVisible(false);
     }
     // make enemies respawn at wave start point if they leave camera view
     for (var i = 0; i < this.wave.getChildren().length; i++) {
@@ -634,6 +654,10 @@ class BossScene extends Phaser.Scene{
     this.powerupText3.setScrollFactor(0,0);
     this.powerupText4.setScrollFactor(0,0);
     this.hasteStackText.setScrollFactor(0,0);
+    this.arrows1.setScrollFactor(0,0);
+    this.arrows2.setScrollFactor(0,0);
+    this.arrows3.setScrollFactor(0,0);
+    this.arrows4.setScrollFactor(0,0);
     this.bossHPText.setScrollFactor(0,0);
     this.levelText.setText("Level: " + difficulty + " Stage: " + this.stage);
     this.numKillsText.setText("Enemies Killed: " + this.numEnemiesKilled);

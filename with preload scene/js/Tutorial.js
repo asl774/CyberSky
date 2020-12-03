@@ -123,6 +123,7 @@ class Tutorial extends Phaser.Scene{
     this.tutorialpowerup4 = addPhysics.group();
     //hud
     this.hud = add.image(700, 50, "hud").setAlpha(0.80);
+    this.arrows1 = this.add.image(1230, 50, "arrows").setAlpha(0.80).setVisible(false);
     this.abilityIcon1 = add.image(250, 34, "healAbility").setVisible(false);
     this.abilityIcon2 = add.image(300, 34, "shieldAbility").setVisible(false);
     this.abilityIcon3 = add.image(350, 34, "dashAbility").setVisible(false);
@@ -763,6 +764,7 @@ createStage1() {
     this.powerupText3.setScrollFactor(0,0);
     this.powerupText4.setScrollFactor(0,0);
     this.hasteStackText.setScrollFactor(0,0);
+    this.arrows1.setScrollFactor(0,0);
     this.bossHPText.setScrollFactor(0,0);
     this.abilityBarText.setScrollFactor(0,0);
     this.abilityText1.setScrollFactor(0,0);
@@ -881,6 +883,7 @@ createStage1() {
         this.abilityIcon1.setVisible(false);
         this.abilityIcon2.setVisible(false);
         this.abilityIcon3.setVisible(false);
+        this.arrows1.setVisible(true);
          this.tweens.add({
           targets: this.abilityText1,
           alpha: 0,
@@ -1152,6 +1155,9 @@ createStage1() {
           ease: 'Power2'
         });
     }
+    if (player.sprite.x >= 1400 - 150){
+        this.arrows1.setVisible(false);
+    }
     if (player.sprite.x >= 1400 && player.multishot == false){
         this.tweens.add({
           targets: this.stage2Text1,
@@ -1160,7 +1166,7 @@ createStage1() {
           ease: 'Power2'
         });
     }
-    if (player.sprite.x >= 1400 && this.numEnemiesKilled >= 4){
+    if (player.sprite.x >= 1400 - 40 && this.numEnemiesKilled >= 4){
         this.tweens.add({
           targets: this.stage1Text7,
           alpha: 0,

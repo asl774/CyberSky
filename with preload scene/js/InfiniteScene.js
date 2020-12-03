@@ -180,6 +180,10 @@ class InfiniteScene extends Phaser.Scene{
     //this.puui5 = this.add.image(6100, 685, 'PUUI');
 
     this.hud = this.add.image(700, 50, "hud").setAlpha(0.80);
+    this.arrows1 = this.add.image(1230, 50, "arrows").setAlpha(0.80).setVisible(false);
+    this.arrows2 = this.add.image(1230, 50, "arrows").setAlpha(0.80).setVisible(false);
+    this.arrows3 = this.add.image(1230, 50, "arrows").setAlpha(0.80).setVisible(false);
+    this.arrows4 = this.add.image(1230, 50, "arrows").setAlpha(0.80).setVisible(false);
     //this.powerupBar = this.makePowerupBar(350, 0, 0xffffff);
     this.abilityIcon1 = this.add.image(500, 34, "healAbility");
     this.abilityIcon2 = this.add.image(550, 34, "shieldAbility");
@@ -357,6 +361,10 @@ class InfiniteScene extends Phaser.Scene{
     this.powerupText3.setScrollFactor(0,0);
     this.powerupText4.setScrollFactor(0,0);
     this.hasteStackText.setScrollFactor(0,0);
+    this.arrows1.setScrollFactor(0,0);
+    this.arrows2.setScrollFactor(0,0);
+    this.arrows3.setScrollFactor(0,0);
+    this.arrows4.setScrollFactor(0,0);
     this.bossHPText.setScrollFactor(0,0);
     //this.setHUDPosition(this.levelText, this.cameras.main.x, this.cameras.main.y);
     this.levelText.setText("Level: " + difficulty + " Stage: " + this.stage);
@@ -430,6 +438,7 @@ class InfiniteScene extends Phaser.Scene{
       this.cameras.main.setBounds(0, 0, 1400 * 2 - 40, 560);
       this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
       this.enemyWave = 2;
+      this.arrows1.setVisible(true);
     }
     // can move to wave 3
     if (this.numEnemiesKilled >= 20 * difficulty && this.numEnemiesKilled < 30 * difficulty){
@@ -437,6 +446,7 @@ class InfiniteScene extends Phaser.Scene{
       this.cameras.main.setBounds(0, 0, 1400 * 3 - 40, 560);
       this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
       this.enemyWave = 3;
+      this.arrows2.setVisible(true);
     }
     // can move to wave 4
     if (this.numEnemiesKilled >= 30 * difficulty && this.numEnemiesKilled < 40 * difficulty){
@@ -444,6 +454,7 @@ class InfiniteScene extends Phaser.Scene{
       this.cameras.main.setBounds(0, 0, 1400 * 4 - 40, 560);
       this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
       this.enemyWave = 4;
+      this.arrows3.setVisible(true);
     }
     // can move to boss
     if (this.numEnemiesKilled >= 40 * difficulty && this.numEnemiesKilled < 50 * difficulty){
@@ -451,6 +462,7 @@ class InfiniteScene extends Phaser.Scene{
       this.cameras.main.setBounds(0, 0, 1400 * 4 + 1000, 560);
       this.physics.world.setBounds(this.worldsX, 30, 1440, 560);
       this.enemyWave = 5;
+      this.arrows4.setVisible(true);
     }
 
     // make waves attack only when player crosses line
@@ -491,19 +503,18 @@ class InfiniteScene extends Phaser.Scene{
       this.worldsX = 5600;
       this.poweruptimer5.paused = false;
       this.bossHPText.setVisible(true);
-      //this.levelText.setVisible(false);
-    //this.numKillsText.setVisible(false);
-    //this.powerupBarText.setVisible(false);
-    //this.powerupBar.setVisible(false);
-    //this.powerupIcon1.setVisible(false);
-    //this.powerupIcon2.setVisible(false);
-    //this.powerupIcon3.setVisible(false);
-    //this.powerupIcon4.setVisible(false);
-    //this.powerupText.setVisible(false);
-    //this.powerupText2.setVisible(false);
-    //this.powerupText3.setVisible(false);
-    //this.powerupText4.setVisible(false);
-    //this.hasteStackText.setVisible(false);
+    }
+    if (player.sprite.x >= 1400 - 50){
+        this.arrows1.setVisible(false);
+    }
+    if (player.sprite.x >= 2800 - 50){
+        this.arrows2.setVisible(false);
+    }
+    if (player.sprite.x >= 4200 - 50){
+        this.arrows3.setVisible(false);
+    }
+    if (player.sprite.x >= 5600 - 50){
+        this.arrows4.setVisible(false);
     }
     // make enemies respawn at wave start point if they leave camera view
     for (var i = 0; i < this.wave1.getChildren().length; i++) {
