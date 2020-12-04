@@ -25,7 +25,8 @@ class Tutorial extends Phaser.Scene{
       player.health = 80;
       player.isAlive = true;
       player.healthPercent = 100;
-      player.healthBar = 0;
+      player.healthBarGreen = 0;
+      player.healthBarRed = 0;
       player.shielded = false;
       player.multishot = false;
       player.pierce = false;
@@ -83,6 +84,7 @@ class Tutorial extends Phaser.Scene{
 
     tutorialtheme = sound.add('tutorialtheme', {volume: 0.5});
     tutorialtheme.setLoop(true);
+    this.sound.stopAll();
     tutorialtheme.play();
     this.ability1 = sound.add('ability1', {volume: 0.5});
     this.blocA = sound.add('blocA');
@@ -104,9 +106,12 @@ class Tutorial extends Phaser.Scene{
     player.sprite = addPhysics.sprite(20, this.sys.game.config.height / 2, 'ninja');
     player.sprite.setScale(0.5);
     player.sprite.setCollideWorldBounds(true); //can't run off screen
-    player.healthBar = this.makeBar(40, 10, 0, 50, 0x2ecc71); //make player health bar
-    this.setValue(player.healthBar,player.healthPercent);
-    player.healthBar.setVisible(true);
+    player.healthBarGreen = this.makeBar(40, 10, 0, 50, 0x2ecc71);
+    this.setValue(player.healthBarGreen,player.healthPercent);
+    player.healthBarGreen.setVisible(true);
+    player.healthBarRed = this.makeBar(40, 10, 0, 50, 0xe74c3c);
+    this.setValue(player.healthBarRed,player.healthPercent);
+    player.healthBarRed.setVisible(false);
     player.healthPercent = 100;
     mainCamera.startFollow(player.sprite, true, 0.1, 0.1); //start following player
     mainCamera.followOffset.set(-500, 0);
@@ -250,7 +255,8 @@ class Tutorial extends Phaser.Scene{
 
   update()
   {
-    this.setHealthBarPosition(player.healthBar, player.sprite.x - 25, player.sprite.y - 40);
+    this.setHealthBarPosition(player.healthBarGreen, player.sprite.x - 25, player.sprite.y - 40);
+    this.setHealthBarPosition(player.healthBarRed, player.sprite.x - 25, player.sprite.y - 40);
     this.bossHPText.setText("Boss HP: " + Math.ceil(tutorialboss.health));
     this.stopTextScroll();
     if (!player.isAlive) {
@@ -455,7 +461,7 @@ createStage1() {
     }
     player.health -= 20;
     player.healthPercent -= 20;
-    this.setValue(player.healthBar, player.healthPercent);
+    this.checkUseRedBar();
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
       this.gameOver();
@@ -531,7 +537,7 @@ createStage1() {
         player.health += 20;
         player.healthPercent += 20;
       }
-      this.setValue(player.healthBar, player.healthPercent);
+      this.checkUseRedBar();
       console.log("player health is : " + player.health);
     }
     //press S to shield
@@ -638,7 +644,7 @@ createStage1() {
     }
     player.health -= 5;
     player.healthPercent -= 5;
-    this.setValue(player.healthBar, player.healthPercent);
+    this.checkUseRedBar();
     this.cameras.main.shake(400, 0.01); //duration, intensity
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
@@ -749,6 +755,21 @@ createStage1() {
   setHealthBarPosition(bar, x, y){
     bar.x = x;
     bar.y = y;
+  }
+
+  checkUseRedBar(){
+      this.setValue(player.healthBarGreen, player.healthPercent);
+      this.setValue(player.healthBarRed, player.healthPercent);
+      if (player.health >= 50)
+      {
+        player.healthBarGreen.setVisible(true);
+        player.healthBarRed.setVisible(false);
+      }
+      else
+      {
+        player.healthBarGreen.setVisible(false);
+        player.healthBarRed.setVisible(true);
+      }
   }
 
   stopTextScroll()

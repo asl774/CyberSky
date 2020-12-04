@@ -30,7 +30,8 @@ class BossScene extends Phaser.Scene{
     player.health = 100;
     player.isAlive = true;
     player.healthPercent = 100;
-    player.healthBar = 0;
+    player.healthBarGreen = 0;
+    player.healthBarRed = 0;
 
     boss.speed = 2;
     boss.health = 100;
@@ -95,9 +96,12 @@ class BossScene extends Phaser.Scene{
     this.pickBackground();
     // player
     player.sprite = addPhysics.sprite(20, this.sys.game.config.height / 2, 'ninja').setScale(0.5).setCollideWorldBounds(true); //can't run off screen
-    player.healthBar = this.makePlayerBar(0, 50, 0x2ecc71);
-    this.setValue(player.healthBar,player.healthPercent);
-    player.healthBar.setVisible(true);
+    player.healthBarGreen = this.makePlayerBar(0, 50, 0x2ecc71);
+    this.setValue(player.healthBarGreen,player.healthPercent);
+    player.healthBarGreen.setVisible(true);
+    player.healthBarRed = this.makePlayerBar(0, 50, 0xe74c3c);
+    this.setValue(player.healthBarRed,player.healthPercent);
+    player.healthBarRed.setVisible(false);
     player.healthPercent = 100;
     mainCamera.startFollow(player.sprite, true, 0.1, 0.1);
     mainCamera.followOffset.set(-500, 0);
@@ -253,7 +257,8 @@ class BossScene extends Phaser.Scene{
 
   update()
   {
-    this.setHealthBarPosition(player.healthBar, player.sprite.x - 25, player.sprite.y - 40);
+    this.setHealthBarPosition(player.healthBarGreen, player.sprite.x - 25, player.sprite.y - 40);
+    this.setHealthBarPosition(player.healthBarRed, player.sprite.x - 25, player.sprite.y - 40);
     this.stopTextScroll();
 
     //check if player is alive
@@ -423,7 +428,6 @@ class BossScene extends Phaser.Scene{
       this.physics.world.setBounds(5600, 30, 1350, 560);
     }
     if (this.startBoss){
-      player.healthBar.setVisible(true);
       boss.healthBar.setVisible(true);
       boss.sprite.setVisible(true);
       boss.sprite.x -= boss.speed * 2;
@@ -550,7 +554,7 @@ class BossScene extends Phaser.Scene{
         player.health += 20;
         player.healthPercent += 20;
       }
-      this.setValue(player.healthBar, player.healthPercent);
+      this.checkUseRedBar();
       console.log("player health is : " + player.health);
     }
     //press b to shield
@@ -630,6 +634,21 @@ class BossScene extends Phaser.Scene{
   setHealthBarPosition(bar, x, y){
     bar.x = x;
     bar.y = y;
+  }
+
+  checkUseRedBar(){
+      this.setValue(player.healthBarGreen, player.healthPercent);
+      this.setValue(player.healthBarRed, player.healthPercent);
+      if (player.health >= 50)
+      {
+        player.healthBarGreen.setVisible(true);
+        player.healthBarRed.setVisible(false);
+      }
+      else
+      {
+        player.healthBarGreen.setVisible(false);
+        player.healthBarRed.setVisible(true);
+      }
   }
 
   stopTextScroll()
@@ -1387,7 +1406,7 @@ class BossScene extends Phaser.Scene{
     }
     player.health -= 10 + (difficulty*2);
     player.healthPercent -= 10 + (difficulty*2);
-    this.setValue(player.healthBar, player.healthPercent);
+    this.checkUseRedBar();
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
       this.gameOver();
@@ -1406,7 +1425,7 @@ class BossScene extends Phaser.Scene{
     }
     player.health -= 2.0;
     player.healthPercent -= 2.0;
-    this.setValue(player.healthBar, player.healthPercent);
+    this.checkUseRedBar();
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
       this.gameOver();
@@ -1426,7 +1445,7 @@ class BossScene extends Phaser.Scene{
     }
     player.health -= 0.15;
     player.healthPercent -= 0.15;
-    this.setValue(player.healthBar, player.healthPercent);
+    this.checkUseRedBar();
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
       this.gameOver();
@@ -1445,7 +1464,7 @@ class BossScene extends Phaser.Scene{
     }
     player.health -= 1;
     player.healthPercent -= 1;
-    this.setValue(player.healthBar, player.healthPercent);
+      this.checkUseRedBar();
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
       this.gameOver();
@@ -1464,7 +1483,7 @@ class BossScene extends Phaser.Scene{
     }
     player.health -= 0.18;
     player.healthPercent -= 0.18;
-    this.setValue(player.healthBar, player.healthPercent);
+      this.checkUseRedBar();
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
       this.gameOver();
@@ -1482,7 +1501,7 @@ class BossScene extends Phaser.Scene{
     if (player.sprite.x >= 200){
       player.health -= 30;
       player.healthPercent-= 30;
-      this.setValue(player.healthBar, player.healthPercent);
+      this.checkUseRedBar();
       player.sprite.x = player.sprite.x- 150;
       player.sprite.tint = Math.random() * 0xffffff;
       this.cameras.main.shake(300);
@@ -1491,7 +1510,7 @@ class BossScene extends Phaser.Scene{
     else{
       player.health -= 30;
       player.healthPercent -= 30;
-      this.setValue(player.healthBar, player.healthPercent);
+      this.checkUseRedBar();
       player.sprite.x = player.sprite.x + 200;
       this.laser.tint = Math.random() * 0xffffff;
       this.cameras.main.shake(300);
@@ -1515,7 +1534,7 @@ class BossScene extends Phaser.Scene{
       player.health += 10;
       player.healthPercent += 10;
     }
-    this.setValue(player.healthBar, player.healthPercent);
+      this.checkUseRedBar();
   }
   powerupTwo(p, powerup2){
     powerup2.destroy();
@@ -1530,7 +1549,7 @@ class BossScene extends Phaser.Scene{
       player.health += 10;
       player.healthPercent += 10;
     }
-    this.setValue(player.healthBar, player.healthPercent);
+      this.checkUseRedBar();
   }
   powerupThree(p, powerup3){
     powerup3.destroy();
@@ -1545,7 +1564,7 @@ class BossScene extends Phaser.Scene{
       player.health += 10;
       player.healthPercent += 10;
     }
-    this.setValue(player.healthBar, player.healthPercent);
+      this.checkUseRedBar();
   }
   powerupFour(p, powerup4){
     powerup4.destroy();
@@ -1563,7 +1582,7 @@ class BossScene extends Phaser.Scene{
         player.healthPercent += 10;
         console.log("player.haste is: ", player.haste)
       }
-      this.setValue(player.healthBar, player.healthPercent);
+      this.checkUseRedBar();
     }else{
       player.haste += 100;
       console.log("player.haste is: ", player.haste)
@@ -1606,7 +1625,7 @@ class BossScene extends Phaser.Scene{
     }
     player.health -= 1 * difficulty;
     player.healthPercent -= 1 * difficulty;
-    this.setValue(player.healthBar, player.healthPercent);
+      this.checkUseRedBar();
     this.cameras.main.shake(400, 0.01); //duration, intensity
     if(player.health <= 0) //things can happen, be safe and less than 0
     {
