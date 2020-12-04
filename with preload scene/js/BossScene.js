@@ -1498,20 +1498,20 @@ class BossScene extends Phaser.Scene{
       console.log("player had a shield");
       return;
     }
-    if (player.sprite.x >= 200){
-      player.health -= 30;
-      player.healthPercent-= 30;
+    if (player.sprite.x >= 5800){
+      player.health -= 20;
+      player.healthPercent-= 20;
       this.checkUseRedBar();
-      player.sprite.x = player.sprite.x- 150;
+      player.sprite.x = player.sprite.x - 150;
       player.sprite.tint = Math.random() * 0xffffff;
       this.cameras.main.shake(300);
       console.log("player health is : " + player.health);
     }
     else{
-      player.health -= 30;
-      player.healthPercent -= 30;
+      player.health -= 20;
+      player.healthPercent -= 20;
       this.checkUseRedBar();
-      player.sprite.x = player.sprite.x + 200;
+      player.sprite.x = player.sprite.x + 300;
       this.laser.tint = Math.random() * 0xffffff;
       this.cameras.main.shake(300);
       console.log("player health is : " + player.health);
