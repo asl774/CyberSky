@@ -80,6 +80,7 @@ class InfiniteScene extends Phaser.Scene{
 
 
     if (firstLevel) {
+        this.sound.stopAll();
         theme = this.sound.add('theme', {volume: 0.3});
         theme.setLoop(true);
         theme.play();

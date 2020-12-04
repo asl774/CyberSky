@@ -686,6 +686,7 @@ class BossScene extends Phaser.Scene{
 
   /////////////////////////////////////////SCENE ADJUST SECTION////
   resetScene(){
+    this.sound.stopAll();
     theme = this.sound.add('theme', {volume: 0.3});
     theme.setLoop(true);
     theme.play();
