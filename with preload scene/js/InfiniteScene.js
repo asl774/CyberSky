@@ -308,7 +308,7 @@ class InfiniteScene extends Phaser.Scene{
     this.poweruptimer3 = this.time.addEvent({delay : 5000, callback: this.createPowerup3, callbackScope: this, loop: true, paused: true });
     this.poweruptimer4 = this.time.addEvent({delay : 5000, callback: this.createPowerup4, callbackScope: this, loop: true, paused: true });
     this.poweruptimer5 = this.time.addEvent({delay : 5000, callback: this.createPowerup5, callbackScope: this, loop: true, paused: true });
-    this.abilityTimer1 = this.time.addEvent({delay : 1350 - player.haste, callback: this.pauseAbilityTimer1, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer1 = this.time.addEvent({delay : 1300 - player.haste, callback: this.pauseAbilityTimer1, callbackScope: this, loop: true, paused: false });
     this.abilityTimer2 = this.time.addEvent({delay : 3000 - player.haste, callback: this.pauseAbilityTimer2, callbackScope: this, loop: true, paused: false });
     this.abilityTimer3 = this.time.addEvent({delay : 1100 - player.haste, callback: this.pauseAbilityTimer3, callbackScope: this, loop: true, paused: false });
     this.abilityTimer6 = this.time.addEvent({delay : 10000, callback: this.pauseAbilityTimer6, callbackScope: this, loop: true, paused: false });
@@ -604,7 +604,7 @@ class InfiniteScene extends Phaser.Scene{
     //press z key to throw 3 stars
     else if (Phaser.Input.Keyboard.JustDown(this.qkey) && player.multishot == true && player.canMultishotAgain)
     {
-      this.abilityTimer1.isPaused = false;
+      this.mSpawn.isPaused = false;
       player.canMultishotAgain = false;
       this.throwtriplestar.play();
       let playerx = player.sprite.x;
@@ -621,7 +621,7 @@ class InfiniteScene extends Phaser.Scene{
     //press x key to throw big piercing star
     else if (Phaser.Input.Keyboard.JustDown(this.wkey) && player.pierce == true && player.canPierceAgain)
     {
-      this.abilityTimer2.isPaused = false;
+      this.pSpawn.isPaused = false;
       player.canPierceAgain = false;
       this.throwbigstar.play();
       let playerx = player.sprite.x;
@@ -632,7 +632,7 @@ class InfiniteScene extends Phaser.Scene{
     //t r a p c a r d
     else if (Phaser.Input.Keyboard.JustDown(this.ekey) && player.trap == true && player.canTrapAgain)
     {
-      this.abilityTimer3.isPaused = false;
+      this.tSpawn.isPaused = false;
       player.canTrapAgain = false;
       let playerx = player.sprite.x;
       let playery = player.sprite.y;
@@ -643,25 +643,25 @@ class InfiniteScene extends Phaser.Scene{
     {
       if (this.cursors.right.isDown){
           player.sprite.x += 100;
-          this.dashTimer.isPaused = false;
+          this.dSpawn.isPaused = false;
           player.canDashAgain = false;
           this.teleport.play();
       }
       else if (this.cursors.left.isDown){
           player.sprite.x -= 100;
-          this.dashTimer.isPaused = false;
+          this.dSpawn.isPaused = false;
           player.canDashAgain = false;
           this.teleport.play();
       }
       else if (this.cursors.up.isDown){
           player.sprite.y -= 100;
-          this.dashTimer.isPaused = false;
+          this.dSpawn.isPaused = false;
           player.canDashAgain = false;
           this.teleport.play();
       }
       else if (this.cursors.down.isDown){
           player.sprite.y += 100;
-          this.dashTimer.isPaused = false;
+          this.dSpawn.isPaused = false;
           player.canDashAgain = false;
           this.teleport.play();
       }
@@ -669,7 +669,7 @@ class InfiniteScene extends Phaser.Scene{
     //press v to heal - this should go somewhere else
     else if(Phaser.Input.Keyboard.JustDown(this.akey) && player.health < 100 && player.canHealAgain == true)
     {
-      this.healTimer.isPaused = false;
+      this.hSpawn.isPaused = false;
       player.canHealAgain = false;
       this.healthUp.play();
       if(player.health > 80)
@@ -1413,7 +1413,46 @@ class InfiniteScene extends Phaser.Scene{
       this.gameOver();
     }
   }
-
+  mSpawn() {
+    if (player.canHasteAgain == true){
+      let delay = 0;
+    }else{
+      let delay = 1300;
+    }
+    var timer = scene.time.delayedCall(delay, mSpawn, this.pauseAbilityTimer1, scope); 
+}
+  pSpawn() {
+    if (player.canHasteAgain == true){
+      let delay = 0;
+    }else{
+      let delay = 3000;
+    }
+    var timer = scene.time.delayedCall(delay, pSpawn, this.pauseAbilityTimer2, scope); 
+}
+  tSpawn() {
+    if (player.canHasteAgain == true){
+      let delay = 0;
+    }else{
+      let delay = 1100;
+    }
+    var timer = scene.time.delayedCall(delay, tSpawn, this.pauseAbilityTimer3, scope); 
+}
+  hSpawn() {
+    if (player.canHasteAgain == true){
+      let delay = 0;
+    }else{
+      let delay = 2000;
+    }
+    var timer = scene.time.delayedCall(delay, hSpawn, this.pauseHealTimer, scope); 
+}
+dSpawn() {
+  if (player.canHasteAgain == true){
+    let delay = 0;
+  }else{
+    let delay = 1000;
+  }
+  var timer = scene.time.delayedCall(delay, dSpawn, this.pauseDashTimer, scope); 
+}
   powerupOne(p, powerup1){
     powerup1.destroy();
     player.multishot = true;
@@ -1483,56 +1522,62 @@ class InfiniteScene extends Phaser.Scene{
     player.canHasteAgain = false;
     this.powerupIcon4.setVisible(true);
     this.powerupText4.setVisible(true);
-    this.hasteStackText.setVisible(true);
-    if (player.haste >= 1000){
-      if(player.health > 90)
-      {
-        player.health = 100;
-        player.healthPercent = 100;
-      } else {
-        player.health += 10;
-        player.healthPercent += 10;
-        console.log("player.haste is: ", player.haste)
-      }
-      this.checkUseRedBar();
-    }else{
-      player.haste += 100;
-      console.log("player.haste is: ", player.haste)
-      }
+      
   }
 
   pauseAbilityTimer1(){
     this.abilityTimer1.isPaused = true;
     player.canMultishotAgain = true;
+    if(player.canHasteAgain == true){
+      this.abilityTimer1.delay = 0;
+    }else{
+    this.abilityTimer1.delay = 1300;
+    }
   }
 
   pauseAbilityTimer2(){
     this.abilityTimer2.isPaused = true;
     player.canPierceAgain = true;
+    if(player.canHasteAgain == true){
+      this.abilityTimer2.delay = 0;
+    }else{
+    this.abilityTimer2.delay = 3000;
+    }
   }
 
   pauseAbilityTimer3(){
     this.abilityTimer3.isPaused = true;
     player.canTrapAgain = true;
+    if(player.canHasteAgain == true){
+      this.abilityTimer3.delay = 0;
+    }else{
+    this.abilityTimer3.delay = 1100;
+    }
   }
   pauseAbilityTimer6(){
     this.abilityTimer6.isPaused = true;
     this.powerupIcon4.setVisible(false);
     this.powerupText4.setVisible(false);
-    this.hasteStackText.setVisible(false);
-    player.pCD = 0;
-    player.tCD = 0;
-    player.mCD = 0;
-    player.canHasteAgain = true;
+    player.canHasteAgain = false;
   }
   pauseDashTimer(){
     this.dashTimer.isPaused = true;
     player.canDashAgain = true;
+    if(player.canHasteAgain == true){
+      this.healTimer.delay = 0;
+    }else{
+    this.healTimer.delay = 2000;
+    }
   }
 
   pauseHealTimer(){
     this.healTimer.isPaused = true;
     player.canHealAgain = true;
+    if(player.canHasteAgain == true){
+      this.dashTimer.delay = 0;
+    }else{
+    this.dashTimer.delay = 1000;
+    }
   }
 
   hitPlayer(p, b)
