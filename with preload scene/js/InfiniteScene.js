@@ -311,7 +311,7 @@ class InfiniteScene extends Phaser.Scene{
     this.abilityTimer1 = this.time.addEvent({delay : 1300 - player.haste, callback: this.pauseAbilityTimer1, callbackScope: this, loop: true, paused: false });
     this.abilityTimer2 = this.time.addEvent({delay : 3000 - player.haste, callback: this.pauseAbilityTimer2, callbackScope: this, loop: true, paused: false });
     this.abilityTimer3 = this.time.addEvent({delay : 1100 - player.haste, callback: this.pauseAbilityTimer3, callbackScope: this, loop: true, paused: false });
-    this.abilityTimer6 = this.time.addEvent({delay : 10000, callback: this.pauseAbilityTimer6, callbackScope: this, loop: true, paused: false });
+    this.abilityTimer6 = this.time.addEvent({delay : 15000, callback: this.pauseAbilityTimer6, callbackScope: this, loop: true, paused: false });
     this.healTimer = this.time.addEvent({delay : 2000 - player.haste, callback: this.pauseHealTimer, callbackScope: this, loop: true, paused: false });
     this.dashTimer = this.time.addEvent({delay : 1000 - player.haste, callback: this.pauseDashTimer, callbackScope: this, loop: true, paused: false });
     //debugging / things to remove later
@@ -1445,13 +1445,13 @@ class InfiniteScene extends Phaser.Scene{
     }
     var timer = scene.time.delayedCall(delay, hSpawn, this.pauseHealTimer, scope); 
 }
-dSpawn() {
-  if (player.canHasteAgain == true){
-    let delay = 0;
-  }else{
-    let delay = 1000;
-  }
-  var timer = scene.time.delayedCall(delay, dSpawn, this.pauseDashTimer, scope); 
+  dSpawn() {
+    if (player.canHasteAgain == true){
+      let delay = 0;
+    }else{
+      let delay = 1000;
+    }
+    var timer = scene.time.delayedCall(delay, dSpawn, this.pauseDashTimer, scope); 
 }
   powerupOne(p, powerup1){
     powerup1.destroy();
@@ -1519,9 +1519,10 @@ dSpawn() {
   powerupFour(p, powerup4){
     powerup4.destroy();
     this.hastesound.play();
-    player.canHasteAgain = false;
     this.powerupIcon4.setVisible(true);
     this.powerupText4.setVisible(true);
+    player.canHasteAgain = true;
+
       
   }
 
@@ -1541,7 +1542,7 @@ dSpawn() {
     if(player.canHasteAgain == true){
       this.abilityTimer2.delay = 0;
     }else{
-    this.abilityTimer2.delay = 3000;
+      this.abilityTimer2.delay = 3000;
     }
   }
 
@@ -1551,7 +1552,7 @@ dSpawn() {
     if(player.canHasteAgain == true){
       this.abilityTimer3.delay = 0;
     }else{
-    this.abilityTimer3.delay = 1100;
+      this.abilityTimer3.delay = 1100;
     }
   }
   pauseAbilityTimer6(){
@@ -1566,7 +1567,7 @@ dSpawn() {
     if(player.canHasteAgain == true){
       this.healTimer.delay = 0;
     }else{
-    this.healTimer.delay = 2000;
+    this.healTimer.delay = 1000;
     }
   }
 
@@ -1576,7 +1577,7 @@ dSpawn() {
     if(player.canHasteAgain == true){
       this.dashTimer.delay = 0;
     }else{
-    this.dashTimer.delay = 1000;
+    this.dashTimer.delay = 2000;
     }
   }
 
