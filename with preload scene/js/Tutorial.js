@@ -1187,6 +1187,11 @@ createStage1() {
           ease: 'Power2'
         });
     }
+    if (player.sprite.x >= 1400 && this.numEnemiesKilled >= 4){
+      this.powerupBarText.setVisible(true);
+      this.waveAttackTimer.paused = false;
+      this.worldsX = 1400;
+    }
     if (player.sprite.x >= 1400 - 40 && this.numEnemiesKilled >= 4){
         this.tweens.add({
           targets: this.stage1Text7,
@@ -1194,9 +1199,6 @@ createStage1() {
           duration: 1000,
           ease: 'Power2'
         });
-      this.powerupBarText.setVisible(true);
-      this.waveAttackTimer.paused = false;
-      this.worldsX = 1400;
     }
   }
 
