@@ -279,7 +279,7 @@ class Tutorial extends Phaser.Scene{
     //stage 1 enemies
     this.updateTutorialText();
 
-    if(this.numEnemiesKilled >= 4 && this.numEnemiesKilled < 10  && this.firstDPressed){
+    if(this.numEnemiesKilled >= 4 && this.numEnemiesKilled < 10  && this.firstDPressed && player.sprite.x >= 1400 - 70){
         this.cameras.main.setBounds(0, 0, 1400 * 2 - 10, 560);
         this.physics.world.setBounds(this.worldsX, 30, 1400, 560);
     }
@@ -1176,10 +1176,10 @@ createStage1() {
           ease: 'Power2'
         });
     }
-    if (player.sprite.x >= 1400 - 150){
+    if (player.sprite.x >= 1400 - 40){
         this.arrows1.setVisible(false);
     }
-    if (player.sprite.x >= 1400 && player.multishot == false){
+    if (player.sprite.x >= 1400 && player.multishot == false && this.numEnemiesKilled >= 4){
         this.tweens.add({
           targets: this.stage2Text1,
           alpha: 1,
